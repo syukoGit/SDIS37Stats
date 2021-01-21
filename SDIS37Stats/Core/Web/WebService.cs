@@ -31,6 +31,9 @@
         /// </summary>
         private string password;
 
+        public delegate void OnHtmlDocStatsHandler(HtmlDocument htmlDocument);
+        public event OnHtmlDocStatsHandler OnHtmlDocStats;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebService" /> class.
         /// </summary>
@@ -42,6 +45,7 @@
             this.password = password;
 
             this.WebBrowser = new WebBrowser();
+
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
 
             this.WebBrowser.Url = new Uri(WebServicesLoginURL);
@@ -112,6 +116,15 @@
                         }
 
                         buttonElem?.InvokeMember("click");
+                    }
+                }
+                else
+                {
+                    HtmlDocument document = WebBrowser.Document;
+
+                    if (document != null && document.Title == "Sdis37 Gipsiweb ")
+                    {
+                        this.OnHtmlDocStats?.Invoke(document);
                     }
                 }
             }
