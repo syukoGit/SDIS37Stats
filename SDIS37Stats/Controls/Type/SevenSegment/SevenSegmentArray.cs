@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SDIS37Stats.Controls.Type
+namespace SDIS37Stats.Controls.Type.SevenSegment
 {
     public class SevenSegmentArray : UserControl
     {
