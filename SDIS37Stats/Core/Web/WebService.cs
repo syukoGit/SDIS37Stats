@@ -31,6 +31,16 @@
         /// </summary>
         private string password;
 
+        /// <summary>
+        /// Private integer for get and set a connection state.
+        /// </summary>
+        /// <remarks>
+        /// 0 : no connection.
+        /// 1 : attempt connection.
+        /// 2 : connection success.
+        /// </remarks>
+        private int connectionState = 0;
+
         public delegate void OnHtmlDocStatsHandler(HtmlDocument htmlDocument);
         public event OnHtmlDocStatsHandler OnHtmlDocStats;
 
@@ -68,7 +78,11 @@
         /// <summary>
         /// Refresh the <see cref="System.Windows.Forms.WebBrowser"/>.
         /// </summary>
-        public void Refresh() => this.WebBrowser.Refresh();
+        public void Refresh()
+        {
+            Console.Out.WriteLine("Refresh");
+            this.WebBrowser.Url = new Uri(WebServicesStatsURL);
+        }
 
         #endregion
 
@@ -88,6 +102,16 @@
             {
                 if (this.WebBrowser.Url.AbsoluteUri == WebServicesLoginURL)
                 {
+                    if (this.connectionState == 1)
+                    {
+                        Console.Out.WriteLine("Connexion impossible");
+                        return;
+                    }
+
+                    Console.Out.WriteLine("Tentative de connexion");
+
+                    this.connectionState = 1;
+
                     if (string.IsNullOrEmpty(this.username) || string.IsNullOrEmpty(this.password))
                     {
                         var getCredentials = new Controls.GetCredentials();
@@ -120,11 +144,19 @@
                 }
                 else
                 {
+                    Console.Out.WriteLine("Connexion réussite");
+
+                    this.connectionState = 2;
+
                     HtmlDocument document = WebBrowser.Document;
 
-                    if (document != null && document.Title == "Sdis37 Gipsiweb ")
+                    if (document != null && document.Title == "Sdis37 Gipsiweb")
                     {
-                        this.OnHtmlDocStats?.Invoke(document);
+                        this.OnHtmlDocStats?.Invoke(WebBrowser.Document);
+                    }
+                    else
+                    {
+                        Console.Out.WriteLine("Page inconnue");
                     }
                 }
             }
