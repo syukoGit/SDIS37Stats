@@ -59,11 +59,24 @@
     <Compile Include="Controls\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Theme\Color\Theme.cs" />
+    <Compile Include="Controls\Type\Graph\BarGraph.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Type\Graph\BarGraph.Designer.cs">
+      <DependentUpon>BarGraph.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Type\SevenSegment\SevenSegment.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Type\SevenSegment\SevenSegmentArray.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\NbOperationPerHour.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\NbOperationPerHour.Designer.cs">
+      <DependentUpon>NbOperationPerHour.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Type\Statistics\NbOperationToday.cs">
       <SubType>UserControl</SubType>
@@ -80,6 +93,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Type\Graph\BarGraph.resx">
+      <DependentUpon>BarGraph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Type\Statistics\NbOperationPerHour.resx">
+      <DependentUpon>NbOperationPerHour.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Type\Statistics\NbOperationToday.resx">
       <DependentUpon>NbOperationToday.cs</DependentUpon>
