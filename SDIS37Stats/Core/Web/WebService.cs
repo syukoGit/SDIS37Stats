@@ -17,9 +17,14 @@
         public const string WebServicesLoginURL = "https://webservices.sdis37.fr/users/login";
 
         /// <summary>
-        /// Const string used for get the statistics url (main page) of the webservice.
+        /// Const string used for get the main page of the webservice.
         /// </summary>
-        public const string WebServicesStatsURL = "https://webservices.sdis37.fr/interventions";
+        public const string WebServiceMainPageURL = "https://webservices.sdis37.fr/interventions";
+
+        /// <summary>
+        /// Const string used for get the number of operation per day.
+        /// </summary>
+        public const string WebServicesStatsForOperationPerHourURL = "https://webservices.sdis37.fr/interventions/getNb";
 
         /// <summary>
         /// Private string for save the username used for connection.
@@ -41,8 +46,11 @@
         /// </remarks>
         private int connectionState = 0;
 
-        public delegate void OnHtmlDocStatsHandler(HtmlDocument htmlDocument);
-        public event OnHtmlDocStatsHandler OnHtmlDocStats;
+        public delegate void OnNbOperationTodayUpdatedHandler(HtmlDocument htmlDocument);
+        public event OnNbOperationTodayUpdatedHandler OnNbOperationTodayUpdated;
+
+        public delegate void OnNbOperationPerHourUpdatedHandler(HtmlDocument htmlDocument);
+        public event OnNbOperationPerHourUpdatedHandler OnNbOperationPerHourUpdated;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebService" /> class.
@@ -58,7 +66,7 @@
 
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
 
-            this.WebBrowser.Url = new Uri(WebServicesLoginURL);
+            this.WebBrowser.Url = new Uri(WebServiceMainPageURL);
         }
 
         /// <summary>
@@ -81,7 +89,7 @@
         public void Refresh()
         {
             Console.Out.WriteLine("Refresh");
-            this.WebBrowser.Url = new Uri(WebServicesStatsURL);
+            this.WebBrowser.Url = new Uri(WebServiceMainPageURL);
         }
 
         #endregion
@@ -150,9 +158,18 @@
 
                     HtmlDocument document = WebBrowser.Document;
 
-                    if (document != null && document.Title == "Sdis37 Gipsiweb")
+                    if (document == null)
                     {
-                        this.OnHtmlDocStats?.Invoke(WebBrowser.Document);
+                        Console.Out.WriteLine("Document null");
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceMainPageURL)
+                    {
+                        this.WebBrowser.Navigate(WebServicesStatsForOperationPerHourURL);
+                        this.OnNbOperationTodayUpdated?.Invoke(WebBrowser.Document);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServicesStatsForOperationPerHourURL)
+                    {
+                        this.OnNbOperationPerHourUpdated?.Invoke(WebBrowser.Document);
                     }
                     else
                     {

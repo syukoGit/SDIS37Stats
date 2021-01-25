@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace SDIS37Stats.Controls
@@ -38,14 +38,26 @@ namespace SDIS37Stats.Controls
                 this.Controls.Add(this.webService.WebBrowser);
             }
 
+            this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
         }
 
+        #region Private
+        private static int GetIntervalInSecondsWithNextMinute()
+        {
+            DateTime now = DateTime.Now;
+            return (60 - now.Second) * 1000 - now.Millisecond;
+        }
+        #endregion
+
+        #region Event
         private void StatUpdated()
         {
-            this.NbInter.Text = this.statistics.TotalOperationInDay.ToString();
+            this.NbOperationToday.Value = this.statistics.TotalOperationInDay;
             this.LastUpdate.Text = this.statistics.LastRefresh.ToString("dd/MM/yyyy HH:mm");
+            this.NbOperationPerHour.Value = new List<int>(this.statistics.OperationPerHour);
 
+            this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
         }
 
@@ -61,8 +73,8 @@ namespace SDIS37Stats.Controls
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            this.timer.Stop();
             this.webService.Refresh();
         }
+        #endregion
     }
 }
