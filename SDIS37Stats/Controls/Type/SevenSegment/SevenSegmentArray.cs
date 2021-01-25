@@ -22,7 +22,7 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
         private bool showDot = true;
         private Padding elementPadding;
 
-        private string theValue = null;
+        private int theValue;
 
         public SevenSegmentArray()
         {
@@ -144,22 +144,31 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
         /// The value to be displayed on the LED array. This can contain numbers,
         /// certain letters, and decimal points.
         /// </summary>
-        public string Value
+        public int Value
         {
-            get { return theValue; }
+            get
+            {
+                return theValue;
+            }
             set
             {
                 theValue = value;
-                for (int i = 0; i < segments.Length; i++) { segments[i].CustomPattern = 0; segments[i].DecimalOn = false; }
-                if (theValue != null)
+                for (int i = 0; i < segments.Length; i++)
                 {
-                    int segmentIndex = 0;
-                    for (int i = theValue.Length - 1; i >= 0; i--)
-                    {
-                        if (segmentIndex >= segments.Length) break;
-                        if (theValue[i] == '.') segments[segmentIndex].DecimalOn = true;
-                        else segments[segmentIndex++].Value = theValue[i].ToString();
-                    }
+                    segments[i].CustomPattern = 0;
+                    segments[i].DecimalOn = false;
+                }
+                
+                int segmentIndex = 0;
+                for (int i = theValue.ToString().Length - 1; i >= 0; i--)
+                {
+                    if (segmentIndex >= segments.Length)
+                        break;
+
+                    if (theValue.ToString()[i] == '.')
+                        segments[segmentIndex].DecimalOn = true;
+                    else
+                        segments[segmentIndex++].Value = int.Parse(theValue.ToString()[i].ToString());
                 }
             }
         }

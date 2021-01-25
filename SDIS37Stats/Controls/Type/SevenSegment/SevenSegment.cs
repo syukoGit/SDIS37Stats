@@ -17,7 +17,7 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
         private Color colorDark = Color.DimGray;
         private Color colorLight = Color.Red;
 
-        private string theValue = null;
+        private int theValue;
         private bool showDot = true, dotOn = false;
         private bool showColon = false, colonOn = false;
         private int customPattern = 0;
@@ -26,13 +26,7 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
         {
             None = 0x0, Zero = 0x77, One = 0x24, Two = 0x5D, Three = 0x6D,
             Four = 0x2E, Five = 0x6B, Six = 0x7B, Seven = 0x25,
-            Eight = 0x7F, Nine = 0x6F, A = 0x3F, B = 0x7A, C = 0x53, c = 0x58,
-            D = 0x7C, E = 0x5B, F = 0x1B, G = 0x73, H = 0x3E, h = 0x3A, i = 0x20,
-            J = 0x74, L = 0x52, N = 0x38, o = 0x78, P = 0x1F, Q = 0x2F, R = 0x18,
-            T = 0x5A, U = 0x76, u = 0x70, Y = 0x6E,
-            Dash = 0x8, Equals = 0x48, Degrees = 0xF,
-            Apostrophe = 0x2, Quote = 0x6, RBracket = 0x65,
-            Underscore = 0x40, Identical = 0x49, Not = 0x28
+            Eight = 0x7F, Nine = 0x6F
         }
 
         public SevenSegment()
@@ -126,77 +120,36 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
             }
         }
 
-        public string Value
+        public int Value
         {
-            get { return theValue; }
+            get
+            {
+                return theValue;
+            }
             set
             {
                 customPattern = 0;
                 theValue = value;
                 Invalidate();
-                if (value == null || value.Length == 0)
+
+                if (theValue > 9)
+                    theValue = 9;
+
+                if (theValue < 0)
+                    theValue = 0;
+
+                switch (theValue)
                 {
-                    return;
-                }
-                //is it an integer?
-                if (int.TryParse(value, out int tempValue))
-                {
-                    if (tempValue > 9) tempValue = 9; if (tempValue < 0) tempValue = 0;
-                    switch (tempValue)
-                    {
-                        case 0: customPattern = (int)ValuePattern.Zero; break;
-                        case 1: customPattern = (int)ValuePattern.One; break;
-                        case 2: customPattern = (int)ValuePattern.Two; break;
-                        case 3: customPattern = (int)ValuePattern.Three; break;
-                        case 4: customPattern = (int)ValuePattern.Four; break;
-                        case 5: customPattern = (int)ValuePattern.Five; break;
-                        case 6: customPattern = (int)ValuePattern.Six; break;
-                        case 7: customPattern = (int)ValuePattern.Seven; break;
-                        case 8: customPattern = (int)ValuePattern.Eight; break;
-                        case 9: customPattern = (int)ValuePattern.Nine; break;
-                    }
-                }
-                else
-                {
-                    //is it a letter?
-                    switch (value[0])
-                    {
-                        case 'A': case 'a': customPattern = (int)ValuePattern.A; break;
-                        case 'B': case 'b': customPattern = (int)ValuePattern.B; break;
-                        case 'C': customPattern = (int)ValuePattern.C; break;
-                        case 'c': customPattern = (int)ValuePattern.c; break;
-                        case 'D': case 'd': customPattern = (int)ValuePattern.D; break;
-                        case 'E': case 'e': customPattern = (int)ValuePattern.E; break;
-                        case 'F': case 'f': customPattern = (int)ValuePattern.F; break;
-                        case 'G': case 'g': customPattern = (int)ValuePattern.G; break;
-                        case 'H': customPattern = (int)ValuePattern.H; break;
-                        case 'h': customPattern = (int)ValuePattern.h; break;
-                        case 'I': customPattern = (int)ValuePattern.One; break;
-                        case 'i': customPattern = (int)ValuePattern.i; break;
-                        case 'J': case 'j': customPattern = (int)ValuePattern.J; break;
-                        case 'L': case 'l': customPattern = (int)ValuePattern.L; break;
-                        case 'N': case 'n': customPattern = (int)ValuePattern.N; break;
-                        case 'O': customPattern = (int)ValuePattern.Zero; break;
-                        case 'o': customPattern = (int)ValuePattern.o; break;
-                        case 'P': case 'p': customPattern = (int)ValuePattern.P; break;
-                        case 'Q': case 'q': customPattern = (int)ValuePattern.Q; break;
-                        case 'R': case 'r': customPattern = (int)ValuePattern.R; break;
-                        case 'S': case 's': customPattern = (int)ValuePattern.Five; break;
-                        case 'T': case 't': customPattern = (int)ValuePattern.T; break;
-                        case 'U': customPattern = (int)ValuePattern.U; break;
-                        case 'u': case 'µ': case 'μ': customPattern = (int)ValuePattern.u; break;
-                        case 'Y': case 'y': customPattern = (int)ValuePattern.Y; break;
-                        case '-': customPattern = (int)ValuePattern.Dash; break;
-                        case '=': customPattern = (int)ValuePattern.Equals; break;
-                        case '°': customPattern = (int)ValuePattern.Degrees; break;
-                        case '\'': customPattern = (int)ValuePattern.Apostrophe; break;
-                        case '"': customPattern = (int)ValuePattern.Quote; break;
-                        case '[': case '{': customPattern = (int)ValuePattern.C; break;
-                        case ']': case '}': customPattern = (int)ValuePattern.RBracket; break;
-                        case '_': customPattern = (int)ValuePattern.Underscore; break;
-                        case '≡': customPattern = (int)ValuePattern.Identical; break;
-                        case '¬': customPattern = (int)ValuePattern.Not; break;
-                    }
+                    case 0: customPattern = (int)ValuePattern.Zero; break;
+                    case 1: customPattern = (int)ValuePattern.One; break;
+                    case 2: customPattern = (int)ValuePattern.Two; break;
+                    case 3: customPattern = (int)ValuePattern.Three; break;
+                    case 4: customPattern = (int)ValuePattern.Four; break;
+                    case 5: customPattern = (int)ValuePattern.Five; break;
+                    case 6: customPattern = (int)ValuePattern.Six; break;
+                    case 7: customPattern = (int)ValuePattern.Seven; break;
+                    case 8: customPattern = (int)ValuePattern.Eight; break;
+                    case 9: customPattern = (int)ValuePattern.Nine; break;
                 }
             }
         }
