@@ -65,6 +65,12 @@
     <Compile Include="Controls\Type\SevenSegment\SevenSegmentArray.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Type\Statistics\NbOperationToday.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\NbOperationToday.Designer.cs">
+      <DependentUpon>NbOperationToday.cs</DependentUpon>
+    </Compile>
     <Compile Include="Core\Web\WebService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +80,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Type\Statistics\NbOperationToday.resx">
+      <DependentUpon>NbOperationToday.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
