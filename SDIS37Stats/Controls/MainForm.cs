@@ -31,15 +31,12 @@ namespace SDIS37Stats.Controls
             {
                 this.webService.WebBrowser.Location = new System.Drawing.Point(229, 81);
                 this.webService.WebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-                this.webService.WebBrowser.Name = "webBrowser1";
+                this.webService.WebBrowser.Name = "webBrowser";
                 this.webService.WebBrowser.Size = new System.Drawing.Size(290, 320);
                 this.webService.WebBrowser.TabIndex = 3;
 
                 this.Controls.Add(this.webService.WebBrowser);
             }
-
-            this.timer.Interval = GetIntervalInSecondsWithNextMinute();
-            this.timer.Start();
         }
 
         #region Private
@@ -56,6 +53,7 @@ namespace SDIS37Stats.Controls
             this.NbOperationToday.Value = this.statistics.TotalOperationInDay;
             this.LastUpdate.Text = this.statistics.LastRefresh.ToString("dd/MM/yyyy HH:mm");
             this.NbOperationPerHour.Value = new List<int>(this.statistics.OperationPerHour);
+            this.RecentOperationList.SetValue(this.statistics.RecentOperationList);
 
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
@@ -73,6 +71,7 @@ namespace SDIS37Stats.Controls
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            this.timer.Stop();
             this.webService.Refresh();
         }
         #endregion

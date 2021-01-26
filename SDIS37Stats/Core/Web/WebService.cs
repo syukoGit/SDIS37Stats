@@ -22,9 +22,14 @@
         public const string WebServiceMainPageURL = "https://webservices.sdis37.fr/interventions";
 
         /// <summary>
-        /// Const string used for get the number of operation per day.
+        /// Const string used for get the number of operations per day.
         /// </summary>
-        public const string WebServicesStatsForOperationPerHourURL = "https://webservices.sdis37.fr/interventions/getNb";
+        public const string WebServiceStatsForOperationPerHourURL = "https://webservices.sdis37.fr/interventions/getNb";
+
+        /// <summary>
+        /// Const string used for get the lis of recent operations in SDIS37.
+        /// </summary>
+        public const string WebServiceRecentOperationListURL = "https://webservices.sdis37.fr/interventions/liste?direction=desc&sort=Depart";
 
         /// <summary>
         /// Private string for save the username used for connection.
@@ -51,6 +56,9 @@
 
         public delegate void OnNbOperationPerHourUpdatedHandler(HtmlDocument htmlDocument);
         public event OnNbOperationPerHourUpdatedHandler OnNbOperationPerHourUpdated;
+
+        public delegate void OnListRecentOperationUpdatedHandler(HtmlDocument htmlDocument);
+        public event OnListRecentOperationUpdatedHandler OnRecentOperationListUpdated;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebService" /> class.
@@ -164,16 +172,23 @@
                     }
                     else if (document.Url.AbsoluteUri == WebServiceMainPageURL)
                     {
-                        this.WebBrowser.Navigate(WebServicesStatsForOperationPerHourURL);
                         this.OnNbOperationTodayUpdated?.Invoke(WebBrowser.Document);
+                        this.WebBrowser.Navigate(WebServiceStatsForOperationPerHourURL);
                     }
-                    else if (document.Url.AbsoluteUri == WebServicesStatsForOperationPerHourURL)
+                    else if (document.Url.AbsoluteUri == WebServiceStatsForOperationPerHourURL)
                     {
                         this.OnNbOperationPerHourUpdated?.Invoke(WebBrowser.Document);
+                        this.WebBrowser.ScriptErrorsSuppressed = true;
+                        this.WebBrowser.Navigate(WebServiceRecentOperationListURL);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceRecentOperationListURL)
+                    {
+                        this.WebBrowser.ScriptErrorsSuppressed = false;
+                        this.OnRecentOperationListUpdated?.Invoke(WebBrowser.Document);
                     }
                     else
                     {
-                        Console.Out.WriteLine("Page inconnue");
+                        Console.Out.WriteLine("Page inconnue : " + document.Url.AbsoluteUri);
                     }
                 }
             }

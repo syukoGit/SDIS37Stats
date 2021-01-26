@@ -72,6 +72,18 @@
     <Compile Include="Controls\Type\SevenSegment\SevenSegmentArray.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Type\Statistics\DisplayOperation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\DisplayOperation.Designer.cs">
+      <DependentUpon>DisplayOperation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\RecentOperationList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\RecentOperationList.Designer.cs">
+      <DependentUpon>RecentOperationList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Type\Statistics\NbOperationPerHour.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -84,6 +96,7 @@
     <Compile Include="Controls\Type\Statistics\NbOperationToday.Designer.cs">
       <DependentUpon>NbOperationToday.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\Statistics\Operation.cs" />
     <Compile Include="Core\Web\WebService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +109,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Type\Graph\BarGraph.resx">
       <DependentUpon>BarGraph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Type\Statistics\DisplayOperation.resx">
+      <DependentUpon>DisplayOperation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Type\Statistics\RecentOperationList.resx">
+      <DependentUpon>RecentOperationList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Type\Statistics\NbOperationPerHour.resx">
       <DependentUpon>NbOperationPerHour.cs</DependentUpon>
