@@ -25,20 +25,10 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.localisation.Text = operation.Localisation;
             this.OperationDescription.Text = operation.OperationDescription;
 
-            this.tableLayoutPanelVehiculeEnrolled.Controls.Clear();
-            this.tableLayoutPanelVehiculeEnrolled.RowCount = this.operation.VehiculeEnrolled.Count;
-            int count = 0;
+            this.vehicules.Text = string.Empty;
             foreach (var item in this.operation.VehiculeEnrolled)
             {
-                var label = new Label()
-                {
-                    Text = item,
-                    Anchor = AnchorStyles.Left
-                };
-
-                this.tableLayoutPanelVehiculeEnrolled.Controls.Add(label);
-                this.tableLayoutPanelVehiculeEnrolled.SetRow(label, count);
-                count++;
+                vehicules.Text += item + "\n";
             }
         }
     }

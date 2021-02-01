@@ -109,6 +109,7 @@
             this.RecentOperationList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RecentOperationList.Location = new System.Drawing.Point(419, 140);
             this.RecentOperationList.Name = "RecentOperationList";
+            this.RecentOperationList.NbOperationDisplayed = 15;
             this.RecentOperationList.Size = new System.Drawing.Size(828, 254);
             this.RecentOperationList.TabIndex = 5;
             // 
