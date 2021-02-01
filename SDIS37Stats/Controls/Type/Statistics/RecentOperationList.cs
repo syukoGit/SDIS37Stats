@@ -55,6 +55,10 @@ namespace SDIS37Stats.Controls.Type.Statistics
             }
 
             this.currentControl = 0;
+            if (this.tableOperationDisplayed.Controls.Count > 0)
+            {
+                this.tableOperationDisplayed.ScrollControlIntoView(this.tableOperationDisplayed.Controls[this.currentControl]);
+            }
 
             this.timerAutoScroll.Start();
         }
