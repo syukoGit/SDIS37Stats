@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SDIS37Stats.Core.Statistics
@@ -23,6 +24,8 @@ namespace SDIS37Stats.Core.Statistics
             this.webService.OnRecentOperationListUpdated += this.WebService_RecentOperationList;
         }
 
+        public string FirehouseName { get; set; } = null;
+
         public int TotalOperationInDay { get; private set; }
 
         public DateTime LastRefresh { get; private set; }
@@ -35,6 +38,18 @@ namespace SDIS37Stats.Core.Statistics
         private void WebService_MainPage(HtmlDocument htmlDocument)
         {
             string dateTimeStr = htmlDocument.GetElementById("date").InnerText + " " + htmlDocument.GetElementById("last_refresh").InnerText;
+
+            if (string.IsNullOrWhiteSpace(this.FirehouseName))
+            {
+                foreach (HtmlElement item in htmlDocument.GetElementsByTagName("a"))
+                {
+                    if (item.OuterHtml.Contains("<a class=\"user-profile dropdown-toggle\" aria-expanded=\"false\" href=\"javascript:;\" data-toggle=\"dropdown\">"))
+                    {
+                        string str = Regex.Replace(item.OuterText, @"[a-zA-Z0-9 ]*\(", string.Empty);
+                        this.FirehouseName = Regex.Replace(str, @"\)[a-zA-Z0-9 ]*", string.Empty);
+                    }
+                }
+            }
 
             this.TotalOperationInDay = int.Parse(htmlDocument.GetElementById("number-interventions").InnerText);
             this.LastRefresh = DateTime.ParseExact(dateTimeStr, DateTimeFormat, DateTimeProvider);

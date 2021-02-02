@@ -54,6 +54,7 @@ namespace SDIS37Stats.Controls
             this.LastUpdate.Text = this.statistics.LastRefresh.ToString("dd/MM/yyyy HH:mm");
             this.NbOperationPerHour.Value = new List<int>(this.statistics.OperationPerHour);
             this.RecentOperationList.SetValue(this.statistics.RecentOperationList);
+            this.RecentOperationList.FirehouseName = this.statistics.FirehouseName;
 
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
