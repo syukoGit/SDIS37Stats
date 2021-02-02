@@ -23,6 +23,18 @@ namespace SDIS37Stats.Controls
         public GetCredentials()
         {
             InitializeComponent();
+
+            this.BackColor = Theme.Default.BackgroundColor;
+            this.ForeColor = Theme.Default.FontColor;
+
+            this.buttonOk.BackColor = Theme.GetCredential.BackgroundColorButton;
+            
+
+            this.username.BackColor = Theme.GetCredential.BackgroundColorTextbox;
+            this.username.ForeColor = Theme.Default.DebugColor;
+
+            this.password.BackColor = Theme.GetCredential.BackgroundColorTextbox;
+            this.password.ForeColor = Theme.Default.DebugColor;
         }
 
         #region Event

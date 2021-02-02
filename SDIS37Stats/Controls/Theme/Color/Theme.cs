@@ -38,4 +38,10 @@ namespace SDIS37Stats.Controls.Theme
         public static Color BackgroundColorHighlightItem => yellow2;
         public static Color FontColorHighlightItem => gray7;
     }
+
+    public abstract class GetCredential : MyColor
+    {
+        public static Color BackgroundColorButton => gray6;
+        public static Color BackgroundColorTextbox => gray6;
+    }
 }
