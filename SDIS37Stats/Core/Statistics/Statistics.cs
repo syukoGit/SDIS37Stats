@@ -29,10 +29,25 @@ namespace SDIS37Stats.Core.Statistics
         public int TotalOperationInDay { get; private set; }
 
         public DateTime LastRefresh { get; private set; }
-
+        
         public List<int> OperationPerHour { get; private set; } = new List<int>();
 
         public List<Operation> RecentOperationList { get; set; } = new List<Operation>();
+
+        public List<Operation> RecentOperationOfUserFirehouse { get; set; } = new List<Operation>();
+
+        #region Private
+        private void UpdateOperation(Operation operationUpdated)
+        {
+            var operation = this.RecentOperationList.Where(c => operationUpdated.NumOperation == c.NumOperation).ToList()[0];
+
+            operation.Localisation = operationUpdated.Localisation;
+            operation.OperationDescription = operationUpdated.OperationDescription;
+            operation.Time = operationUpdated.Time;
+            operation.Type = operationUpdated.Type;
+            operation.VehiculeEnrolled = operationUpdated.VehiculeEnrolled;
+        }
+        #endregion
 
         #region Event
         private void WebService_MainPage(HtmlDocument htmlDocument)
@@ -67,47 +82,65 @@ namespace SDIS37Stats.Core.Statistics
             var data = htmlDocument.GetElementsByTagName("tbody")[0];
             var list = data.GetElementsByTagName("tr");
 
-            this.RecentOperationList.Clear();
-
             foreach (HtmlElement item in list)
             {
-                DateTime time = DateTime.ParseExact(item.Children[0].InnerHtml, "HH:mm", DateTimeProvider);
-                int numOperation = int.Parse(item.Children[1].InnerText);
-                string localisation = item.Children[2].GetElementsByTagName("b")[0].InnerHtml;
-                string operationDescription = item.Children[2].Children[1].InnerText;
+                var operation = HtmlElementToOperation(item);
 
-                Operation.OperationType type = Operation.OperationType.OTHER;
-                if (item.Children[1].InnerHtml.Contains("/img/sap.gif"))
+                if (this.RecentOperationList.Where(c => c.NumOperation == operation.NumOperation).Count() > 0)
                 {
-                    type = Operation.OperationType.SAP;
+                    this.UpdateOperation(operation);
                 }
-                else if (item.Children[1].InnerHtml.Contains("img/inc.gif"))
+                else
                 {
-                    type = Operation.OperationType.INC;
-                }
-                else if (item.Children[1].InnerHtml.Contains("img/od.gif"))
-                {
-                    type = Operation.OperationType.OD;
+                    this.RecentOperationList.Add(operation);
                 }
 
-                HashSet<string> vehiculeEnrolled = new HashSet<string>();
-                foreach (HtmlElement vehicule in item.Children[3].GetElementsByTagName("div"))
-                {
-                    vehiculeEnrolled.Add(vehicule.InnerText);
-                }
+                this.RecentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
 
-                this.RecentOperationList.Add(new Operation
-                {
-                    Time = time,
-                    NumOperation = numOperation,
-                    Type = type,
-                    Localisation = localisation,
-                    OperationDescription = operationDescription,
-                    VehiculeEnrolled = vehiculeEnrolled
-                });
+                this.RecentOperationOfUserFirehouse = this.RecentOperationList.Where(c => c.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).ToList();
             }
 
             this.OnStatUpdated?.Invoke();
+        }
+        #endregion
+
+        #region Static
+        private static Operation HtmlElementToOperation(HtmlElement item)
+        {
+            DateTime time = DateTime.ParseExact(item.Children[0].InnerHtml, "HH:mm", DateTimeProvider);
+            int numOperation = int.Parse(item.Children[1].InnerText);
+            string localisation = item.Children[2].GetElementsByTagName("b")[0].InnerHtml;
+            string operationDescription = item.Children[2].Children[1].InnerText;
+
+            Operation.OperationType type = Operation.OperationType.OTHER;
+            if (item.Children[1].InnerHtml.Contains("/img/sap.gif"))
+            {
+                type = Operation.OperationType.SAP;
+            }
+            else if (item.Children[1].InnerHtml.Contains("img/inc.gif"))
+            {
+                type = Operation.OperationType.INC;
+            }
+            else if (item.Children[1].InnerHtml.Contains("img/od.gif"))
+            {
+                type = Operation.OperationType.OD;
+            }
+
+            HashSet<string> vehiculeEnrolled = new HashSet<string>();
+            foreach (HtmlElement vehicule in item.Children[3].GetElementsByTagName("div"))
+            {
+                vehiculeEnrolled.Add(vehicule.InnerText);
+            }
+
+            return new Operation
+            {
+                Time = time,
+                NumOperation = numOperation,
+                Type = type,
+                Localisation = localisation,
+                OperationDescription = operationDescription,
+                VehiculeEnrolled = vehiculeEnrolled
+            };
         }
         #endregion
     }
