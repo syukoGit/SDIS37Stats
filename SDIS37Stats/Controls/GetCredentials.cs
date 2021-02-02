@@ -31,10 +31,10 @@ namespace SDIS37Stats.Controls
             
 
             this.username.BackColor = Theme.GetCredential.BackgroundColorTextbox;
-            this.username.ForeColor = Theme.Default.DebugColor;
+            this.username.ForeColor = Theme.Default.FontColor;
 
             this.password.BackColor = Theme.GetCredential.BackgroundColorTextbox;
-            this.password.ForeColor = Theme.Default.DebugColor;
+            this.password.ForeColor = Theme.Default.FontColor;
         }
 
         #region Event
