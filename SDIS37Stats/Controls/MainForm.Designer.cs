@@ -107,6 +107,8 @@
             this.RecentOperationList.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.RecentOperationList, 2);
             this.RecentOperationList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RecentOperationList.FirehouseName = "RID";
+            this.RecentOperationList.HighlightOperationOfYourFirehouse = true;
             this.RecentOperationList.Location = new System.Drawing.Point(419, 140);
             this.RecentOperationList.Name = "RecentOperationList";
             this.RecentOperationList.NbOperationDisplayed = 15;

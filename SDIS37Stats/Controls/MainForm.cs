@@ -59,11 +59,6 @@ namespace SDIS37Stats.Controls
             this.timer.Start();
         }
 
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            this.webService.Refresh();
-        }
-
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.webService.Dispose();

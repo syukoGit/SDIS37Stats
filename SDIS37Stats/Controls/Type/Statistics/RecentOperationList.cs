@@ -18,6 +18,10 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
         public int NbOperationDisplayed { get; set; } = 6;
 
+        public bool HighlightOperationOfYourFirehouse { get; set; } = false;
+
+        public string FirehouseName { get; set; } = null;
+
         public RecentOperationList()
         {
             InitializeComponent();
@@ -42,10 +46,23 @@ namespace SDIS37Stats.Controls.Type.Statistics
             int count = 0;
             for (int i = 0; i < this.NbOperationDisplayed && i < operations.Count; i++)
             {
+                Color backgroundColor = Theme.RecentOperationList.BackgroundColorItem;
+                Color fontColor = Theme.RecentOperationList.FontColorItem;
+
+                if (this.HighlightOperationOfYourFirehouse && !string.IsNullOrWhiteSpace(this.FirehouseName))
+                {
+                    if (operations[i].VehiculeEnrolled.Where(c => c.Contains(this.FirehouseName)).Count() > 0)
+                    {
+                        backgroundColor = Theme.RecentOperationList.BackgroundColorHighlightItem;
+                        fontColor = Theme.RecentOperationList.FontColorHighlightItem;
+                    }
+                }
+
                 var displayOperation = new DisplayOperation(operations[i])
                 {
                     Dock = DockStyle.Fill,
-                    BackColor = Theme.RecentOperationList.BackgroundColorItem
+                    BackColor = backgroundColor,
+                    ForeColor = fontColor
                 };
 
                 this.tableOperationDisplayed.Controls.Add(displayOperation);

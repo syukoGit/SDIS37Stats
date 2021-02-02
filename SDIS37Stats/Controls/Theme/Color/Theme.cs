@@ -11,6 +11,7 @@ namespace SDIS37Stats.Controls.Theme
         protected static readonly Color white1 = Color.FromArgb(240, 240, 240); // FontColor
 
         protected static readonly Color yellow1 = Color.FromArgb(220, 220, 0);
+        protected static readonly Color yellow2 = Color.FromArgb(255, 255, 180);
 
         protected static readonly Color debugColor = Color.Green;
     }
@@ -33,6 +34,8 @@ namespace SDIS37Stats.Controls.Theme
     {
         public static Color BackgroundList => gray6;
         public static Color BackgroundColorItem => gray5;
-        public static Color BorderColorOfDisplayOperation => gray5;
+        public static Color FontColorItem => Default.FontColor;
+        public static Color BackgroundColorHighlightItem => yellow2;
+        public static Color FontColorHighlightItem => gray7;
     }
 }
