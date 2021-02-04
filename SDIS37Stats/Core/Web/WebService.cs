@@ -34,12 +34,12 @@
         /// <summary>
         /// Private string for save the username used for connection.
         /// </summary>
-        private string username;
+        private static string usernameLogin;
 
         /// <summary>
         /// Private string for save the password used for connection.
         /// </summary>
-        private string password;
+        private static string passwordLogin;
 
         /// <summary>
         /// Private integer for get and set a connection state.
@@ -63,12 +63,24 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="WebService" /> class.
         /// </summary>
+        public WebService()
+        {
+            this.WebBrowser = new WebBrowser();
+
+            this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
+
+            this.WebBrowser.Url = new Uri(WebServiceMainPageURL);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebService" /> class.
+        /// </summary>
         /// <param name="username">username used for connection</param>
         /// <param name="password">password used for connection</param>
         public WebService(string username, string password)
         {
-            this.username = username;
-            this.password = password;
+            usernameLogin = username;
+            passwordLogin = password;
 
             this.WebBrowser = new WebBrowser();
 
@@ -128,22 +140,22 @@
 
                     this.connectionState = 1;
 
-                    if (string.IsNullOrEmpty(this.username) || string.IsNullOrEmpty(this.password))
+                    if (string.IsNullOrEmpty(usernameLogin) || string.IsNullOrEmpty(passwordLogin))
                     {
                         var getCredentials = new Controls.GetCredentials();
                         _ = getCredentials.ShowDialog();
 
                         var (Username, Password) = getCredentials.Credentials;
-                        this.username = Username;
-                        this.password = Password;
+                        usernameLogin = Username;
+                        passwordLogin = Password;
                     }
 
                     HtmlDocument document = WebBrowser.Document;
 
                     if (document != null)
                     {
-                        document.All["username"].SetAttribute("value", this.username);
-                        document.All["password"].SetAttribute("value", this.password);
+                        document.All["username"].SetAttribute("value", usernameLogin);
+                        document.All["password"].SetAttribute("value", passwordLogin);
 
                         HtmlElement buttonElem = null;
                         foreach (HtmlElement item in document.GetElementsByTagName("button"))
