@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SDIS37Stats.Controls
@@ -50,10 +51,13 @@ namespace SDIS37Stats.Controls
         #region Event
         private void StatUpdated()
         {
+            var recentOperationList = this.statistics.RecentOperationList.Select(c => c.Value).ToList();
+            recentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
+
             this.NbOperationToday.Value = this.statistics.TotalOperationInDay;
             this.LastUpdate.Text = this.statistics.LastRefresh.ToString("dd/MM/yyyy HH:mm");
             this.NbOperationPerHour.Value = new List<int>(this.statistics.OperationPerHour);
-            this.RecentOperationList.SetValue(this.statistics.RecentOperationList);
+            this.RecentOperationList.SetValue(recentOperationList);
             this.RecentOperationList.FirehouseName = this.statistics.FirehouseName;
 
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();

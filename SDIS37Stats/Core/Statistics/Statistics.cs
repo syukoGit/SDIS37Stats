@@ -32,14 +32,14 @@ namespace SDIS37Stats.Core.Statistics
         
         public List<int> OperationPerHour { get; private set; } = new List<int>();
 
-        public List<Operation> RecentOperationList { get; set; } = new List<Operation>();
+        public Dictionary<int, Operation> RecentOperationList { get; set; } = new Dictionary<int, Operation>();
 
         public List<Operation> RecentOperationOfUserFirehouse { get; set; } = new List<Operation>();
 
         #region Private
         private void UpdateOperation(Operation operationUpdated)
         {
-            var operation = this.RecentOperationList.Where(c => operationUpdated.NumOperation == c.NumOperation).ToList()[0];
+            var operation = this.RecentOperationList.Where(c => operationUpdated.NumOperation == c.Key).Select(c => c.Value).ToList()[0];
 
             operation.Localisation = operationUpdated.Localisation;
             operation.OperationDescription = operationUpdated.OperationDescription;
@@ -86,18 +86,18 @@ namespace SDIS37Stats.Core.Statistics
             {
                 var operation = HtmlElementToOperation(item);
 
-                if (this.RecentOperationList.Where(c => c.NumOperation == operation.NumOperation).Count() > 0)
+                if (this.RecentOperationList.Where(c => c.Key == operation.NumOperation).Count() > 0)
                 {
                     this.UpdateOperation(operation);
                 }
                 else
                 {
-                    this.RecentOperationList.Add(operation);
+                    this.RecentOperationList.Add(operation.NumOperation, operation);
                 }
 
-                this.RecentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
+                //this.RecentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
 
-                this.RecentOperationOfUserFirehouse = this.RecentOperationList.Where(c => c.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).ToList();
+                this.RecentOperationOfUserFirehouse = this.RecentOperationList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
             }
 
             this.OnStatUpdated?.Invoke();
