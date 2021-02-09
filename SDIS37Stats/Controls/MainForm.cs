@@ -21,7 +21,8 @@ namespace SDIS37Stats.Controls
 
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
-            this.statistics.OnStatUpdated += this.StatUpdated;
+            this.statistics.OnStatUpdated += this.Statistics_StatUpdated;
+            this.statistics.OnNewOperation += this.Statistics_NewOperation;
 
             if (this.ShowWebBrowser)
             {
@@ -44,7 +45,7 @@ namespace SDIS37Stats.Controls
         #endregion
 
         #region Event
-        private void StatUpdated()
+        private void Statistics_StatUpdated()
         {
             var recentOperationList = this.statistics.RecentOperationList.Select(c => c.Value).ToList();
             recentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
@@ -66,6 +67,11 @@ namespace SDIS37Stats.Controls
 
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
+        }
+
+        private void Statistics_NewOperation()
+        {
+            Extra.Sound.Sound.NewOperationNotification();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
