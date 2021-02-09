@@ -91,7 +91,7 @@
             this.NbOperationToday.Name = "NbOperationToday";
             this.NbOperationToday.Size = new System.Drawing.Size(299, 111);
             this.NbOperationToday.TabIndex = 3;
-            this.NbOperationToday.Value = 126;
+            this.NbOperationToday.Value = 0;
             // 
             // NbOperationPerHour
             // 
