@@ -108,14 +108,6 @@
         /// </summary>
         public void Refresh()
         {
-            if (DateTime.Now.Minute == 0 && DateTime.Now.Hour == 0)
-            {
-                this.WebBrowser.DocumentCompleted -= this.WebBrowser_DocumentCompleted;
-                this.WebBrowser.Dispose();
-                this.WebBrowser = new WebBrowser();
-                this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
-                Console.Out.WriteLine("WebBrowser stoped");
-            }
             Console.Out.WriteLine("Refresh");
             this.WebBrowser.Url = new Uri(WebServiceMainPageURL);
         }

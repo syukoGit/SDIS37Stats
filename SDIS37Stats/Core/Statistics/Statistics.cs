@@ -16,9 +16,6 @@ namespace SDIS37Stats.Core.Statistics
         public delegate void OnStatUpdatedHandler();
         public OnStatUpdatedHandler OnStatUpdated;
 
-        public delegate void OnNewOperationHandler();
-        public OnNewOperationHandler OnNewOperation;
-
         public Statistics(Web.WebService webService)
         {
             this.webService = webService;
@@ -85,7 +82,6 @@ namespace SDIS37Stats.Core.Statistics
             var data = htmlDocument.GetElementsByTagName("tbody")[0];
             var list = data.GetElementsByTagName("tr");
 
-            bool newOperation = false;
             foreach (HtmlElement item in list)
             {
                 var operation = HtmlElementToOperation(item);
@@ -97,15 +93,11 @@ namespace SDIS37Stats.Core.Statistics
                 else
                 {
                     this.RecentOperationList.Add(operation.NumOperation, operation);
-                    newOperation = true;
                 }
 
+                //this.RecentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
+
                 this.RecentOperationOfUserFirehouse = this.RecentOperationList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
-                
-                if (newOperation)
-                {
-                    this.OnNewOperation?.Invoke();
-                }
             }
 
             this.OnStatUpdated?.Invoke();
