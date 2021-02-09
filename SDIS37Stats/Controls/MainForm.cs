@@ -48,14 +48,20 @@ namespace SDIS37Stats.Controls
         {
             var recentOperationList = this.statistics.RecentOperationList.Select(c => c.Value).ToList();
             recentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
+
             var recentOperationListOfUserFirehouse = this.statistics.RecentOperationOfUserFirehouse;
             recentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
 
             this.NbOperationToday.Value = this.statistics.TotalOperationInDay;
+
             this.LastUpdate.Text = this.statistics.LastRefresh.ToString("dd/MM/yyyy HH:mm");
+
             this.NbOperationPerHour.Value = new List<int>(this.statistics.OperationPerHour);
+
             this.RecentOperationList.SetValue(recentOperationList);
             this.RecentOperationList.FirehouseName = this.statistics.FirehouseName;
+
+            this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + this.statistics.FirehouseName + " :";
             this.RecentOperationOfUserFirehouse.SetValue(recentOperationListOfUserFirehouse);
 
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();

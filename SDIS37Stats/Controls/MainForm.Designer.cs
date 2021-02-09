@@ -130,7 +130,7 @@
             this.RecentOperationOfUserFirehouse.NbOperationDisplayed = 5;
             this.RecentOperationOfUserFirehouse.Size = new System.Drawing.Size(828, 255);
             this.RecentOperationOfUserFirehouse.TabIndex = 6;
-            this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de la caserne :";
+            this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de ... :";
             // 
             // MainForm
             // 
