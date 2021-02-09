@@ -17,12 +17,7 @@ namespace SDIS37Stats.Controls
         {
             InitializeComponent();
 
-            var getCredentials = new GetCredentials();
-            _ = getCredentials.ShowDialog();
-
-            var (Username, Password) = getCredentials.Credentials;
-
-            this.webService = new Core.Web.WebService(Username, Password);
+            this.webService = new Core.Web.WebService();
 
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
