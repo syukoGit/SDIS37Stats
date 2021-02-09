@@ -44,7 +44,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             displayOperations.Clear();
             this.tableOperationDisplayed.Controls.Clear();
 
-            this.tableOperationDisplayed.RowCount = operations.Count;
+            this.tableOperationDisplayed.RowCount = operations.Count + 1;
 
             int count = 0;
             for (int i = 0; i < this.NbOperationDisplayed && i < operations.Count; i++)

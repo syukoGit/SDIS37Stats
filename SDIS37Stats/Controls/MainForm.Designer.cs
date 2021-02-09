@@ -36,6 +36,7 @@
             this.NbOperationToday = new SDIS37Stats.Controls.Type.Statistics.NbOperationToday();
             this.NbOperationPerHour = new SDIS37Stats.Controls.Type.Statistics.NbOperationPerHour();
             this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
+            this.RecentOperationOfUserFirehouse = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,6 +71,7 @@
             this.tableLayoutPanel1.Controls.Add(this.NbOperationToday, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.NbOperationPerHour, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.RecentOperationList, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.RecentOperationOfUserFirehouse, 1, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -116,6 +118,20 @@
             this.RecentOperationList.TabIndex = 5;
             this.RecentOperationList.Title = "Liste des dernières interventions :";
             // 
+            // RecentOperationOfUserFirehouse
+            // 
+            this.RecentOperationOfUserFirehouse.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.RecentOperationOfUserFirehouse, 2);
+            this.RecentOperationOfUserFirehouse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RecentOperationOfUserFirehouse.FirehouseName = null;
+            this.RecentOperationOfUserFirehouse.HighlightOperationOfYourFirehouse = false;
+            this.RecentOperationOfUserFirehouse.Location = new System.Drawing.Point(419, 400);
+            this.RecentOperationOfUserFirehouse.Name = "RecentOperationOfUserFirehouse";
+            this.RecentOperationOfUserFirehouse.NbOperationDisplayed = 5;
+            this.RecentOperationOfUserFirehouse.Size = new System.Drawing.Size(828, 255);
+            this.RecentOperationOfUserFirehouse.TabIndex = 6;
+            this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de la caserne :";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -142,6 +158,7 @@
         private Type.Statistics.NbOperationToday NbOperationToday;
         private Type.Statistics.NbOperationPerHour NbOperationPerHour;
         private Type.Statistics.DisplayOperationList RecentOperationList;
+        private Type.Statistics.DisplayOperationList RecentOperationOfUserFirehouse;
     }
 }
 
