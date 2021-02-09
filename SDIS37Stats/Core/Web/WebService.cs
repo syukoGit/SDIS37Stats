@@ -32,6 +32,11 @@
         public const string WebServiceRecentOperationListURL = "https://webservices.sdis37.fr/interventions/liste?direction=desc&sort=Depart";
 
         /// <summary>
+        /// Const string used for gets the availabilities of the firefighters of the user's firehouse.
+        /// </summary>
+        public const string WebServiceFirefighterAvailabilityURL = "https://webservices.sdis37.fr/personnels";
+
+        /// <summary>
         /// Private string for save the username used for connection.
         /// </summary>
         private static string usernameLogin;
@@ -59,6 +64,9 @@
 
         public delegate void OnListRecentOperationUpdatedHandler(HtmlDocument htmlDocument);
         public event OnListRecentOperationUpdatedHandler OnRecentOperationListUpdated;
+
+        public delegate void OnListFirefighterAvailabilityUpdatedHandler(HtmlDocument htmlDocument);
+        public event OnListFirefighterAvailabilityUpdatedHandler OnListFirefighterAvailabilityUpdated;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebService" /> class.
@@ -197,6 +205,11 @@
                     {
                         this.WebBrowser.ScriptErrorsSuppressed = false;
                         this.OnRecentOperationListUpdated?.Invoke(WebBrowser.Document);
+                        this.WebBrowser.Navigate(WebServiceFirefighterAvailabilityURL);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceFirefighterAvailabilityURL)
+                    {
+                        this.OnListFirefighterAvailabilityUpdated?.Invoke(WebBrowser.Document);
                     }
                     else
                     {

@@ -22,6 +22,7 @@ namespace SDIS37Stats.Core.Statistics
             this.webService.OnNbOperationTodayUpdated += this.WebService_MainPage;
             this.webService.OnNbOperationPerHourUpdated += this.WebService_NbOperationPerHour;
             this.webService.OnRecentOperationListUpdated += this.WebService_RecentOperationList;
+            this.webService.OnListFirefighterAvailabilityUpdated += WebService_FirefighterAvailabilityList;
         }
 
         public string FirehouseName { get; set; } = null;
@@ -35,6 +36,8 @@ namespace SDIS37Stats.Core.Statistics
         public Dictionary<int, Operation> RecentOperationList { get; set; } = new Dictionary<int, Operation>();
 
         public List<Operation> RecentOperationOfUserFirehouse { get; set; } = new List<Operation>();
+
+        public List<FirefighterAvailability> FirefighterAvailabilities { get; set; } = new List<FirefighterAvailability>();
 
         #region Private
         private void UpdateOperation(Operation operationUpdated)
@@ -95,9 +98,51 @@ namespace SDIS37Stats.Core.Statistics
                     this.RecentOperationList.Add(operation.NumOperation, operation);
                 }
 
-                //this.RecentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
-
                 this.RecentOperationOfUserFirehouse = this.RecentOperationList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
+            }
+        }
+
+        private void WebService_FirefighterAvailabilityList(HtmlDocument htmlDocument)
+        {
+            var data = htmlDocument.GetElementById("liste-dipo");
+            data = data.GetElementsByTagName("tbody")[0];
+            var firefighterList = data.GetElementsByTagName("tr");
+
+            this.FirefighterAvailabilities.Clear();
+
+           foreach (HtmlElement firefighter in firefighterList)
+            {
+                var content = firefighter.GetElementsByTagName("td");
+
+                FirefighterAvailability.AVAILABILITY availability;
+                if (content[0].InnerText.Contains("Disponible sur place"))
+                {
+                    availability = FirefighterAvailability.AVAILABILITY.AvailableOnSite;
+                }
+                else if (content[0].InnerText.Contains("Disponible 5 min"))
+                {
+                    availability = FirefighterAvailability.AVAILABILITY.Available5Min;
+                }
+                else if (content[0].InnerText.Contains("Disponible 10 min"))
+                {
+                    availability = FirefighterAvailability.AVAILABILITY.Available10Min;
+                }
+                else
+                {
+                    availability = FirefighterAvailability.AVAILABILITY.NotAvailable;
+                }
+
+                string matricule = content[1].InnerText;
+                string name = content[2].InnerText;
+                string rank = content[3].InnerText;
+
+                this.FirefighterAvailabilities.Add(new FirefighterAvailability
+                {
+                    Availability = availability,
+                    Matricule = matricule,
+                    Name = name,
+                    Rank = rank
+                });
             }
 
             this.OnStatUpdated?.Invoke();

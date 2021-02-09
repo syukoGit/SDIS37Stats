@@ -96,6 +96,7 @@
     <Compile Include="Controls\Type\Statistics\NbOperationToday.Designer.cs">
       <DependentUpon>NbOperationToday.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\Statistics\FirefighterAvailability.cs" />
     <Compile Include="Core\Statistics\Operation.cs" />
     <Compile Include="Core\Web\WebService.cs" />
     <Compile Include="Program.cs" />
