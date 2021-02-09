@@ -37,14 +37,14 @@
         public const string WebServiceFirefighterAvailabilityURL = "https://webservices.sdis37.fr/personnels";
 
         /// <summary>
-        /// Private string for save the username used for connection.
+        /// Public string for save the username used for connection.
         /// </summary>
-        private static string usernameLogin;
+        public static string Username { get; set; }
 
         /// <summary>
-        /// Private string for save the password used for connection.
+        /// Public string for save the password used for connection.
         /// </summary>
-        private static string passwordLogin;
+        public static string Password { get; set; }
 
         /// <summary>
         /// Private integer for get and set a connection state.
@@ -87,8 +87,8 @@
         /// <param name="password">password used for connection</param>
         public WebService(string username, string password)
         {
-            usernameLogin = username;
-            passwordLogin = password;
+            Username = username;
+            Password = password;
 
             this.WebBrowser = new WebBrowser();
 
@@ -148,22 +148,22 @@
 
                     this.connectionState = 1;
 
-                    if (string.IsNullOrEmpty(usernameLogin) || string.IsNullOrEmpty(passwordLogin))
+                    if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
                     {
                         var getCredentials = new Controls.GetCredentials();
                         _ = getCredentials.ShowDialog();
 
                         var (Username, Password) = getCredentials.Credentials;
-                        usernameLogin = Username;
-                        passwordLogin = Password;
+                        WebService.Username = Username;
+                        WebService.Password = Password;
                     }
 
                     HtmlDocument document = WebBrowser.Document;
 
                     if (document != null)
                     {
-                        document.All["username"].SetAttribute("value", usernameLogin);
-                        document.All["password"].SetAttribute("value", passwordLogin);
+                        document.All["username"].SetAttribute("value", Username);
+                        document.All["password"].SetAttribute("value", Password);
 
                         HtmlElement buttonElem = null;
                         foreach (HtmlElement item in document.GetElementsByTagName("button"))
