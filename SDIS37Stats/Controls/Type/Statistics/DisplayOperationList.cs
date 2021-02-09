@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SDIS37Stats.Controls.Type.Statistics
 {
-    public partial class RecentOperationList : UserControl
+    public partial class DisplayOperationList : UserControl
     {
         private readonly List<DisplayOperation> displayOperations = new List<DisplayOperation>();
 
@@ -28,11 +25,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
             set => this.title.Text = value;
         }
 
-        public RecentOperationList()
+        public DisplayOperationList()
         {
             InitializeComponent();
 
-            this.tableOperationDisplayed.BackColor = Theme.RecentOperationList.BackgroundList;
+            this.tableOperationDisplayed.BackColor = Theme.DisplayOperationList.BackgroundList;
 
             int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
             this.tableOperationDisplayed.Padding = new Padding(0, 0, vertScrollWidth - 15, 0);
@@ -52,15 +49,15 @@ namespace SDIS37Stats.Controls.Type.Statistics
             int count = 0;
             for (int i = 0; i < this.NbOperationDisplayed && i < operations.Count; i++)
             {
-                Color backgroundColor = Theme.RecentOperationList.BackgroundColorItem;
-                Color fontColor = Theme.RecentOperationList.FontColorItem;
+                Color backgroundColor = Theme.DisplayOperationList.BackgroundColorItem;
+                Color fontColor = Theme.DisplayOperationList.FontColorItem;
 
                 if (this.HighlightOperationOfYourFirehouse && !string.IsNullOrWhiteSpace(this.FirehouseName))
                 {
                     if (operations[i].VehiculeEnrolled.Where(c => c.Contains(this.FirehouseName)).Count() > 0)
                     {
-                        backgroundColor = Theme.RecentOperationList.BackgroundColorHighlightItem;
-                        fontColor = Theme.RecentOperationList.FontColorHighlightItem;
+                        backgroundColor = Theme.DisplayOperationList.BackgroundColorHighlightItem;
+                        fontColor = Theme.DisplayOperationList.FontColorHighlightItem;
                     }
                 }
 

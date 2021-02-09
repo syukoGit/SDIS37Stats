@@ -30,7 +30,7 @@ namespace SDIS37Stats.Controls.Theme
         public static Color MainBarColor => white1;
     }
 
-    public abstract class RecentOperationList : MyColor
+    public abstract class DisplayOperationList : MyColor
     {
         public static Color BackgroundList => gray6;
         public static Color BackgroundColorItem => gray5;

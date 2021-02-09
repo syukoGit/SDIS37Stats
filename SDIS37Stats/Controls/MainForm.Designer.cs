@@ -35,7 +35,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.NbOperationToday = new SDIS37Stats.Controls.Type.Statistics.NbOperationToday();
             this.NbOperationPerHour = new SDIS37Stats.Controls.Type.Statistics.NbOperationPerHour();
-            this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.RecentOperationList();
+            this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -141,7 +141,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private Type.Statistics.NbOperationToday NbOperationToday;
         private Type.Statistics.NbOperationPerHour NbOperationPerHour;
-        private Type.Statistics.RecentOperationList RecentOperationList;
+        private Type.Statistics.DisplayOperationList RecentOperationList;
     }
 }
 

@@ -1,6 +1,6 @@
 ﻿namespace SDIS37Stats.Controls.Type.Statistics
 {
-    partial class RecentOperationList
+    partial class DisplayOperationList
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.
@@ -83,13 +83,13 @@
             this.timerAutoScroll.Interval = 1000;
             this.timerAutoScroll.Tick += new System.EventHandler(this.TimerAutoScroll_Tick);
             // 
-            // RecentOperationList
+            // DisplayOperationList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.Controls.Add(this.tableLayoutPanel);
-            this.Name = "RecentOperationList";
+            this.Name = "DisplayOperationList";
             this.Size = new System.Drawing.Size(495, 100);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
