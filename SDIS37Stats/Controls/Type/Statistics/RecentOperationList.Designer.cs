@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.tableOperationDisplayed = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.title = new System.Windows.Forms.Label();
             this.timerAutoScroll = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
@@ -57,7 +57,7 @@
             this.tableLayoutPanel.ColumnCount = 1;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.Controls.Add(this.tableOperationDisplayed, 0, 1);
-            this.tableLayoutPanel.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel.Controls.Add(this.title, 0, 0);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -67,16 +67,16 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(495, 100);
             this.tableLayoutPanel.TabIndex = 1;
             // 
-            // label1
+            // title
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(107, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(280, 20);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Liste des dernières interventions :";
+            this.title.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.title.AutoSize = true;
+            this.title.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.title.Location = new System.Drawing.Point(226, 0);
+            this.title.Name = "title";
+            this.title.Size = new System.Drawing.Size(43, 20);
+            this.title.TabIndex = 1;
+            this.title.Text = "Title";
             // 
             // timerAutoScroll
             // 
@@ -101,7 +101,7 @@
 
         private System.Windows.Forms.TableLayoutPanel tableOperationDisplayed;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label title;
         private System.Windows.Forms.Timer timerAutoScroll;
     }
 }

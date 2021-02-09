@@ -22,6 +22,12 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
         public string FirehouseName { get; set; } = null;
 
+        public string Title
+        {
+            get => this.title.Text;
+            set => this.title.Text = value;
+        }
+
         public RecentOperationList()
         {
             InitializeComponent();

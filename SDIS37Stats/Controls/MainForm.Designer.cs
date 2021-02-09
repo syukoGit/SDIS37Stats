@@ -114,6 +114,7 @@
             this.RecentOperationList.NbOperationDisplayed = 15;
             this.RecentOperationList.Size = new System.Drawing.Size(828, 254);
             this.RecentOperationList.TabIndex = 5;
+            this.RecentOperationList.Title = "Liste des dernières interventions :";
             // 
             // MainForm
             // 
