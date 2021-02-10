@@ -32,7 +32,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.tableOperationDisplayed.BackColor = Theme.DisplayOperationList.BackgroundList;
 
             int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
-            this.tableOperationDisplayed.Padding = new Padding(0, 0, vertScrollWidth - 15, 0);
+            this.tableOperationDisplayed.Padding = new Padding(0, 0, vertScrollWidth - 16, 0);
 
             this.timerAutoScroll.Start();
         }
