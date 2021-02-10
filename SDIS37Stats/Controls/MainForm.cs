@@ -82,6 +82,12 @@ namespace SDIS37Stats.Controls
         private void Timer_Tick(object sender, EventArgs e)
         {
             this.timer.Stop();
+
+            if (DateTime.Now.Hour == 0 && DateTime.Now.Minute == 0)
+            {
+                this.webService.ClearSession();
+            }
+
             this.webService.Refresh();
         }
         #endregion

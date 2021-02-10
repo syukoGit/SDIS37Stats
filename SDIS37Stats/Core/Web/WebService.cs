@@ -112,6 +112,15 @@
         }
 
         /// <summary>
+        /// Clear session by deleting the authentication cache.
+        /// </summary>
+        public void ClearSession()
+        {
+            Console.Out.WriteLine("Clear authentication cache");
+            this.WebBrowser.Document.ExecCommand("ClearAuthenticationCache", false, null);
+        }
+
+        /// <summary>
         /// Refresh the <see cref="System.Windows.Forms.WebBrowser"/>.
         /// </summary>
         public void Refresh()
