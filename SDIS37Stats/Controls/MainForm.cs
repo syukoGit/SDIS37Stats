@@ -65,6 +65,9 @@ namespace SDIS37Stats.Controls
             this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + this.statistics.FirehouseName + " :";
             this.RecentOperationOfUserFirehouse.SetValue(recentOperationListOfUserFirehouse);
 
+            this.displayFirefighterAvailabilityList.Title = "Liste des disponibilités de " + this.statistics.FirehouseName + " :";
+            this.displayFirefighterAvailabilityList.SetValue(this.statistics.FirefighterAvailabilities);
+
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
         }

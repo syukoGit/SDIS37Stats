@@ -37,6 +37,7 @@
             this.NbOperationPerHour = new SDIS37Stats.Controls.Type.Statistics.NbOperationPerHour();
             this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
             this.RecentOperationOfUserFirehouse = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
+            this.displayFirefighterAvailabilityList = new SDIS37Stats.Controls.Type.Statistics.DisplayFirefighterAvailabilityList();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +73,7 @@
             this.tableLayoutPanel1.Controls.Add(this.NbOperationPerHour, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.RecentOperationList, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.RecentOperationOfUserFirehouse, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.displayFirefighterAvailabilityList, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -132,6 +134,16 @@
             this.RecentOperationOfUserFirehouse.TabIndex = 6;
             this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de ... :";
             // 
+            // displayFirefighterAvailabilityList
+            // 
+            this.displayFirefighterAvailabilityList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.displayFirefighterAvailabilityList.Location = new System.Drawing.Point(3, 400);
+            this.displayFirefighterAvailabilityList.Name = "displayFirefighterAvailabilityList";
+            this.displayFirefighterAvailabilityList.NbAvailibilitiesDisplayed = 100;
+            this.displayFirefighterAvailabilityList.Size = new System.Drawing.Size(410, 255);
+            this.displayFirefighterAvailabilityList.TabIndex = 7;
+            this.displayFirefighterAvailabilityList.Title = "Liste des disponibilités de ... :";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,6 +171,7 @@
         private Type.Statistics.NbOperationPerHour NbOperationPerHour;
         private Type.Statistics.DisplayOperationList RecentOperationList;
         private Type.Statistics.DisplayOperationList RecentOperationOfUserFirehouse;
+        private Type.Statistics.DisplayFirefighterAvailabilityList displayFirefighterAvailabilityList;
     }
 }
 

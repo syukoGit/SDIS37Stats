@@ -44,4 +44,11 @@ namespace SDIS37Stats.Controls.Theme
         public static Color BackgroundColorButton => gray6;
         public static Color BackgroundColorTextbox => gray6;
     }
+
+    public abstract class DisplayFirefighterAvailabilityList : MyColor
+    {
+        public static Color BackgroundList => gray6;
+        public static Color BackgroundColorItem => gray5;
+        public static Color FontColorItem => Default.FontColor;
+    }
 }

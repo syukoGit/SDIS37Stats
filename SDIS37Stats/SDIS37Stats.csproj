@@ -72,6 +72,18 @@
     <Compile Include="Controls\Type\SevenSegment\SevenSegmentArray.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Type\Statistics\DisplayFirefighterAvailabilityList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\DisplayFirefighterAvailabilityList.Designer.cs">
+      <DependentUpon>DisplayFirefighterAvailabilityList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\DisplayFirefighterAvailability.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Type\Statistics\DisplayFirefighterAvailability.Designer.cs">
+      <DependentUpon>DisplayFirefighterAvailability.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Type\Statistics\DisplayOperation.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -111,6 +123,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Type\Graph\BarGraph.resx">
       <DependentUpon>BarGraph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Type\Statistics\DisplayFirefighterAvailabilityList.resx">
+      <DependentUpon>DisplayFirefighterAvailabilityList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Type\Statistics\DisplayFirefighterAvailability.resx">
+      <DependentUpon>DisplayFirefighterAvailability.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Type\Statistics\DisplayOperation.resx">
       <DependentUpon>DisplayOperation.cs</DependentUpon>
