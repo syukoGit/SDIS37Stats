@@ -30,12 +30,13 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private void InitializeComponent()
         {
             this.tableLayoutMain = new System.Windows.Forms.TableLayoutPanel();
-            this.labelAvailabitily = new System.Windows.Forms.Label();
             this.tableLayoutRankAndName = new System.Windows.Forms.TableLayoutPanel();
             this.labelName = new System.Windows.Forms.Label();
             this.labelRank = new System.Windows.Forms.Label();
+            this.pictureBoxAvailability = new System.Windows.Forms.PictureBox();
             this.tableLayoutMain.SuspendLayout();
             this.tableLayoutRankAndName.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAvailability)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutMain
@@ -43,27 +44,17 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.tableLayoutMain.AutoSize = true;
             this.tableLayoutMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutMain.ColumnCount = 2;
-            this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutMain.Controls.Add(this.labelAvailabitily, 0, 0);
+            this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
             this.tableLayoutMain.Controls.Add(this.tableLayoutRankAndName, 1, 0);
+            this.tableLayoutMain.Controls.Add(this.pictureBoxAvailability, 0, 0);
             this.tableLayoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutMain.Name = "tableLayoutMain";
             this.tableLayoutMain.RowCount = 1;
-            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutMain.Size = new System.Drawing.Size(230, 30);
+            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutMain.Size = new System.Drawing.Size(177, 30);
             this.tableLayoutMain.TabIndex = 0;
-            // 
-            // labelAvailabitily
-            // 
-            this.labelAvailabitily.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.labelAvailabitily.AutoSize = true;
-            this.labelAvailabitily.Location = new System.Drawing.Point(11, 8);
-            this.labelAvailabitily.Name = "labelAvailabitily";
-            this.labelAvailabitily.Size = new System.Drawing.Size(92, 13);
-            this.labelAvailabitily.TabIndex = 1;
-            this.labelAvailabitily.Text = "Disponible sur site";
             // 
             // tableLayoutRankAndName
             // 
@@ -75,12 +66,12 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.tableLayoutRankAndName.Controls.Add(this.labelName, 1, 0);
             this.tableLayoutRankAndName.Controls.Add(this.labelRank, 0, 0);
             this.tableLayoutRankAndName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutRankAndName.Location = new System.Drawing.Point(115, 0);
+            this.tableLayoutRankAndName.Location = new System.Drawing.Point(61, 0);
             this.tableLayoutRankAndName.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutRankAndName.Name = "tableLayoutRankAndName";
             this.tableLayoutRankAndName.RowCount = 1;
             this.tableLayoutRankAndName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutRankAndName.Size = new System.Drawing.Size(115, 30);
+            this.tableLayoutRankAndName.Size = new System.Drawing.Size(116, 30);
             this.tableLayoutRankAndName.TabIndex = 2;
             // 
             // labelName
@@ -104,6 +95,17 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.labelRank.TabIndex = 1;
             this.labelRank.Text = "SAP";
             // 
+            // pictureBoxAvailability
+            // 
+            this.pictureBoxAvailability.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.pictureBoxAvailability.Location = new System.Drawing.Point(36, 7);
+            this.pictureBoxAvailability.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.pictureBoxAvailability.Name = "pictureBoxAvailability";
+            this.pictureBoxAvailability.Size = new System.Drawing.Size(15, 15);
+            this.pictureBoxAvailability.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBoxAvailability.TabIndex = 3;
+            this.pictureBoxAvailability.TabStop = false;
+            // 
             // DisplayFirefighterAvailability
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -114,11 +116,12 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.Margin = new System.Windows.Forms.Padding(0);
             this.MinimumSize = new System.Drawing.Size(10, 30);
             this.Name = "DisplayFirefighterAvailability";
-            this.Size = new System.Drawing.Size(230, 30);
+            this.Size = new System.Drawing.Size(177, 30);
             this.tableLayoutMain.ResumeLayout(false);
             this.tableLayoutMain.PerformLayout();
             this.tableLayoutRankAndName.ResumeLayout(false);
             this.tableLayoutRankAndName.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAvailability)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,9 +130,9 @@ namespace SDIS37Stats.Controls.Type.Statistics
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutMain;
-        private System.Windows.Forms.Label labelAvailabitily;
         private System.Windows.Forms.TableLayoutPanel tableLayoutRankAndName;
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.Label labelRank;
+        private System.Windows.Forms.PictureBox pictureBoxAvailability;
     }
 }

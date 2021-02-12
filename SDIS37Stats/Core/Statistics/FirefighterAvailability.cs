@@ -7,7 +7,8 @@
             AvailableOnSite,
             Available5Min,
             Available10Min,
-            NotAvailable
+            NotAvailable,
+            InIntervention
         }
 
         public AVAILABILITY Availability { get; set; }

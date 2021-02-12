@@ -111,6 +111,7 @@
     <Compile Include="Core\Statistics\FirefighterAvailability.cs" />
     <Compile Include="Core\Statistics\Operation.cs" />
     <Compile Include="Core\Web\WebService.cs" />
+    <Compile Include="Extra\Image\Image.cs" />
     <Compile Include="Extra\Sound\Sound.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -169,6 +170,21 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Extra\Image\PNG\BlackCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Extra\Image\PNG\BlueCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Extra\Image\PNG\GreenCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Extra\Image\PNG\PurpleCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Extra\Image\PNG\RedCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Extra\Sound\StreetFireworksSound.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

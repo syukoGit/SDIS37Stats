@@ -137,6 +137,10 @@ namespace SDIS37Stats.Core.Statistics
                 {
                     availability = FirefighterAvailability.AVAILABILITY.Available10Min;
                 }
+                else if (content[0].InnerText.Contains("En intervention"))
+                {
+                    availability = FirefighterAvailability.AVAILABILITY.InIntervention;
+                }
                 else
                 {
                     availability = FirefighterAvailability.AVAILABILITY.NotAvailable;
