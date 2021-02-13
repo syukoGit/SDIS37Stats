@@ -139,7 +139,7 @@
             this.displayFirefighterAvailabilityList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.displayFirefighterAvailabilityList.Location = new System.Drawing.Point(3, 400);
             this.displayFirefighterAvailabilityList.Name = "displayFirefighterAvailabilityList";
-            this.displayFirefighterAvailabilityList.NbAvailibilitiesDisplayed = 100;
+            this.displayFirefighterAvailabilityList.NbAvailibilitiesDisplayed = 50;
             this.displayFirefighterAvailabilityList.Size = new System.Drawing.Size(410, 255);
             this.displayFirefighterAvailabilityList.TabIndex = 7;
             this.displayFirefighterAvailabilityList.Title = "Liste des disponibilités de ... :";

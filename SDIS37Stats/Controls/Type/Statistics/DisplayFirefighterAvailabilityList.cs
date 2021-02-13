@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace SDIS37Stats.Controls.Type.Statistics
 {
@@ -8,13 +9,55 @@ namespace SDIS37Stats.Controls.Type.Statistics
     {
         private int currentControl = 0;
 
+        private int nbAvailibilitiesDisplayed = 50;
+
+        private IEnumerable<Core.Statistics.FirefighterAvailability> data;
+
         public string Title
         {
             get => this.title.Text;
             set => this.title.Text = value;
         }
 
-        public int NbAvailibilitiesDisplayed { get; set; } = 100;
+        public int NbAvailibilitiesDisplayed
+        {
+            get
+            {
+                return this.nbAvailibilitiesDisplayed;
+            }
+            set
+            {
+                this.nbAvailibilitiesDisplayed = value;
+                if (this.nbAvailibilitiesDisplayed > this.tableLayoutDisplayFirefighterAvailability.Controls.Count)
+                {
+                    int nbNewRow = this.nbAvailibilitiesDisplayed - this.tableLayoutDisplayFirefighterAvailability.Controls.Count;
+                    for (int i = 0; i < nbNewRow; i++)
+                    {
+                        this.tableLayoutDisplayFirefighterAvailability.Controls.Add(new DisplayFirefighterAvailability()
+                        {
+                            Visible = false,
+                            Dock = DockStyle.Fill,
+                            BackColor = Theme.DisplayFirefighterAvailabilityList.BackgroundColorItem,
+                            ForeColor = Theme.DisplayFirefighterAvailabilityList.FontColorItem
+                        });
+                    }
+                }
+                else if (this.nbAvailibilitiesDisplayed < this.tableLayoutDisplayFirefighterAvailability.Controls.Count)
+                {
+                    while (this.tableLayoutDisplayFirefighterAvailability.Controls.Count - this.nbAvailibilitiesDisplayed > 0)
+                    {
+                        var item = this.tableLayoutDisplayFirefighterAvailability.Controls[this.tableLayoutDisplayFirefighterAvailability.Controls.Count - 1];
+                        this.tableLayoutDisplayFirefighterAvailability.Controls.Remove(item);
+                        item.Dispose();
+                    }
+                }
+
+                if (this.data != null)
+                {
+                    this.SetValue(this.data.ToList());
+                }
+            }
+        }
 
         public DisplayFirefighterAvailabilityList()
         {
@@ -33,31 +76,21 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             this.timerAutoScroll.Stop();
 
-            this.tableLayoutDisplayFirefighterAvailability.Controls.Clear();
+            this.data = firefighters;
 
-            this.tableLayoutDisplayFirefighterAvailability.RowCount = firefighters.Count + 1;
-
-            int count = 0;
-            for (int i = 0; i < this.NbAvailibilitiesDisplayed && i < firefighters.Count; i++)
+            int i;
+            for (i = 0; i < this.NbAvailibilitiesDisplayed && i < firefighters.Count; i++)
             {
-                var displayFirefighterAvailability = new DisplayFirefighterAvailability(firefighters[i])
-                {
-                    Dock = DockStyle.Fill,
-                    BackColor = Theme.DisplayFirefighterAvailabilityList.BackgroundColorItem,
-                    ForeColor = Theme.DisplayFirefighterAvailabilityList.FontColorItem
-                };
+                ((DisplayFirefighterAvailability)this.tableLayoutDisplayFirefighterAvailability.Controls[i]).FirefighterAvailability = firefighters[i];
+                this.tableLayoutDisplayFirefighterAvailability.Controls[i].Visible = true;
+            }
 
-                this.tableLayoutDisplayFirefighterAvailability.Controls.Add(displayFirefighterAvailability);
-                this.tableLayoutDisplayFirefighterAvailability.SetColumn(displayFirefighterAvailability, 0);
-                this.tableLayoutDisplayFirefighterAvailability.SetRow(displayFirefighterAvailability, count);
-                count++;
+            for (; i < this.NbAvailibilitiesDisplayed; i++)
+            {
+                this.tableLayoutDisplayFirefighterAvailability.Controls[i].Visible = false;
             }
 
             this.currentControl = 0;
-            if (this.tableLayoutDisplayFirefighterAvailability.Controls.Count > 0)
-            {
-                this.tableLayoutDisplayFirefighterAvailability.ScrollControlIntoView(this.tableLayoutDisplayFirefighterAvailability.Controls[this.currentControl]);
-            }
 
             this.timerAutoScroll.Start();
         }
@@ -68,9 +101,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             this.timerAutoScroll.Stop();
 
-            if (this.tableLayoutDisplayFirefighterAvailability.Controls.Count > 0)
+            int nbObjectDisplayed = this.tableLayoutDisplayFirefighterAvailability.Controls.Cast<Control>().Where(c => c.Visible == true).Count();
+
+            if (nbObjectDisplayed > 0)
             {
-                if (this.currentControl < this.tableLayoutDisplayFirefighterAvailability.Controls.Count - 1)
+                if (this.currentControl < nbObjectDisplayed - 1)
                 {
                     this.currentControl++;
                 }
