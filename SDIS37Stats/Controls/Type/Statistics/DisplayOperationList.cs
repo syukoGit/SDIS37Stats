@@ -9,11 +9,51 @@ namespace SDIS37Stats.Controls.Type.Statistics
 {
     public partial class DisplayOperationList : UserControl
     {
-        private readonly List<DisplayOperation> displayOperations = new List<DisplayOperation>();
-
         private int currentControl = 0;
 
-        public int NbOperationDisplayed { get; set; } = 6;
+        private int nbOperationDisplayed = 15;
+
+        private IEnumerable<Core.Statistics.Operation> data;
+
+        public int NbOperationDisplayed
+        {
+            get
+            {
+                return this.nbOperationDisplayed;
+            }
+            set
+            {
+                this.nbOperationDisplayed = value;
+                if (this.nbOperationDisplayed > this.tableOperationDisplayed.Controls.Count)
+                {
+                    int nbNewRow = this.nbOperationDisplayed - this.tableOperationDisplayed.Controls.Count;
+                    for (int i = 0; i < nbNewRow; i++)
+                    {
+                        this.tableOperationDisplayed.Controls.Add(new DisplayOperation()
+                        {
+                            Visible = false,
+                            Dock = DockStyle.Fill,
+                            BackColor = Theme.DisplayOperationList.BackgroundColorItem,
+                            ForeColor = Theme.DisplayOperationList.FontColorItem
+                        });
+                    }
+                }
+                else if (this.nbOperationDisplayed < this.tableOperationDisplayed.Controls.Count)
+                {
+                    while (this.tableOperationDisplayed.Controls.Count - this.nbOperationDisplayed > 0)
+                    {
+                        var item = this.tableOperationDisplayed.Controls[this.tableOperationDisplayed.Controls.Count - 1];
+                        this.tableOperationDisplayed.Controls.Remove(item);
+                        item.Dispose();
+                    }
+                }
+
+                if (this.data != null)
+                {
+                    this.SetValue(this.data.ToList());
+                }
+            }
+        }
 
         public bool HighlightOperationOfYourFirehouse { get; set; } = false;
 
@@ -37,51 +77,43 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.timerAutoScroll.Start();
         }
 
+        #region Public
         public void SetValue(List<Core.Statistics.Operation> operations)
         {
             this.timerAutoScroll.Stop();
 
-            displayOperations.Clear();
-            this.tableOperationDisplayed.Controls.Clear();
+            this.data = operations;
 
-            this.tableOperationDisplayed.RowCount = operations.Count + 1;
-
-            int count = 0;
-            for (int i = 0; i < this.NbOperationDisplayed && i < operations.Count; i++)
+            int i;
+            for (i = 0; i < this.NbOperationDisplayed && i < operations.Count(); i++)
             {
-                Color backgroundColor = Theme.DisplayOperationList.BackgroundColorItem;
-                Color fontColor = Theme.DisplayOperationList.FontColorItem;
+                ((DisplayOperation)this.tableOperationDisplayed.Controls[i]).Operation = operations[i];
 
                 if (this.HighlightOperationOfYourFirehouse && !string.IsNullOrWhiteSpace(this.FirehouseName))
                 {
                     if (operations[i].VehiculeEnrolled.Where(c => c.Contains(this.FirehouseName)).Count() > 0)
                     {
-                        backgroundColor = Theme.DisplayOperationList.BackgroundColorHighlightItem;
-                        fontColor = Theme.DisplayOperationList.FontColorHighlightItem;
+                        this.tableOperationDisplayed.Controls[i].BackColor = Theme.DisplayOperationList.BackgroundColorHighlightItem;
+                        this.tableOperationDisplayed.Controls[i].ForeColor = Theme.DisplayOperationList.FontColorHighlightItem;
+                    }
+                    else
+                    {
+                        this.tableOperationDisplayed.Controls[i].BackColor = Theme.DisplayOperationList.BackgroundColorItem;
+                        this.tableOperationDisplayed.Controls[i].ForeColor = Theme.DisplayOperationList.FontColorItem;
                     }
                 }
 
-                var displayOperation = new DisplayOperation(operations[i])
-                {
-                    Dock = DockStyle.Fill,
-                    BackColor = backgroundColor,
-                    ForeColor = fontColor
-                };
-
-                this.tableOperationDisplayed.Controls.Add(displayOperation);
-                this.tableOperationDisplayed.SetColumn(displayOperation, 0);
-                this.tableOperationDisplayed.SetRow(displayOperation, count);
-                count++;
+                this.tableOperationDisplayed.Controls[i].Visible = true;
             }
 
-            this.currentControl = 0;
-            if (this.tableOperationDisplayed.Controls.Count > 0)
+            for (; i < this.NbOperationDisplayed; i++)
             {
-                this.tableOperationDisplayed.ScrollControlIntoView(this.tableOperationDisplayed.Controls[this.currentControl]);
+                this.tableOperationDisplayed.Controls[i].Visible = false;
             }
 
             this.timerAutoScroll.Start();
         }
+        #endregion
 
         #region Event
         private void TimerAutoScroll_Tick(object sender, EventArgs e)

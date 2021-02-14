@@ -41,6 +41,8 @@
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 4;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -56,14 +58,14 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(500, 70);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(485, 64);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // time
             // 
             this.time.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.time.AutoSize = true;
-            this.time.Location = new System.Drawing.Point(4, 28);
+            this.time.Location = new System.Drawing.Point(4, 25);
             this.time.Name = "time";
             this.time.Size = new System.Drawing.Size(95, 13);
             this.time.TabIndex = 0;
@@ -74,7 +76,7 @@
             // 
             this.numOperation.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numOperation.AutoSize = true;
-            this.numOperation.Location = new System.Drawing.Point(106, 28);
+            this.numOperation.Location = new System.Drawing.Point(106, 25);
             this.numOperation.Name = "numOperation";
             this.numOperation.Size = new System.Drawing.Size(55, 13);
             this.numOperation.TabIndex = 1;
@@ -93,42 +95,44 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(260, 62);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(248, 56);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // localisation
             // 
+            this.localisation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.localisation.AutoSize = true;
-            this.localisation.Dock = System.Windows.Forms.DockStyle.Fill;
             this.localisation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.localisation.Location = new System.Drawing.Point(3, 0);
-            this.localisation.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
+            this.localisation.Location = new System.Drawing.Point(3, 10);
+            this.localisation.Margin = new System.Windows.Forms.Padding(3, 10, 3, 5);
             this.localisation.Name = "localisation";
-            this.localisation.Size = new System.Drawing.Size(254, 26);
+            this.localisation.Size = new System.Drawing.Size(109, 13);
             this.localisation.TabIndex = 0;
             this.localisation.Text = "AZAY-LE-RIDEAU";
             this.localisation.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // OperationDescription
             // 
+            this.OperationDescription.AutoSize = true;
             this.OperationDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.OperationDescription.Location = new System.Drawing.Point(3, 36);
-            this.OperationDescription.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+            this.OperationDescription.Location = new System.Drawing.Point(3, 33);
+            this.OperationDescription.Margin = new System.Windows.Forms.Padding(3, 5, 3, 10);
             this.OperationDescription.Name = "OperationDescription";
-            this.OperationDescription.Size = new System.Drawing.Size(254, 26);
+            this.OperationDescription.Size = new System.Drawing.Size(242, 13);
             this.OperationDescription.TabIndex = 1;
-            this.OperationDescription.Text = "DOMICILE : PERSONNE RESTANT A TERRE SUITE A CHUTE CHUTE MECA / TRAUMA HANCHE";
+            this.OperationDescription.Text = "DOMICILE : PERSONNE RESTANT A TERRE";
             // 
             // vehicules
             // 
             this.vehicules.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.vehicules.AutoSize = true;
             this.vehicules.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.vehicules.Location = new System.Drawing.Point(435, 22);
+            this.vehicules.Location = new System.Drawing.Point(423, 25);
             this.vehicules.Name = "vehicules";
-            this.vehicules.Size = new System.Drawing.Size(57, 26);
+            this.vehicules.Size = new System.Drawing.Size(57, 13);
             this.vehicules.TabIndex = 3;
-            this.vehicules.Text = "VSAV RID\r\nFPT RID\r\n";
+            this.vehicules.Text = "VSAV RID";
+            this.vehicules.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DisplayOperation
             // 
@@ -138,14 +142,14 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
-            this.MinimumSize = new System.Drawing.Size(500, 70);
             this.Name = "DisplayOperation";
-            this.Size = new System.Drawing.Size(500, 70);
+            this.Size = new System.Drawing.Size(485, 64);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

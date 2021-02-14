@@ -12,23 +12,30 @@ namespace SDIS37Stats.Controls.Type.Statistics
 {
     public partial class DisplayOperation : UserControl
     {
-        private readonly Core.Statistics.Operation operation;
+        private Core.Statistics.Operation operation;
 
-        public DisplayOperation(Core.Statistics.Operation operation)
+        public DisplayOperation()
         {
             InitializeComponent();
+        }
 
-            this.operation = operation;
-
-            this.time.Text = operation.Time.ToString("dd/MM/yyyy HH:mm");
-            this.numOperation.Text = operation.NumOperation.ToString();
-            this.localisation.Text = operation.Localisation;
-            this.OperationDescription.Text = operation.OperationDescription;
-
-            this.vehicules.Text = string.Empty;
-            foreach (var item in this.operation.VehiculeEnrolled)
+        public Core.Statistics.Operation Operation
+        {
+            get => this.operation;
+            set
             {
-                vehicules.Text += item + "\n";
+                this.operation = value;
+
+                this.time.Text = operation.Time.ToString("dd/MM/yyyy HH:mm");
+                this.numOperation.Text = operation.NumOperation.ToString();
+                this.localisation.Text = operation.Localisation;
+                this.OperationDescription.Text = operation.OperationDescription;
+
+                this.vehicules.Text = string.Empty;
+                foreach (var item in this.operation.VehiculeEnrolled)
+                {
+                    vehicules.Text += item + "\n";
+                }
             }
         }
     }
