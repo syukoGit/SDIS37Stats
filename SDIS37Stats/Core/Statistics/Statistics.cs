@@ -22,7 +22,8 @@ namespace SDIS37Stats.Core.Statistics
         public Statistics(Web.WebService webService)
         {
             this.webService = webService;
-            this.webService.OnNbOperationTodayUpdated += this.WebService_MainPage;
+            this.webService.OnMainPageLoaded += this.WebService_MainPage;
+            this.webService.OnNbOperationInDayUpdated += WebService_OnNbOperationInDayUpdated;
             this.webService.OnNbOperationPerHourUpdated += this.WebService_NbOperationPerHour;
             this.webService.OnRecentOperationListUpdated += this.WebService_RecentOperationList;
             this.webService.OnListFirefighterAvailabilityUpdated += WebService_FirefighterAvailabilityList;
@@ -72,8 +73,13 @@ namespace SDIS37Stats.Core.Statistics
                 }
             }
 
-            this.TotalOperationInDay = int.Parse(htmlDocument.GetElementById("number-interventions").InnerText);
             this.LastRefresh = DateTime.ParseExact(dateTimeStr, DateTimeFormat, DateTimeProvider);
+        }
+
+        private void WebService_OnNbOperationInDayUpdated(HtmlDocument htmlDocument)
+        {
+            this.TotalOperationInDay = int.Parse(htmlDocument.Body.InnerHtml.ToString());
+            this.OnStatUpdated?.Invoke();
         }
 
         private void WebService_NbOperationPerHour(HtmlDocument htmlDocument)
@@ -158,8 +164,6 @@ namespace SDIS37Stats.Core.Statistics
                     Rank = rank
                 });
             }
-
-            this.OnStatUpdated?.Invoke();
         }
         #endregion
 

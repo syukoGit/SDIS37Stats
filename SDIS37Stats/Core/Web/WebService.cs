@@ -22,7 +22,12 @@
         public const string WebServiceMainPageURL = "https://webservices.sdis37.fr/interventions";
 
         /// <summary>
-        /// Const string used for get the number of operations per day.
+        /// Const string used for get the number of operation in day.
+        /// </summary>
+        public const string WebServiceNbOperationsURl = "https://webservices.sdis37.fr/interventions/nbInterventions";
+
+        /// <summary>
+        /// Const string used for get the number of operations per hour.
         /// </summary>
         public const string WebServiceStatsForOperationPerHourURL = "https://webservices.sdis37.fr/interventions/getNb";
 
@@ -32,7 +37,7 @@
         public const string WebServiceRecentOperationListURL = "https://webservices.sdis37.fr/interventions/liste?direction=desc&sort=Depart";
 
         /// <summary>
-        /// Const string used for gets the availabilities of the firefighters of the user's firehouse.
+        /// Const string used for get the availabilities of the firefighters of the user's firehouse.
         /// </summary>
         public const string WebServiceFirefighterAvailabilityURL = "https://webservices.sdis37.fr/personnels";
 
@@ -56,8 +61,11 @@
         /// </remarks>
         private int connectionState = 0;
 
-        public delegate void OnNbOperationTodayUpdatedHandler(HtmlDocument htmlDocument);
-        public event OnNbOperationTodayUpdatedHandler OnNbOperationTodayUpdated;
+        public delegate void OnMainPageLoadedHandler(HtmlDocument htmlDocument);
+        public event OnMainPageLoadedHandler OnMainPageLoaded;
+
+        public delegate void OnNbOperationInDayUpdatedHandler(HtmlDocument htmlDocument);
+        public event OnNbOperationInDayUpdatedHandler OnNbOperationInDayUpdated;
 
         public delegate void OnNbOperationPerHourUpdatedHandler(HtmlDocument htmlDocument);
         public event OnNbOperationPerHourUpdatedHandler OnNbOperationPerHourUpdated;
@@ -201,7 +209,7 @@
                     }
                     else if (document.Url.AbsoluteUri == WebServiceMainPageURL)
                     {
-                        this.OnNbOperationTodayUpdated?.Invoke(WebBrowser.Document);
+                        this.OnMainPageLoaded?.Invoke(WebBrowser.Document);
                         this.WebBrowser.Navigate(WebServiceStatsForOperationPerHourURL);
                     }
                     else if (document.Url.AbsoluteUri == WebServiceStatsForOperationPerHourURL)
@@ -219,6 +227,14 @@
                     else if (document.Url.AbsoluteUri == WebServiceFirefighterAvailabilityURL)
                     {
                         this.OnListFirefighterAvailabilityUpdated?.Invoke(WebBrowser.Document);
+
+                        string postData = "date=" + DateTime.Now.ToString("dd/MM/yyyy") + "&rbcsp=SDIS";
+                        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(postData);
+                        this.WebBrowser.Navigate(WebServiceNbOperationsURl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceNbOperationsURl)
+                    {
+                        this.OnNbOperationInDayUpdated?.Invoke(WebBrowser.Document);
                     }
                     else
                     {
