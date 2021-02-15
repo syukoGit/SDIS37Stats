@@ -35,8 +35,10 @@
             this.localisation = new System.Windows.Forms.Label();
             this.OperationDescription = new System.Windows.Forms.Label();
             this.vehicules = new System.Windows.Forms.Label();
+            this.pictureBoxOperationType = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOperationType)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -44,21 +46,23 @@
             this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnCount = 5;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.Controls.Add(this.time, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.numOperation, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.vehicules, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.numOperation, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.vehicules, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pictureBoxOperationType, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(485, 64);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(507, 64);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // time
@@ -76,7 +80,7 @@
             // 
             this.numOperation.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numOperation.AutoSize = true;
-            this.numOperation.Location = new System.Drawing.Point(106, 25);
+            this.numOperation.Location = new System.Drawing.Point(128, 25);
             this.numOperation.Name = "numOperation";
             this.numOperation.Size = new System.Drawing.Size(55, 13);
             this.numOperation.TabIndex = 1;
@@ -90,7 +94,7 @@
             this.tableLayoutPanel2.Controls.Add(this.localisation, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.OperationDescription, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(168, 4);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(190, 4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -127,12 +131,22 @@
             this.vehicules.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.vehicules.AutoSize = true;
             this.vehicules.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.vehicules.Location = new System.Drawing.Point(423, 25);
+            this.vehicules.Location = new System.Drawing.Point(445, 25);
             this.vehicules.Name = "vehicules";
             this.vehicules.Size = new System.Drawing.Size(57, 13);
             this.vehicules.TabIndex = 3;
             this.vehicules.Text = "VSAV RID";
             this.vehicules.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pictureBoxOperationType
+            // 
+            this.pictureBoxOperationType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxOperationType.Location = new System.Drawing.Point(106, 24);
+            this.pictureBoxOperationType.Name = "pictureBoxOperationType";
+            this.pictureBoxOperationType.Size = new System.Drawing.Size(15, 15);
+            this.pictureBoxOperationType.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBoxOperationType.TabIndex = 4;
+            this.pictureBoxOperationType.TabStop = false;
             // 
             // DisplayOperation
             // 
@@ -143,11 +157,12 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.Name = "DisplayOperation";
-            this.Size = new System.Drawing.Size(485, 64);
+            this.Size = new System.Drawing.Size(507, 64);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOperationType)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,5 +177,6 @@
         private System.Windows.Forms.Label localisation;
         private System.Windows.Forms.Label OperationDescription;
         private System.Windows.Forms.Label vehicules;
+        private System.Windows.Forms.PictureBox pictureBoxOperationType;
     }
 }

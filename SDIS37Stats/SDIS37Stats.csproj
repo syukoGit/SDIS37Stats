@@ -176,13 +176,25 @@
     <Content Include="Extra\Image\PNG\BlueCircle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Extra\Image\PNG\BlueSquareWithoutInterior.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Extra\Image\PNG\GreenCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Extra\Image\PNG\GreenSquare.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Extra\Image\PNG\PurpleCircle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Extra\Image\PNG\RedCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Extra\Image\PNG\RedCircleWithoutInterior.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Extra\Image\PNG\YellowTriangle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Extra\Sound\StreetFireworksSound.wav">
