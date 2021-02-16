@@ -32,9 +32,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.components = new System.ComponentModel.Container();
             this.tableLayoutMain = new System.Windows.Forms.TableLayoutPanel();
             this.title = new System.Windows.Forms.Label();
-            this.tableLayoutDisplayFirefighterAvailability = new System.Windows.Forms.TableLayoutPanel();
             this.timerAutoScroll = new System.Windows.Forms.Timer(this.components);
+            this.panel = new System.Windows.Forms.Panel();
+            this.tableLayoutDisplayFirefighterAvailability = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutMain.SuspendLayout();
+            this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutMain
@@ -42,7 +44,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.tableLayoutMain.ColumnCount = 1;
             this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutMain.Controls.Add(this.title, 0, 0);
-            this.tableLayoutMain.Controls.Add(this.tableLayoutDisplayFirefighterAvailability, 0, 1);
+            this.tableLayoutMain.Controls.Add(this.panel, 0, 1);
             this.tableLayoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutMain.Name = "tableLayoutMain";
@@ -63,25 +65,38 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.title.TabIndex = 0;
             this.title.Text = "Title";
             // 
-            // tableLayoutDisplayFirefighterAvailability
-            // 
-            this.tableLayoutDisplayFirefighterAvailability.AutoScroll = true;
-            this.tableLayoutDisplayFirefighterAvailability.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutDisplayFirefighterAvailability.ColumnCount = 1;
-            this.tableLayoutDisplayFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutDisplayFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutDisplayFirefighterAvailability.Location = new System.Drawing.Point(0, 23);
-            this.tableLayoutDisplayFirefighterAvailability.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.tableLayoutDisplayFirefighterAvailability.Name = "tableLayoutDisplayFirefighterAvailability";
-            this.tableLayoutDisplayFirefighterAvailability.RowCount = 1;
-            this.tableLayoutDisplayFirefighterAvailability.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutDisplayFirefighterAvailability.Size = new System.Drawing.Size(382, 95);
-            this.tableLayoutDisplayFirefighterAvailability.TabIndex = 1;
-            // 
             // timerAutoScroll
             // 
             this.timerAutoScroll.Interval = 1000;
             this.timerAutoScroll.Tick += new System.EventHandler(this.TimerAutoScroll_Tick);
+            // 
+            // panel
+            // 
+            this.panel.AutoScroll = true;
+            this.panel.Controls.Add(this.tableLayoutDisplayFirefighterAvailability);
+            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel.Location = new System.Drawing.Point(0, 23);
+            this.panel.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(382, 95);
+            this.panel.TabIndex = 1;
+            // 
+            // tableLayoutDisplayFirefighterAvailability
+            // 
+            this.tableLayoutDisplayFirefighterAvailability.AutoSize = true;
+            this.tableLayoutDisplayFirefighterAvailability.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutDisplayFirefighterAvailability.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutDisplayFirefighterAvailability.ColumnCount = 1;
+            this.tableLayoutDisplayFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutDisplayFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutDisplayFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutDisplayFirefighterAvailability.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutDisplayFirefighterAvailability.Name = "tableLayoutDisplayFirefighterAvailability";
+            this.tableLayoutDisplayFirefighterAvailability.RowCount = 1;
+            this.tableLayoutDisplayFirefighterAvailability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutDisplayFirefighterAvailability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutDisplayFirefighterAvailability.Size = new System.Drawing.Size(382, 2);
+            this.tableLayoutDisplayFirefighterAvailability.TabIndex = 0;
             // 
             // DisplayFirefighterAvailabilityList
             // 
@@ -92,6 +107,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.Size = new System.Drawing.Size(382, 118);
             this.tableLayoutMain.ResumeLayout(false);
             this.tableLayoutMain.PerformLayout();
+            this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -100,7 +117,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutMain;
         private System.Windows.Forms.Label title;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutDisplayFirefighterAvailability;
         private System.Windows.Forms.Timer timerAutoScroll;
+        private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutDisplayFirefighterAvailability;
     }
 }
