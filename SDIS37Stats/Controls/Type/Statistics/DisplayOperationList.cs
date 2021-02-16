@@ -69,10 +69,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             InitializeComponent();
 
+            this.panel.BackColor = Theme.DisplayFirefighterAvailabilityList.BackgroundList;
             this.tableOperationDisplayed.BackColor = Theme.DisplayOperationList.BackgroundList;
-
-            int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
-            this.tableOperationDisplayed.Padding = new Padding(0, 0, vertScrollWidth - 16, 0);
 
             this.timerAutoScroll.Start();
         }
@@ -131,7 +129,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
                     this.currentControl = 0;
                 }
 
-                this.tableOperationDisplayed.ScrollControlIntoView(this.tableOperationDisplayed.Controls[this.currentControl]);
+                this.panel.ScrollControlIntoView(this.tableOperationDisplayed.Controls[this.currentControl]);
             }
 
             this.timerAutoScroll.Start();
