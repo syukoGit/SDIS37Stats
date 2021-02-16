@@ -74,6 +74,8 @@ namespace SDIS37Stats.Core.Statistics
             }
 
             this.LastRefresh = DateTime.ParseExact(dateTimeStr, DateTimeFormat, DateTimeProvider);
+
+            this.webService.RefreshAllValue();
         }
 
         private void WebService_OnNbOperationInDayUpdated(HtmlDocument htmlDocument)

@@ -1,6 +1,7 @@
 ﻿namespace SDIS37Stats.Core.Web
 {
     using System;
+    using System.Collections.Generic;
     using System.Windows.Forms;
 
     /// <summary>
@@ -12,44 +13,9 @@
     class WebService : IDisposable
     {
         /// <summary>
-        /// Const string used for get the login url of the webservice.
+        /// Private queue for set and get a url queue to execute.
         /// </summary>
-        public const string WebServicesLoginURL = "https://webservices.sdis37.fr/users/login";
-
-        /// <summary>
-        /// Const string used for get the main page of the webservice.
-        /// </summary>
-        public const string WebServiceMainPageURL = "https://webservices.sdis37.fr/interventions";
-
-        /// <summary>
-        /// Const string used for get the number of operation in day.
-        /// </summary>
-        public const string WebServiceNbOperationsURl = "https://webservices.sdis37.fr/interventions/nbInterventions";
-
-        /// <summary>
-        /// Const string used for get the number of operations per hour.
-        /// </summary>
-        public const string WebServiceStatsForOperationPerHourURL = "https://webservices.sdis37.fr/interventions/getNb";
-
-        /// <summary>
-        /// Const string used for get the lis of recent operations in SDIS37.
-        /// </summary>
-        public const string WebServiceRecentOperationListURL = "https://webservices.sdis37.fr/interventions/liste?direction=desc&sort=Depart";
-
-        /// <summary>
-        /// Const string used for get the availabilities of the firefighters of the user's firehouse.
-        /// </summary>
-        public const string WebServiceFirefighterAvailabilityURL = "https://webservices.sdis37.fr/personnels";
-
-        /// <summary>
-        /// Public string for save the username used for connection.
-        /// </summary>
-        public static string Username { get; set; }
-
-        /// <summary>
-        /// Public string for save the password used for connection.
-        /// </summary>
-        public static string Password { get; set; }
+        private readonly Queue<(string url, string postData)> urlQueue = new Queue<(string, string)>();
 
         /// <summary>
         /// Private integer for get and set a connection state.
@@ -60,6 +26,11 @@
         /// 2 : connection success.
         /// </remarks>
         private int connectionState = 0;
+
+        /// <summary>
+        /// Gets or sets a boolean if a web page is during loading.
+        /// </summary>
+        private bool webPageDuringLoading = false;
 
         public delegate void OnMainPageLoadedHandler(HtmlDocument htmlDocument);
         public event OnMainPageLoadedHandler OnMainPageLoaded;
@@ -85,25 +56,18 @@
 
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
 
-            this.WebBrowser.Url = new Uri(WebServiceMainPageURL);
+            this.WebBrowser.Url = new Uri(WebServiceURL.WebServiceMainPageURL);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebService" /> class.
+        /// Gets or sets the username used for connection.
         /// </summary>
-        /// <param name="username">username used for connection</param>
-        /// <param name="password">password used for connection</param>
-        public WebService(string username, string password)
-        {
-            Username = username;
-            Password = password;
+        public static string Username { get; set; }
 
-            this.WebBrowser = new WebBrowser();
-
-            this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
-
-            this.WebBrowser.Url = new Uri(WebServiceMainPageURL);
-        }
+        /// <summary>
+        /// Gets or sets the password used for connection.
+        /// </summary>
+        public static string Password { get; set; }
 
         /// <summary>
         /// Gets the <see cref="System.Windows.Forms.WebBrowser"/> used for connection.
@@ -126,21 +90,150 @@
         {
             Console.Out.WriteLine("Clear authentication cache");
             this.WebBrowser.Document.ExecCommand("ClearAuthenticationCache", false, null);
+            this.urlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null));
+
+            this.NavigateToNextUrl();
         }
 
         /// <summary>
-        /// Refresh the <see cref="System.Windows.Forms.WebBrowser"/>.
+        /// Refreshed the all values used by statistics class.
         /// </summary>
-        public void Refresh()
+        public void RefreshAllValue()
         {
             Console.Out.WriteLine("Refresh");
-            this.WebBrowser.Url = new Uri(WebServiceMainPageURL);
+
+            string postDataNbOperationInDay = "date=" + DateTime.Now.ToString("dd/MM/yyyy") + "&rbcsp=SDIS";
+
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceStatsForOperationPerHourURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceFirefighterAvailabilityURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceNbOperationInDayURL, postDataNbOperationInDay));
+
+            this.NavigateToNextUrl();
         }
 
         #endregion
 
         #region Private
+        /// <summary>
+        /// Sets the next url of the queue to <see cref="WebBrowser"/>
+        /// </summary>
+        private void NavigateToNextUrl()
+        {
+            if (this.urlQueue.Count > 0 && !this.webPageDuringLoading)
+            {
+                this.webPageDuringLoading = true;
 
+                var (url, postData) = this.urlQueue.Dequeue();
+                if (string.IsNullOrEmpty(postData))
+                {
+                    this.WebBrowser.ScriptErrorsSuppressed = url == WebServiceURL.WebServiceRecentOperationListURL;
+                    this.WebBrowser.Navigate(url);
+                }
+                else
+                {
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(postData);
+                    this.WebBrowser.Navigate(url, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
+                }
+
+                Console.Out.WriteLine("Requete http : " + url);
+            }
+        }
+
+        /// <summary>
+        /// Called when the <see cref="WebBrowser"/> loaded the <see cref="WebServiceURL.WebServicesLoginURL"/> url.
+        /// </summary>
+        /// <param name="document">Html document of the login page</param>
+        private void LoginPageLoaded(HtmlDocument document)
+        {
+            if (this.connectionState == 1)
+            {
+                Console.Out.WriteLine("Connexion impossible");
+                return;
+            }
+
+            Console.Out.WriteLine("Tentative de connexion");
+
+            this.connectionState = 1;
+
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            {
+                var getCredentials = new Controls.GetCredentials();
+                _ = getCredentials.ShowDialog();
+
+                var (Username, Password) = getCredentials.Credentials;
+                WebService.Username = Username;
+                WebService.Password = Password;
+            }
+
+            if (document != null)
+            {
+                document.All["username"].SetAttribute("value", Username);
+                document.All["password"].SetAttribute("value", Password);
+
+                HtmlElement buttonElem = null;
+                foreach (HtmlElement item in document.GetElementsByTagName("button"))
+                {
+                    if (item.InnerText == "Se connecter")
+                    {
+                        buttonElem = item;
+                        break;
+                    }
+                }
+
+                buttonElem?.InvokeMember("click");
+            }
+        }
+
+        /// <summary>
+        /// Called when the Main page of Gipsi is loaded
+        /// </summary>
+        /// <param name="document">Html document of the main page</param>
+        private void MainPageLoaded(HtmlDocument document)
+        {
+            this.OnMainPageLoaded?.Invoke(document);
+            this.NavigateToNextUrl();
+        }
+
+        /// <summary>
+        /// Called when the array of the number of operations per hour is loaded.
+        /// </summary>
+        /// <param name="document">Html document who contain the array</param>
+        private void NbOperationPerHourLoaded(HtmlDocument document)
+        {
+            this.OnNbOperationPerHourUpdated?.Invoke(document);
+            this.NavigateToNextUrl();
+        }
+
+        /// <summary>
+        /// Called when the web page with the recent operations is loaded.
+        /// </summary>
+        /// <param name="document">Html document with the recent operations</param>
+        private void RecentOperationListLoaded(HtmlDocument document)
+        {
+            this.OnRecentOperationListUpdated?.Invoke(document);
+            this.NavigateToNextUrl();
+        }
+
+        /// <summary>
+        /// Called when the web page with the firefighter availabilities is loaded.
+        /// </summary>
+        /// <param name="document">Html document with the firefighter availabilities</param>
+        private void FirefighterAvailabilitiesLoaded(HtmlDocument document)
+        {
+            this.OnListFirefighterAvailabilityUpdated?.Invoke(document);
+            this.NavigateToNextUrl();
+        }
+
+        /// <summary>
+        /// Called when the number of operations in day is loaded.
+        /// </summary>
+        /// <param name="document">Html document with the number of operations</param>
+        private void NbOperationInDayLoaded(HtmlDocument document)
+        {
+            this.OnNbOperationInDayUpdated?.Invoke(document);
+            this.NavigateToNextUrl();
+        }
         #endregion
 
         #region Event
@@ -153,93 +246,41 @@
         {
             try
             {
-                if (this.WebBrowser.Url.AbsoluteUri == WebServicesLoginURL)
+                HtmlDocument document = WebBrowser.Document;
+
+                this.webPageDuringLoading = false;
+
+                if (document == null)
                 {
-                    if (this.connectionState == 1)
-                    {
-                        Console.Out.WriteLine("Connexion impossible");
-                        return;
-                    }
-
-                    Console.Out.WriteLine("Tentative de connexion");
-
-                    this.connectionState = 1;
-
-                    if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
-                    {
-                        var getCredentials = new Controls.GetCredentials();
-                        _ = getCredentials.ShowDialog();
-
-                        var (Username, Password) = getCredentials.Credentials;
-                        WebService.Username = Username;
-                        WebService.Password = Password;
-                    }
-
-                    HtmlDocument document = WebBrowser.Document;
-
-                    if (document != null)
-                    {
-                        document.All["username"].SetAttribute("value", Username);
-                        document.All["password"].SetAttribute("value", Password);
-
-                        HtmlElement buttonElem = null;
-                        foreach (HtmlElement item in document.GetElementsByTagName("button"))
-                        {
-                            if (item.InnerText == "Se connecter")
-                            {
-                                buttonElem = item;
-                                break;
-                            }
-                        }
-
-                        buttonElem?.InvokeMember("click");
-                    }
+                    Console.Out.WriteLine("Error, document is null");
+                }
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServicesLoginURL)
+                {
+                    this.LoginPageLoaded(document);
+                }
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceMainPageURL)
+                {
+                    this.MainPageLoaded(document);
+                }
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceStatsForOperationPerHourURL)
+                {
+                    this.NbOperationPerHourLoaded(document);
+                }
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceRecentOperationListURL)
+                {
+                    this.RecentOperationListLoaded(document);
+                }
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceFirefighterAvailabilityURL)
+                {
+                    this.FirefighterAvailabilitiesLoaded(document);
+                }
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceNbOperationInDayURL)
+                {
+                    this.NbOperationInDayLoaded(document);
                 }
                 else
                 {
-                    Console.Out.WriteLine("Connexion réussite");
-
-                    this.connectionState = 2;
-
-                    HtmlDocument document = WebBrowser.Document;
-
-                    if (document == null)
-                    {
-                        Console.Out.WriteLine("Document null");
-                    }
-                    else if (document.Url.AbsoluteUri == WebServiceMainPageURL)
-                    {
-                        this.OnMainPageLoaded?.Invoke(WebBrowser.Document);
-                        this.WebBrowser.Navigate(WebServiceStatsForOperationPerHourURL);
-                    }
-                    else if (document.Url.AbsoluteUri == WebServiceStatsForOperationPerHourURL)
-                    {
-                        this.OnNbOperationPerHourUpdated?.Invoke(WebBrowser.Document);
-                        this.WebBrowser.ScriptErrorsSuppressed = true;
-                        this.WebBrowser.Navigate(WebServiceRecentOperationListURL);
-                    }
-                    else if (document.Url.AbsoluteUri == WebServiceRecentOperationListURL)
-                    {
-                        this.WebBrowser.ScriptErrorsSuppressed = false;
-                        this.OnRecentOperationListUpdated?.Invoke(WebBrowser.Document);
-                        this.WebBrowser.Navigate(WebServiceFirefighterAvailabilityURL);
-                    }
-                    else if (document.Url.AbsoluteUri == WebServiceFirefighterAvailabilityURL)
-                    {
-                        this.OnListFirefighterAvailabilityUpdated?.Invoke(WebBrowser.Document);
-
-                        string postData = "date=" + DateTime.Now.ToString("dd/MM/yyyy") + "&rbcsp=SDIS";
-                        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(postData);
-                        this.WebBrowser.Navigate(WebServiceNbOperationsURl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
-                    }
-                    else if (document.Url.AbsoluteUri == WebServiceNbOperationsURl)
-                    {
-                        this.OnNbOperationInDayUpdated?.Invoke(WebBrowser.Document);
-                    }
-                    else
-                    {
-                        Console.Out.WriteLine("Page inconnue : " + document.Url.AbsoluteUri);
-                    }
+                    Console.Out.WriteLine("Page inconnue : " + document.Url.AbsoluteUri);
                 }
             }
             catch (Exception ex)

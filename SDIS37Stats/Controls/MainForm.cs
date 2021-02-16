@@ -79,7 +79,7 @@ namespace SDIS37Stats.Controls
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.webService.Dispose();
+            this.webService?.Dispose();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -91,7 +91,7 @@ namespace SDIS37Stats.Controls
                 this.webService.ClearSession();
             }
 
-            this.webService.Refresh();
+            this.webService.RefreshAllValue();
         }
         #endregion
     }

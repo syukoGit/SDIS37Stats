@@ -111,6 +111,7 @@
     <Compile Include="Core\Statistics\FirefighterAvailability.cs" />
     <Compile Include="Core\Statistics\Operation.cs" />
     <Compile Include="Core\Web\WebService.cs" />
+    <Compile Include="Core\Web\WebServiceURL.cs" />
     <Compile Include="Extra\Image\Image.cs" />
     <Compile Include="Extra\Sound\Sound.cs" />
     <Compile Include="Program.cs" />
