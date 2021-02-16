@@ -15,7 +15,7 @@
         /// <summary>
         /// Const string used for get the number of operation in day.
         /// </summary>
-        public const string WebServiceNbOperationsURl = "https://webservices.sdis37.fr/interventions/nbInterventions";
+        public const string WebServiceNbOperationInDayURL = "https://webservices.sdis37.fr/interventions/nbInterventions";
 
         /// <summary>
         /// Const string used for get the number of operations per hour.
