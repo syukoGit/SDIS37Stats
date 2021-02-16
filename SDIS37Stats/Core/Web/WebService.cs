@@ -10,17 +10,12 @@
     /// <remarks>
     /// It uses a <see cref="System.Windows.Forms.WebBrowser"/> so objects can disposable.
     /// </remarks>
-    class WebService : WebServiceURL, IDisposable
+    class WebService : IDisposable
     {
         /// <summary>
-        /// Public string for save the username used for connection.
+        /// Private queue for set and get a url queue to execute.
         /// </summary>
-        public static string Username { get; set; }
-
-        /// <summary>
-        /// Public string for save the password used for connection.
-        /// </summary>
-        public static string Password { get; set; }
+        private readonly Queue<(string url, string postData)> urlQueue = new Queue<(string, string)>();
 
         /// <summary>
         /// Private integer for get and set a connection state.
@@ -36,11 +31,6 @@
         /// Gets or sets a boolean if a web page is during loading.
         /// </summary>
         private bool webPageDuringLoading = false;
-
-        /// <summary>
-        /// Private queue for set and get a url queue to execute.
-        /// </summary>
-        private readonly Queue<(string url, string postData)> urlQueue = new Queue<(string, string)>();
 
         public delegate void OnMainPageLoadedHandler(HtmlDocument htmlDocument);
         public event OnMainPageLoadedHandler OnMainPageLoaded;
@@ -66,8 +56,18 @@
 
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
 
-            this.WebBrowser.Url = new Uri(WebServiceMainPageURL);
+            this.WebBrowser.Url = new Uri(WebServiceURL.WebServiceMainPageURL);
         }
+
+        /// <summary>
+        /// Gets or sets the username used for connection.
+        /// </summary>
+        public static string Username { get; set; }
+
+        /// <summary>
+        /// Gets or sets the password used for connection.
+        /// </summary>
+        public static string Password { get; set; }
 
         /// <summary>
         /// Gets the <see cref="System.Windows.Forms.WebBrowser"/> used for connection.
@@ -90,7 +90,7 @@
         {
             Console.Out.WriteLine("Clear authentication cache");
             this.WebBrowser.Document.ExecCommand("ClearAuthenticationCache", false, null);
-            this.urlQueue.Enqueue((WebServicesLoginURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null));
 
             this.NavigateToNextUrl();
         }
@@ -104,10 +104,10 @@
 
             string postDataNbOperationInDay = "date=" + DateTime.Now.ToString("dd/MM/yyyy") + "&rbcsp=SDIS";
 
-            this.urlQueue.Enqueue((WebServiceStatsForOperationPerHourURL, null));
-            this.urlQueue.Enqueue((WebServiceRecentOperationListURL, null));
-            this.urlQueue.Enqueue((WebServiceFirefighterAvailabilityURL, null));
-            this.urlQueue.Enqueue((WebServiceNbOperationInDayURL, postDataNbOperationInDay));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceStatsForOperationPerHourURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceFirefighterAvailabilityURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceNbOperationInDayURL, postDataNbOperationInDay));
 
             this.NavigateToNextUrl();
         }
@@ -115,6 +115,9 @@
         #endregion
 
         #region Private
+        /// <summary>
+        /// Sets the next url of the queue to <see cref="WebBrowser"/>
+        /// </summary>
         private void NavigateToNextUrl()
         {
             if (this.urlQueue.Count > 0 && !this.webPageDuringLoading)
@@ -124,7 +127,7 @@
                 var (url, postData) = this.urlQueue.Dequeue();
                 if (string.IsNullOrEmpty(postData))
                 {
-                    this.WebBrowser.ScriptErrorsSuppressed = url == WebServiceRecentOperationListURL;
+                    this.WebBrowser.ScriptErrorsSuppressed = url == WebServiceURL.WebServiceRecentOperationListURL;
                     this.WebBrowser.Navigate(url);
                 }
                 else
@@ -140,6 +143,7 @@
         /// <summary>
         /// Called when the <see cref="WebBrowser"/> loaded the <see cref="WebServiceURL.WebServicesLoginURL"/> url.
         /// </summary>
+        /// <param name="document">Html document of the login page</param>
         private void LoginPageLoaded(HtmlDocument document)
         {
             if (this.connectionState == 1)
@@ -181,30 +185,50 @@
             }
         }
 
+        /// <summary>
+        /// Called when the Main page of Gipsi is loaded
+        /// </summary>
+        /// <param name="document">Html document of the main page</param>
         private void MainPageLoaded(HtmlDocument document)
         {
             this.OnMainPageLoaded?.Invoke(document);
             this.NavigateToNextUrl();
         }
 
+        /// <summary>
+        /// Called when the array of the number of operations per hour is loaded.
+        /// </summary>
+        /// <param name="document">Html document who contain the array</param>
         private void NbOperationPerHourLoaded(HtmlDocument document)
         {
             this.OnNbOperationPerHourUpdated?.Invoke(document);
             this.NavigateToNextUrl();
         }
 
+        /// <summary>
+        /// Called when the web page with the recent operations is loaded.
+        /// </summary>
+        /// <param name="document">Html document with the recent operations</param>
         private void RecentOperationListLoaded(HtmlDocument document)
         {
             this.OnRecentOperationListUpdated?.Invoke(document);
             this.NavigateToNextUrl();
         }
 
+        /// <summary>
+        /// Called when the web page with the firefighter availabilities is loaded.
+        /// </summary>
+        /// <param name="document">Html document with the firefighter availabilities</param>
         private void FirefighterAvailabilitiesLoaded(HtmlDocument document)
         {
             this.OnListFirefighterAvailabilityUpdated?.Invoke(document);
             this.NavigateToNextUrl();
         }
 
+        /// <summary>
+        /// Called when the number of operations in day is loaded.
+        /// </summary>
+        /// <param name="document">Html document with the number of operations</param>
         private void NbOperationInDayLoaded(HtmlDocument document)
         {
             this.OnNbOperationInDayUpdated?.Invoke(document);
@@ -228,29 +252,29 @@
 
                 if (document == null)
                 {
-
+                    Console.Out.WriteLine("Error, document is null");
                 }
-                else if (document.Url.AbsoluteUri == WebServicesLoginURL)
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServicesLoginURL)
                 {
                     this.LoginPageLoaded(document);
                 }
-                else if (document.Url.AbsoluteUri == WebServiceMainPageURL)
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceMainPageURL)
                 {
                     this.MainPageLoaded(document);
                 }
-                else if (document.Url.AbsoluteUri == WebServiceStatsForOperationPerHourURL)
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceStatsForOperationPerHourURL)
                 {
                     this.NbOperationPerHourLoaded(document);
                 }
-                else if (document.Url.AbsoluteUri == WebServiceRecentOperationListURL)
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceRecentOperationListURL)
                 {
                     this.RecentOperationListLoaded(document);
                 }
-                else if (document.Url.AbsoluteUri == WebServiceFirefighterAvailabilityURL)
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceFirefighterAvailabilityURL)
                 {
                     this.FirefighterAvailabilitiesLoaded(document);
                 }
-                else if (document.Url.AbsoluteUri == WebServiceNbOperationInDayURL)
+                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceNbOperationInDayURL)
                 {
                     this.NbOperationInDayLoaded(document);
                 }
