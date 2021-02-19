@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-
-namespace SDIS37Stats.Core.Statistics
+﻿namespace SDIS37Stats.Core.Statistics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Windows.Forms;
+
     class Statistics
     {
         private readonly Web.WebService webService;
