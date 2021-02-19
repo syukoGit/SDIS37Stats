@@ -28,9 +28,6 @@ namespace SDIS37Stats.Core.Statistics
         private List<FirefighterAvailability> firefighterAvailabilities;
 
         #region EventHandler
-        public delegate void OnStatUpdatedHandler();
-        public event OnStatUpdatedHandler OnStatUpdated;
-
         public delegate void OnNewOperationHandler();
         public event OnNewOperationHandler OnNewOperation;
 
@@ -197,7 +194,6 @@ namespace SDIS37Stats.Core.Statistics
         private void WebService_OnNbOperationInDayUpdated(HtmlDocument htmlDocument)
         {
             this.TotalOperationInDay = int.Parse(htmlDocument.Body.InnerHtml.ToString());
-            this.OnStatUpdated?.Invoke();
         }
 
         private void WebService_NbOperationPerHour(HtmlDocument htmlDocument)
@@ -213,12 +209,12 @@ namespace SDIS37Stats.Core.Statistics
             var list = data.GetElementsByTagName("tr");
 
             bool newOperation = false;
+            var newList = this.RecentOperationList != null ? new Dictionary<int, Operation>(this.RecentOperationList) : new Dictionary<int, Operation>();
+
             foreach (HtmlElement item in list)
             {
                 var operation = HtmlElementToOperation(item);
 
-                var newList = this.RecentOperationList != null ? new Dictionary<int, Operation>(this.RecentOperationList) : new Dictionary<int, Operation>();
-                
                 if (newList.Where(c => c.Key == operation.NumOperation).Count() > 0)
                 {
                     this.UpdateOperation(newList, operation);
@@ -228,14 +224,14 @@ namespace SDIS37Stats.Core.Statistics
                     newList.Add(operation.NumOperation, operation);
                     newOperation = true;
                 }
+            }
 
-                this.RecentOperationList = newList;
-                this.RecentOperationOfUserFirehouse = newList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
+            this.RecentOperationList = newList;
+            this.RecentOperationOfUserFirehouse = newList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
                 
-                if (newOperation)
-                {
-                    this.OnNewOperation?.Invoke();
-                }
+            if (newOperation)
+            {
+                this.OnNewOperation?.Invoke();
             }
         }
 
