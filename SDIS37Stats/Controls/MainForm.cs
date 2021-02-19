@@ -55,7 +55,7 @@ namespace SDIS37Stats.Controls
 
             this.NbOperationToday.Value = this.statistics.TotalOperationInDay;
 
-            this.LastUpdate.Text = this.statistics.LastRefreshDateTimeLocal.ToString("dd/MM/yyyy HH:mm");
+            this.LastUpdate.Text = this.statistics.LastRefresh.ToString("dd/MM/yyyy HH:mm");
 
             this.NbOperationPerHour.Value = new List<int>(this.statistics.OperationPerHour);
 
