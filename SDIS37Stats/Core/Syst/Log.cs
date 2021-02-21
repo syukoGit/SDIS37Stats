@@ -13,8 +13,7 @@ namespace SDIS37Stats.Core.Syst
         {
             Error,
             Warning,
-            Normal,
-            Information
+            Normal
         }
 
         private static readonly string path = @"Logs\";
@@ -23,6 +22,8 @@ namespace SDIS37Stats.Core.Syst
         {
             var logDateTime = DateTime.Now;
             string logPath = path + logDateTime.ToString("yyyy-MM-dd");
+
+            logToWrite = $"[{logDateTime:dd-MM-yyyy HH:mm:ss}] {logToWrite}";
 
             if (!Directory.Exists(logPath))
             {
@@ -41,14 +42,12 @@ namespace SDIS37Stats.Core.Syst
                 case TYPE.Normal:
                     logPath += @"\logs";
                     break;
-                case TYPE.Information:
-                    logPath += @"\infos";
-                    break;
             }
 
             using (FileStream fs = new FileStream(logPath, FileMode.OpenOrCreate, FileAccess.Write))
             {
-
+                fs.Write(Encoding.UTF8.GetBytes(logToWrite), 0, Encoding.UTF8.GetByteCount(logToWrite));
+                fs.Close();
             }
         }
     }
