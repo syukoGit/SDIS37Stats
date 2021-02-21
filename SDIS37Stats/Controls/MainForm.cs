@@ -15,14 +15,15 @@ namespace SDIS37Stats.Controls
 
         public MainForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.webService = new Core.Web.WebService();
 
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
-            this.statistics.OnStatUpdated += this.Statistics_StatUpdated;
             this.statistics.OnNewOperation += this.Statistics_NewOperation;
+
+            this.SetEventConnection();
 
             if (this.ShowWebBrowser)
             {
@@ -34,9 +35,40 @@ namespace SDIS37Stats.Controls
 
                 this.Controls.Add(this.webService.WebBrowser);
             }
+
+            this.timer.Start();
         }
 
         #region Private
+        private void SetEventConnection()
+        {
+            // NbOperationToday
+            this.statistics.OnTotalOperationInDayUpdated += (c) => this.NbOperationToday.Value = c;
+
+            // NbOperationPerHour
+            this.statistics.OnOperationPerHourUpdated += (c) => this.NbOperationPerHour.Value = c;
+
+            // RecentOperationList
+            this.statistics.OnRecentOperationListUpdated += (c) =>
+            {
+                var value = c.Select(t => t.Value).ToList();
+                value.Sort((a, b) => b.Time.CompareTo(a.Time));
+                this.RecentOperationList.SetValue(value);
+            };
+
+            // displayFirefighterAvailabilityList
+            this.statistics.OnFirehouseNameUpdated += (c) => this.displayFirefighterAvailabilityList.Title = "Liste des disponibilités de " + c + " :";
+            this.statistics.OnFirefighterAvailabilitiesUpdated += this.displayFirefighterAvailabilityList.SetValue;
+
+            // RecentOperationOfUserFirehouse
+            this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + c + " :";
+            this.statistics.OnRecentOperationOfUserFirehouseUpdated += (c) =>
+            {
+                c.Sort((a, b) => b.Time.CompareTo(a.Time));
+                this.RecentOperationOfUserFirehouse.SetValue(c);
+            };
+        }
+
         private static int GetIntervalInSecondsWithNextMinute()
         {
             DateTime now = DateTime.Now;
@@ -45,33 +77,6 @@ namespace SDIS37Stats.Controls
         #endregion
 
         #region Event
-        private void Statistics_StatUpdated()
-        {
-            var recentOperationList = this.statistics.RecentOperationList.Select(c => c.Value).ToList();
-            recentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
-
-            var recentOperationListOfUserFirehouse = this.statistics.RecentOperationOfUserFirehouse;
-            recentOperationList.Sort((a, b) => b.Time.CompareTo(a.Time));
-
-            this.NbOperationToday.Value = this.statistics.TotalOperationInDay;
-
-            this.LastUpdate.Text = this.statistics.LastRefresh.ToString("dd/MM/yyyy HH:mm");
-
-            this.NbOperationPerHour.Value = new List<int>(this.statistics.OperationPerHour);
-
-            this.RecentOperationList.SetValue(recentOperationList);
-            this.RecentOperationList.FirehouseName = this.statistics.FirehouseName;
-
-            this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + this.statistics.FirehouseName + " :";
-            this.RecentOperationOfUserFirehouse.SetValue(recentOperationListOfUserFirehouse);
-
-            this.displayFirefighterAvailabilityList.Title = "Liste des disponibilités de " + this.statistics.FirehouseName + " :";
-            this.displayFirefighterAvailabilityList.SetValue(this.statistics.FirefighterAvailabilities);
-
-            this.timer.Interval = GetIntervalInSecondsWithNextMinute();
-            this.timer.Start();
-        }
-
         private void Statistics_NewOperation()
         {
             Extra.Sound.Sound.NewOperationNotification();
@@ -92,6 +97,11 @@ namespace SDIS37Stats.Controls
             }
 
             this.webService.RefreshAllValue();
+
+            this.LastUpdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+
+            this.timer.Interval = GetIntervalInSecondsWithNextMinute();
+            this.timer.Start();
         }
         #endregion
     }

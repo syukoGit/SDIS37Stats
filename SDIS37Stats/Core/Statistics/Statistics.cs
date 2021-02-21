@@ -13,40 +13,153 @@
         private static readonly System.Globalization.CultureInfo DateTimeProvider = new System.Globalization.CultureInfo("fr-FR");
         private const string DateTimeFormat = "g";
 
-        public delegate void OnStatUpdatedHandler();
-        public OnStatUpdatedHandler OnStatUpdated;
+        private string firehouseName = string.Empty;
 
+        private int totalOperationInDay = 0;
+
+        private DateTime lastRefreshDateTimeLocal;
+
+        private List<int> operationPerHour;
+
+        private Dictionary<int, Operation> recentOperationList;
+
+        private List<Operation> recentOperationOfUserFirehouse;
+
+        private List<FirefighterAvailability> firefighterAvailabilities;
+
+        #region EventHandler
         public delegate void OnNewOperationHandler();
-        public OnNewOperationHandler OnNewOperation;
+        public event OnNewOperationHandler OnNewOperation;
+
+        public delegate void OnFirehouseNameUpdatedHandler(string firehouseName);
+        public event OnFirehouseNameUpdatedHandler OnFirehouseNameUpdated;
+
+        public delegate void OnTotalOperationInDayUpdatedHandler(int totalOperationInDay);
+        public event OnTotalOperationInDayUpdatedHandler OnTotalOperationInDayUpdated;
+
+        public delegate void OnLastRefreshDateTimeLocalUpdatedHandler(DateTime lastRefreshDateTimeLocal);
+        public event OnLastRefreshDateTimeLocalUpdatedHandler OnLastRefreshDateTimeLocalUpdated;
+
+        public delegate void OnOperationPerHourUpdatedHandler(List<int> operationPerHour);
+        public event OnOperationPerHourUpdatedHandler OnOperationPerHourUpdated;
+
+        public delegate void OnRecentOperationListUpdatedHandler(Dictionary<int, Operation> recentOperationList);
+        public event OnRecentOperationListUpdatedHandler OnRecentOperationListUpdated;
+
+        public delegate void OnRecentOperationOfUserFirehouseUpdatedHandler(List<Operation> recentOperationOfUserFirehouse);
+        public event OnRecentOperationOfUserFirehouseUpdatedHandler OnRecentOperationOfUserFirehouseUpdated;
+
+        public delegate void OnFirefighterAvailabilitiesUpdatedHandler(List<FirefighterAvailability> firefighterAvailabilities);
+        public event OnFirefighterAvailabilitiesUpdatedHandler OnFirefighterAvailabilitiesUpdated;
+        #endregion
 
         public Statistics(Web.WebService webService)
         {
             this.webService = webService;
             this.webService.OnMainPageLoaded += this.WebService_MainPage;
-            this.webService.OnNbOperationInDayUpdated += WebService_OnNbOperationInDayUpdated;
+            this.webService.OnNbOperationInDayUpdated += this.WebService_OnNbOperationInDayUpdated;
             this.webService.OnNbOperationPerHourUpdated += this.WebService_NbOperationPerHour;
             this.webService.OnRecentOperationListUpdated += this.WebService_RecentOperationList;
-            this.webService.OnListFirefighterAvailabilityUpdated += WebService_FirefighterAvailabilityList;
+            this.webService.OnListFirefighterAvailabilityUpdated += this.WebService_FirefighterAvailabilityList;
         }
 
-        public string FirehouseName { get; set; } = null;
+        #region Property
+        public string FirehouseName
+        {
+            get
+            {
+                return this.firehouseName;
+            }
+            private set
+            {
+                this.firehouseName = value;
+                this.OnFirehouseNameUpdated?.Invoke(this.firehouseName);
+            }
+        }
 
-        public int TotalOperationInDay { get; private set; }
+        public int TotalOperationInDay
+        {
+            get
+            {
+                return this.totalOperationInDay;
+            }
+            private set
+            {
+                this.totalOperationInDay = value;
+                this.OnTotalOperationInDayUpdated?.Invoke(this.totalOperationInDay);
+            }
+        }
 
-        public DateTime LastRefresh { get; private set; }
-        
-        public List<int> OperationPerHour { get; private set; } = new List<int>();
+        public DateTime LastRefreshDateTimeLocal
+        {
+            get
+            {
+                return this.lastRefreshDateTimeLocal;
+            }
+            private set
+            {
+                this.lastRefreshDateTimeLocal = value;
+                this.OnLastRefreshDateTimeLocalUpdated?.Invoke(this.lastRefreshDateTimeLocal);
+            }
+        }
 
-        public Dictionary<int, Operation> RecentOperationList { get; set; } = new Dictionary<int, Operation>();
+        public List<int> OperationPerHour
+        {
+            get
+            {
+                return this.operationPerHour;
+            }
+            private set
+            {
+                this.operationPerHour = value;
+                this.OnOperationPerHourUpdated?.Invoke(this.operationPerHour);
+            }
+        }
 
-        public List<Operation> RecentOperationOfUserFirehouse { get; set; } = new List<Operation>();
+        public Dictionary<int, Operation> RecentOperationList
+        {
+            get
+            {
+                return this.recentOperationList;
+            }
+            private set
+            {
+                this.recentOperationList = value;
+                this.OnRecentOperationListUpdated?.Invoke(this.recentOperationList);
+            }
+        }
 
-        public List<FirefighterAvailability> FirefighterAvailabilities { get; set; } = new List<FirefighterAvailability>();
+        public List<Operation> RecentOperationOfUserFirehouse
+        {
+            get
+            {
+                return this.recentOperationOfUserFirehouse;
+            }
+            private set
+            {
+                this.recentOperationOfUserFirehouse = value;
+                this.OnRecentOperationOfUserFirehouseUpdated?.Invoke(this.recentOperationOfUserFirehouse);
+            }
+        }
+
+        public List<FirefighterAvailability> FirefighterAvailabilities
+        {
+            get
+            {
+                return this.firefighterAvailabilities;
+            }
+            private set
+            {
+                this.firefighterAvailabilities = value;
+                this.OnFirefighterAvailabilitiesUpdated?.Invoke(this.firefighterAvailabilities);
+            }
+        }
+        #endregion
 
         #region Private
-        private void UpdateOperation(Operation operationUpdated)
+        private void UpdateOperation(Dictionary<int, Operation> operationList, Operation operationUpdated)
         {
-            var operation = this.RecentOperationList.Where(c => operationUpdated.NumOperation == c.Key).Select(c => c.Value).ToList()[0];
+            var operation = operationList.Where(c => operationUpdated.NumOperation == c.Key).Select(c => c.Value).ToList()[0];
 
             operation.Localisation = operationUpdated.Localisation;
             operation.OperationDescription = operationUpdated.OperationDescription;
@@ -73,7 +186,7 @@
                 }
             }
 
-            this.LastRefresh = DateTime.ParseExact(dateTimeStr, DateTimeFormat, DateTimeProvider);
+            this.LastRefreshDateTimeLocal = DateTime.ParseExact(dateTimeStr, DateTimeFormat, DateTimeProvider);
 
             this.webService.RefreshAllValue();
         }
@@ -81,7 +194,6 @@
         private void WebService_OnNbOperationInDayUpdated(HtmlDocument htmlDocument)
         {
             this.TotalOperationInDay = int.Parse(htmlDocument.Body.InnerHtml.ToString());
-            this.OnStatUpdated?.Invoke();
         }
 
         private void WebService_NbOperationPerHour(HtmlDocument htmlDocument)
@@ -97,26 +209,29 @@
             var list = data.GetElementsByTagName("tr");
 
             bool newOperation = false;
+            var newList = this.RecentOperationList != null ? new Dictionary<int, Operation>(this.RecentOperationList) : new Dictionary<int, Operation>();
+
             foreach (HtmlElement item in list)
             {
                 var operation = HtmlElementToOperation(item);
 
-                if (this.RecentOperationList.Where(c => c.Key == operation.NumOperation).Count() > 0)
+                if (newList.Where(c => c.Key == operation.NumOperation).Count() > 0)
                 {
-                    this.UpdateOperation(operation);
+                    this.UpdateOperation(newList, operation);
                 }
                 else
                 {
-                    this.RecentOperationList.Add(operation.NumOperation, operation);
+                    newList.Add(operation.NumOperation, operation);
                     newOperation = true;
                 }
+            }
 
-                this.RecentOperationOfUserFirehouse = this.RecentOperationList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
-                
-                if (newOperation)
-                {
-                    this.OnNewOperation?.Invoke();
-                }
+            this.RecentOperationList = newList;
+            this.RecentOperationOfUserFirehouse = newList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
+
+            if (newOperation)
+            {
+                this.OnNewOperation?.Invoke();
             }
         }
 
@@ -126,9 +241,11 @@
             data = data.GetElementsByTagName("tbody")[0];
             var firefighterList = data.GetElementsByTagName("tr");
 
-            this.FirefighterAvailabilities.Clear();
+            this.FirefighterAvailabilities?.Clear();
 
-           foreach (HtmlElement firefighter in firefighterList)
+            var newList = new List<FirefighterAvailability>();
+
+            foreach (HtmlElement firefighter in firefighterList)
             {
                 var content = firefighter.GetElementsByTagName("td");
 
@@ -158,7 +275,7 @@
                 string name = content[2].InnerText;
                 string rank = content[3].InnerText;
 
-                this.FirefighterAvailabilities.Add(new FirefighterAvailability
+                newList.Add(new FirefighterAvailability
                 {
                     Availability = availability,
                     Matricule = matricule,
@@ -166,6 +283,8 @@
                     Rank = rank
                 });
             }
+
+            this.FirefighterAvailabilities = newList;
         }
         #endregion
 
