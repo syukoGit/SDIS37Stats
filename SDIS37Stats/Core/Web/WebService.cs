@@ -28,6 +28,12 @@
         private int connectionState = 0;
 
         /// <summary>
+        /// Started date and time to http request is send.
+        /// Used for measure the response time of the last http request.
+        /// </summary>
+        private DateTime startedTimeHttpRequest = DateTime.MinValue;
+
+        /// <summary>
         /// Gets or sets a boolean if a web page is during loading.
         /// </summary>
         private bool webPageDuringLoading = false;
@@ -123,6 +129,8 @@
             if (this.urlQueue.Count > 0 && !this.webPageDuringLoading)
             {
                 this.webPageDuringLoading = true;
+
+                this.startedTimeHttpRequest = DateTime.Now;
 
                 var (url, postData) = this.urlQueue.Dequeue();
                 if (string.IsNullOrEmpty(postData))
@@ -250,13 +258,27 @@
 
                 this.webPageDuringLoading = false;
 
+                TimeSpan responseTimeHttpRequest = TimeSpan.Zero;
+                if (this.startedTimeHttpRequest != DateTime.MinValue)
+                {
+                    responseTimeHttpRequest = DateTime.Now - this.startedTimeHttpRequest;
+                    this.startedTimeHttpRequest = DateTime.MinValue;
+                }
+
                 if (document == null)
                 {
                     Syst.Log.WriteLog(Syst.Log.TYPE.Error, "HTTP error. No document");
                 }
                 else
                 {
-                    Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request successfull. URL: " + document.Url.AbsoluteUri);
+                    string log = "HTTP Request successfull. URL: " + document.Url.AbsoluteUri;
+                    if (responseTimeHttpRequest != TimeSpan.Zero)
+                    {
+                        log += " (Response time: " + responseTimeHttpRequest.ToString(@"ss\.fff\s") + ")";
+                    }
+
+                    Syst.Log.WriteLog(Syst.Log.TYPE.Normal, log);
+
                     if (document.Url.AbsoluteUri == WebServiceURL.WebServicesLoginURL)
                     {
                         this.LoginPageLoaded(document);
