@@ -44,8 +44,9 @@ namespace SDIS37Stats.Core.Syst
                     break;
             }
 
-            using (FileStream fs = new FileStream(logPath, FileMode.OpenOrCreate, FileAccess.Write))
+            using (FileStream fs = new FileStream(logPath, FileMode.OpenOrCreate | FileMode.Append, FileAccess.Write))
             {
+                logToWrite += "\n";
                 fs.Write(Encoding.UTF8.GetBytes(logToWrite), 0, Encoding.UTF8.GetByteCount(logToWrite));
                 fs.Close();
             }
