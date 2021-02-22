@@ -16,7 +16,7 @@ namespace SDIS37Stats.Extra.Sound
             }
             catch (Exception e)
             {
-                Console.Out.WriteLine(e.Message);
+                Core.Syst.Log.WriteLog(Core.Syst.Log.TYPE.Error, e.Message);
             }
         }
     }

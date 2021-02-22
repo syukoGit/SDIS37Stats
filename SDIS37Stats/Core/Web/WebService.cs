@@ -88,7 +88,7 @@
         /// </summary>
         public void ClearSession()
         {
-            Console.Out.WriteLine("Clear authentication cache");
+            Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "WebService -> Clear authentification cache");
             this.WebBrowser.Document.ExecCommand("ClearAuthenticationCache", false, null);
             this.urlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null));
 
@@ -100,7 +100,7 @@
         /// </summary>
         public void RefreshAllValue()
         {
-            Console.Out.WriteLine("Refresh");
+            Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "WebService -> Refresh");
 
             string postDataNbOperationInDay = "date=" + DateTime.Now.ToString("dd/MM/yyyy") + "&rbcsp=SDIS";
 
@@ -136,7 +136,7 @@
                     this.WebBrowser.Navigate(url, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
                 }
 
-                Console.Out.WriteLine("Requete http : " + url);
+                Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request. URL: " + url + (string.IsNullOrEmpty(postData) ? string.Empty : " (Post data : " + postData + ")"));
             }
         }
 
@@ -148,11 +148,11 @@
         {
             if (this.connectionState == 1)
             {
-                Console.Out.WriteLine("Connexion impossible");
+                Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Authentification error. Invalid username or password");
                 return;
             }
 
-            Console.Out.WriteLine("Tentative de connexion");
+            Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "Connection attempt. Username: " + Username);
 
             this.connectionState = 1;
 
@@ -246,46 +246,50 @@
         {
             try
             {
-                HtmlDocument document = WebBrowser.Document;
+                HtmlDocument document = this.WebBrowser.Document;
 
                 this.webPageDuringLoading = false;
 
                 if (document == null)
                 {
-                    Console.Out.WriteLine("Error, document is null");
-                }
-                else if (document.Url.AbsoluteUri == WebServiceURL.WebServicesLoginURL)
-                {
-                    this.LoginPageLoaded(document);
-                }
-                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceMainPageURL)
-                {
-                    this.MainPageLoaded(document);
-                }
-                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceStatsForOperationPerHourURL)
-                {
-                    this.NbOperationPerHourLoaded(document);
-                }
-                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceRecentOperationListURL)
-                {
-                    this.RecentOperationListLoaded(document);
-                }
-                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceFirefighterAvailabilityURL)
-                {
-                    this.FirefighterAvailabilitiesLoaded(document);
-                }
-                else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceNbOperationInDayURL)
-                {
-                    this.NbOperationInDayLoaded(document);
+                    Syst.Log.WriteLog(Syst.Log.TYPE.Error, "HTTP error. No document");
                 }
                 else
                 {
-                    Console.Out.WriteLine("Page inconnue : " + document.Url.AbsoluteUri);
+                    Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request successfull. URL: " + document.Url.AbsoluteUri);
+                    if (document.Url.AbsoluteUri == WebServiceURL.WebServicesLoginURL)
+                    {
+                        this.LoginPageLoaded(document);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceMainPageURL)
+                    {
+                        this.MainPageLoaded(document);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceStatsForOperationPerHourURL)
+                    {
+                        this.NbOperationPerHourLoaded(document);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceRecentOperationListURL)
+                    {
+                        this.RecentOperationListLoaded(document);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceFirefighterAvailabilityURL)
+                    {
+                        this.FirefighterAvailabilitiesLoaded(document);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceNbOperationInDayURL)
+                    {
+                        this.NbOperationInDayLoaded(document);
+                    }
+                    else
+                    {
+                        Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Web page unknown. URL: " + document.Url.AbsoluteUri);
+                    }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.Out.WriteLine(ex.Message);
+                Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error when processing the web page. URL: " + this.WebBrowser.Document.Url.AbsoluteUri);
             }
         }
 
