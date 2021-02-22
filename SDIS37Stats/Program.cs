@@ -21,6 +21,8 @@ namespace SDIS37Stats
         {
             try
             {
+                Core.Syst.Log.WriteLog(Core.Syst.Log.TYPE.Normal, "Application started");
+
                 SetThreadExecutionState(0x80000000 | 0x00000002 | 0x00000040);
 
                 if(args.Length > 0)
@@ -35,7 +37,7 @@ namespace SDIS37Stats
             finally
             {
                 SetThreadExecutionState(0x80000000);
-                Console.Out.WriteLine("Arrêt du programme");
+                Core.Syst.Log.WriteLog(Core.Syst.Log.TYPE.Normal, "Application stopped");
             }
         }
 
@@ -49,7 +51,6 @@ namespace SDIS37Stats
                     if (i < args.Length)
                     {
                         Core.Web.WebService.Username = args[i];
-                        Console.Out.WriteLine("Username : " + args[i]);
                     }
                 }
                 else if (args[i] == "-p")
@@ -58,7 +59,6 @@ namespace SDIS37Stats
                     if (i < args.Length)
                     {
                         Core.Web.WebService.Password = args[i];
-                        Console.Out.WriteLine("Password : " + args[i]);
                     }
                 }
             }
