@@ -22,7 +22,7 @@
         Color Graph_MainColor();
         #endregion
 
-        #region DisplayOperationList
+        #region OperationListView
         Color OperationListView_BackgroundColorList();
         Color OperationListView_BackgroundColorItem();
         Color OperationListView_FontColorItem();
@@ -30,7 +30,12 @@
         Color OperationListView_FontColorHighlightItem();
         #endregion
 
-        #region DisplayFirefighterAvailabilityList
+        #region SevenSegment
+        Color SevenSegment_DarkColor();
+        Color SevenSegment_LightColor();
+        #endregion
+
+        #region FirefighterAvailabilityListView
         Color FirefighterAvailabilityListView_BackgroundList();
         Color FirefighterAvailabilityListView_BackgroundColorItem();
         #endregion

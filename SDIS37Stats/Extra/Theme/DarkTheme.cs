@@ -35,5 +35,9 @@ namespace SDIS37Stats.Extra.Theme
         public Color SettingsButton_BackgroundColorWhenSelected() => ColorPalette.yellow2;
 
         public Color SettingsButton_DefaultBackgroundColor() => ColorPalette.transparent;
+
+        public Color SevenSegment_DarkColor() => ColorPalette.gray6;
+
+        public Color SevenSegment_LightColor() => ColorPalette.white1;
     }
 }
