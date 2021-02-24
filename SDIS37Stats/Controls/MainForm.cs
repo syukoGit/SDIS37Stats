@@ -51,6 +51,7 @@ namespace SDIS37Stats.Controls
 
             //Event connection
             this.OnThemeUpdated += this.NbOperationToday.ApplyTheme;
+            this.OnThemeUpdated += this.NbOperationPerHour.ApplyTheme;
 
             this.ApplyTheme();
 

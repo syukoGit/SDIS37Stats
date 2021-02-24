@@ -46,13 +46,13 @@ namespace SDIS37Stats.Controls.Type.Graph
             }
         }
 
-        public Color BackGroundColor { get; set; } = MainForm.Instance.Settings.Theme.Graph_BackgroundColor();
+        public Color BackGroundColor { get; set; } = Color.White;
 
-        public Color AxisColor { get; set; } = MainForm.Instance.Settings.Theme.Graph_AxisColor();
+        public Color AxisColor { get; set; } = Color.Yellow;
 
-        public Color MainBarColor { get; set; } = MainForm.Instance.Settings.Theme.Graph_MainColor();
+        public Color MainBarColor { get; set; } = Color.Blue;
 
-        public Color ValueColor { get; set; } = MainForm.Instance.Settings.Theme.Form_FontColor();
+        public Color ValueColor { get; set; } = Color.Red;
 
         #region Event
         private void Graph_Resize(object sender, EventArgs e)

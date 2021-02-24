@@ -33,5 +33,20 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 }
             }
         }
+
+        #region Public
+        public void ApplyTheme(Extra.Theme.ITheme theme)
+        {
+            this.BackColor = theme.Form_BackgroundColor();
+            this.ForeColor = theme.Form_FontColor();
+
+            this.fix_label.ForeColor = theme.Form_FontColor();
+
+            this.barGraph.BackGroundColor = theme.Graph_BackgroundColor();
+            this.barGraph.AxisColor = theme.Graph_AxisColor();
+            this.barGraph.MainBarColor = theme.Graph_MainColor();
+            this.barGraph.ValueColor = theme.Form_FontColor();
+        }
+        #endregion
     }
 }
