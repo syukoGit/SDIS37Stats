@@ -81,7 +81,7 @@ namespace SDIS37Stats.Controls
         #region Event
         private void Statistics_NewOperation()
         {
-            Extra.Sound.Sound.NewOperationNotification();
+            Extra.Sound.Sound.PlaySound(Extra.Sound.Sound.SoundType.NewOperationNotification);
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
