@@ -37,8 +37,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
                         {
                             Visible = false,
                             Dock = DockStyle.Fill,
-                            BackColor = Theme.DisplayFirefighterAvailabilityList.BackgroundColorItem,
-                            ForeColor = Theme.DisplayFirefighterAvailabilityList.FontColorItem
+                            BackColor = MainForm.Instance.Settings.Theme.FirefighterAvailabilityListView_BackgroundColorItem(),
+                            ForeColor = MainForm.Instance.Settings.Theme.Form_FontColor()
                         });
                     }
                 }
@@ -63,8 +63,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             InitializeComponent();
 
-            this.panel.BackColor = Theme.DisplayFirefighterAvailabilityList.BackgroundList;
-            this.tableLayoutDisplayFirefighterAvailability.BackColor = Theme.DisplayOperationList.BackgroundList;
+            this.panel.BackColor = MainForm.Instance.Settings.Theme.FirefighterAvailabilityListView_BackgroundList();
+            this.tableLayoutDisplayFirefighterAvailability.BackColor = MainForm.Instance.Settings.Theme.FirefighterAvailabilityListView_BackgroundList();
 
             this.timerAutoScroll.Start();
         }

@@ -33,8 +33,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
                         {
                             Visible = false,
                             Dock = DockStyle.Fill,
-                            BackColor = Theme.DisplayOperationList.BackgroundColorItem,
-                            ForeColor = Theme.DisplayOperationList.FontColorItem
+                            BackColor = MainForm.Instance.Settings.Theme.OperationListView_BackgroundColorItem(),
+                            ForeColor = MainForm.Instance.Settings.Theme.OperationListView_FontColorItem()
                         });
                     }
                 }
@@ -69,8 +69,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             InitializeComponent();
 
-            this.panel.BackColor = Theme.DisplayFirefighterAvailabilityList.BackgroundList;
-            this.tableOperationDisplayed.BackColor = Theme.DisplayOperationList.BackgroundList;
+            this.panel.BackColor = MainForm.Instance.Settings.Theme.OperationListView_BackgroundColorList();
+            this.tableOperationDisplayed.BackColor = MainForm.Instance.Settings.Theme.OperationListView_BackgroundColorList();
 
             this.timerAutoScroll.Start();
         }
@@ -91,13 +91,13 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 {
                     if (operations[i].VehiculeEnrolled.Where(c => c.Contains(this.FirehouseName)).Count() > 0)
                     {
-                        this.tableOperationDisplayed.Controls[i].BackColor = Theme.DisplayOperationList.BackgroundColorHighlightItem;
-                        this.tableOperationDisplayed.Controls[i].ForeColor = Theme.DisplayOperationList.FontColorHighlightItem;
+                        this.tableOperationDisplayed.Controls[i].BackColor = MainForm.Instance.Settings.Theme.OperationListView_BackgroundColorHighlightItem();
+                        this.tableOperationDisplayed.Controls[i].ForeColor = MainForm.Instance.Settings.Theme.OperationListView_FontColorHighlightItem();
                     }
                     else
                     {
-                        this.tableOperationDisplayed.Controls[i].BackColor = Theme.DisplayOperationList.BackgroundColorItem;
-                        this.tableOperationDisplayed.Controls[i].ForeColor = Theme.DisplayOperationList.FontColorItem;
+                        this.tableOperationDisplayed.Controls[i].BackColor = MainForm.Instance.Settings.Theme.OperationListView_BackgroundColorItem();
+                        this.tableOperationDisplayed.Controls[i].ForeColor = MainForm.Instance.Settings.Theme.OperationListView_FontColorItem();
                     }
                 }
 
