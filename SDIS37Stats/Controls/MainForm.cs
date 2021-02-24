@@ -19,6 +19,9 @@ namespace SDIS37Stats.Controls
 
         public bool ShowWebBrowser { get; set; } = false;
 
+        public delegate void OnThemeUpdatedHandler(Extra.Theme.ITheme theme);
+        public event OnThemeUpdatedHandler OnThemeUpdated;
+
         public MainForm()
         {
             MainForm.Instance = this;
@@ -44,6 +47,11 @@ namespace SDIS37Stats.Controls
         #region Private
         private void Init()
         {
+            this.SettingsPicture.Image = Extra.Image.Image.SettingsPicture;
+
+            //Event connection
+            this.OnThemeUpdated += this.NbOperationToday.ApplyTheme;
+
             this.ApplyTheme();
 
             this.webService = new Core.Web.WebService();
@@ -52,18 +60,18 @@ namespace SDIS37Stats.Controls
 
             this.statistics.OnNewOperation += this.Statistics_NewOperation;
 
-            this.SettingsPicture.Image = Extra.Image.Image.SettingsPicture;
-
-            this.SetEventConnection();
+            this.SetStatisticEventConnection();
         }
 
         private void ApplyTheme()
         {
             this.BackColor = this.Settings.Theme.Form_BackgroundColor();
             this.ForeColor = this.Settings.Theme.Form_FontColor();
+
+            this.OnThemeUpdated?.Invoke(this.Settings.Theme);
         }
 
-        private void SetEventConnection()
+        private void SetStatisticEventConnection()
         {
             // NbOperationToday
             this.statistics.OnTotalOperationInDayUpdated += (c) => this.NbOperationToday.Value = c;
