@@ -7,11 +7,11 @@ namespace SDIS37Stats.Controls
 {
     public partial class MainForm : Form
     {
-        private readonly Core.Web.WebService webService;
+        private Core.Web.WebService webService;
 
-        private readonly Core.Statistics.Statistics statistics;
+        private Core.Statistics.Statistics statistics;
 
-        private readonly SettingsForm settingsForm = new SettingsForm();
+        private SettingsForm settingsForm = new SettingsForm();
 
         public static MainForm Instance { get; private set; }
 
@@ -25,15 +25,7 @@ namespace SDIS37Stats.Controls
 
             this.InitializeComponent();
 
-            this.webService = new Core.Web.WebService();
-
-            this.statistics = new Core.Statistics.Statistics(this.webService);
-
-            this.statistics.OnNewOperation += this.Statistics_NewOperation;
-
-            this.SettingsPicture.Image = Extra.Image.Image.SettingsPicture;
-
-            this.SetEventConnection();
+            this.Init();
 
             if (this.ShowWebBrowser)
             {
@@ -50,6 +42,27 @@ namespace SDIS37Stats.Controls
         }
 
         #region Private
+        private void Init()
+        {
+            this.ApplyTheme();
+
+            this.webService = new Core.Web.WebService();
+
+            this.statistics = new Core.Statistics.Statistics(this.webService);
+
+            this.statistics.OnNewOperation += this.Statistics_NewOperation;
+
+            this.SettingsPicture.Image = Extra.Image.Image.SettingsPicture;
+
+            this.SetEventConnection();
+        }
+
+        private void ApplyTheme()
+        {
+            this.BackColor = this.Settings.Theme.Form_BackgroundColor();
+            this.ForeColor = this.Settings.Theme.Form_FontColor();
+        }
+
         private void SetEventConnection()
         {
             // NbOperationToday
