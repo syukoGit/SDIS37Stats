@@ -23,6 +23,8 @@ namespace SDIS37Stats.Controls
 
             this.statistics.OnNewOperation += this.Statistics_NewOperation;
 
+            this.ParametersPicture.Image = Extra.Image.Image.SettingsPicture;
+
             this.SetEventConnection();
 
             if (this.ShowWebBrowser)
@@ -103,6 +105,20 @@ namespace SDIS37Stats.Controls
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
         }
+        
+        private void SettingsPicture_MouseEnter(object sender, EventArgs e)
+        {
+            this.ParametersPicture.BorderStyle = BorderStyle.FixedSingle;
+            this.ParametersPicture.BackColor = Theme.MainForm.SettingsButton_BackgroundColorWhenSelected;
+        }
+
+        private void SettingsPicture_MouseLeave(object sender, EventArgs e)
+        {
+            this.ParametersPicture.BorderStyle = BorderStyle.None;
+            this.ParametersPicture.BackColor = Theme.MainForm.SettingsButton_DefaultBackgroundColor;
+        }
         #endregion
+
+        
     }
 }

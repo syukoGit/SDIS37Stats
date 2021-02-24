@@ -13,6 +13,8 @@ namespace SDIS37Stats.Controls.Theme
         protected static readonly Color yellow1 = Color.FromArgb(220, 220, 0);
         protected static readonly Color yellow2 = Color.FromArgb(255, 255, 180);
 
+        protected static readonly Color transparent = Color.Transparent;
+
         protected static readonly Color debugColor = Color.Green;
     }
 
@@ -21,6 +23,12 @@ namespace SDIS37Stats.Controls.Theme
         public static Color BackgroundColor => gray7;
         public static Color FontColor => white1;
         public static Color DebugColor => debugColor;
+    }
+
+    public abstract class MainForm : MyColor
+    {
+        public static Color SettingsButton_DefaultBackgroundColor => transparent;
+        public static Color SettingsButton_BackgroundColorWhenSelected => yellow2;
     }
 
     public abstract class Graph : MyColor

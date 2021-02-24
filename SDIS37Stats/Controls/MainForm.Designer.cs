@@ -33,12 +33,16 @@
             this.LastUpdate = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.ParametersPicture = new System.Windows.Forms.PictureBox();
             this.NbOperationToday = new SDIS37Stats.Controls.Type.Statistics.NbOperationToday();
             this.NbOperationPerHour = new SDIS37Stats.Controls.Type.Statistics.NbOperationPerHour();
             this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
             this.RecentOperationOfUserFirehouse = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
             this.displayFirefighterAvailabilityList = new SDIS37Stats.Controls.Type.Statistics.DisplayFirefighterAvailabilityList();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ParametersPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // LastUpdate
@@ -48,7 +52,7 @@
             this.LastUpdate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LastUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LastUpdate.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.LastUpdate.Location = new System.Drawing.Point(1081, 0);
+            this.LastUpdate.Location = new System.Drawing.Point(249, 0);
             this.LastUpdate.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.LastUpdate.Name = "LastUpdate";
             this.LastUpdate.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -68,12 +72,12 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Controls.Add(this.LastUpdate, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.NbOperationToday, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.NbOperationPerHour, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.RecentOperationList, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.RecentOperationOfUserFirehouse, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.displayFirefighterAvailabilityList, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -85,6 +89,35 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1250, 658);
             this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.LastUpdate, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ParametersPicture, 0, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(832, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(418, 117);
+            this.tableLayoutPanel2.TabIndex = 8;
+            // 
+            // ParametersPicture
+            // 
+            this.ParametersPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ParametersPicture.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ParametersPicture.Location = new System.Drawing.Point(380, 30);
+            this.ParametersPicture.Name = "ParametersPicture";
+            this.ParametersPicture.Size = new System.Drawing.Size(35, 35);
+            this.ParametersPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ParametersPicture.TabIndex = 3;
+            this.ParametersPicture.TabStop = false;
+            this.ParametersPicture.MouseEnter += new System.EventHandler(this.SettingsPicture_MouseEnter);
+            this.ParametersPicture.MouseLeave += new System.EventHandler(this.SettingsPicture_MouseLeave);
             // 
             // NbOperationToday
             // 
@@ -158,6 +191,9 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ParametersPicture)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -172,6 +208,8 @@
         private Type.Statistics.DisplayOperationList RecentOperationList;
         private Type.Statistics.DisplayOperationList RecentOperationOfUserFirehouse;
         private Type.Statistics.DisplayFirefighterAvailabilityList displayFirefighterAvailabilityList;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.PictureBox ParametersPicture;
     }
 }
 
