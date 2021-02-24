@@ -14,7 +14,16 @@ namespace SDIS37Stats.Controls
     {
         public SettingsForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #region Private
+        private void Init()
+        {
+            var settings = (this.Owner as MainForm).Settings;
+
+            this.checkBoxMuteSound.Checked = settings.MuteSound;
+        }
+        #endregion
     }
 }

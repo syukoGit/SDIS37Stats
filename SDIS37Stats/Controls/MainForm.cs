@@ -11,10 +11,18 @@ namespace SDIS37Stats.Controls
 
         private readonly Core.Statistics.Statistics statistics;
 
+        private readonly SettingsForm settingsForm = new SettingsForm();
+
+        public static MainForm Instance { get; private set; }
+
+        public Core.Syst.Setting Settings { get; set; } = new Core.Syst.Setting();
+
         public bool ShowWebBrowser { get; set; } = false;
 
         public MainForm()
         {
+            MainForm.Instance = this;
+
             this.InitializeComponent();
 
             this.webService = new Core.Web.WebService();
@@ -23,7 +31,7 @@ namespace SDIS37Stats.Controls
 
             this.statistics.OnNewOperation += this.Statistics_NewOperation;
 
-            this.ParametersPicture.Image = Extra.Image.Image.SettingsPicture;
+            this.SettingsPicture.Image = Extra.Image.Image.SettingsPicture;
 
             this.SetEventConnection();
 
@@ -108,17 +116,20 @@ namespace SDIS37Stats.Controls
         
         private void SettingsPicture_MouseEnter(object sender, EventArgs e)
         {
-            this.ParametersPicture.BorderStyle = BorderStyle.FixedSingle;
-            this.ParametersPicture.BackColor = Theme.MainForm.SettingsButton_BackgroundColorWhenSelected;
+            this.SettingsPicture.BorderStyle = BorderStyle.FixedSingle;
+            this.SettingsPicture.BackColor = this.Settings.Theme.SettingsButton_BackgroundColorWhenSelected();
         }
 
         private void SettingsPicture_MouseLeave(object sender, EventArgs e)
         {
-            this.ParametersPicture.BorderStyle = BorderStyle.None;
-            this.ParametersPicture.BackColor = Theme.MainForm.SettingsButton_DefaultBackgroundColor;
+            this.SettingsPicture.BorderStyle = BorderStyle.None;
+            this.SettingsPicture.BackColor = this.Settings.Theme.SettingsButton_DefaultBackgroundColor();
+        }
+
+        private void SettingsPicture_Click(object sender, EventArgs e)
+        {
+            this.settingsForm.Show(this);
         }
         #endregion
-
-        
     }
 }
