@@ -16,13 +16,15 @@ namespace SDIS37Stats.Extra.Theme
 
         public Color Form_BackgroundColorTextbox() => ColorPalette.gray6;
 
-        public Color Form_FontColor() => ColorPalette.white1;
+        public Color Form_FontColor() => ColorPalette.white2;
 
         public Color Graph_AxisColor() => ColorPalette.yellow1;
 
         public Color Graph_BackgroundColor() => ColorPalette.gray6;
 
-        public Color Graph_MainColor() => ColorPalette.white1;
+        public Color Graph_BackgroundGraphColor() => ColorPalette.gray7;
+
+        public Color Graph_MainColor() => ColorPalette.white2;
 
         public Color OperationListView_BackgroundColor() => ColorPalette.gray7;
 
@@ -34,7 +36,7 @@ namespace SDIS37Stats.Extra.Theme
 
         public Color OperationListView_FontColorHighlightItem() => ColorPalette.yellow2;
 
-        public Color OperationListView_FontColorItem() => ColorPalette.white1;
+        public Color OperationListView_FontColorItem() => ColorPalette.white2;
 
         public Color SettingsButton_BackgroundColorWhenSelected() => ColorPalette.yellow2;
 
@@ -42,6 +44,6 @@ namespace SDIS37Stats.Extra.Theme
 
         public Color SevenSegment_DarkColor() => ColorPalette.gray6;
 
-        public Color SevenSegment_LightColor() => ColorPalette.white1;
+        public Color SevenSegment_LightColor() => ColorPalette.white2;
     }
 }

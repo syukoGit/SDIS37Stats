@@ -46,7 +46,7 @@ namespace SDIS37Stats.Controls.Type.Graph
             }
         }
 
-        public Color BackGroundColor { get; set; } = Color.White;
+        public Color BackGroundGraphColor { get; set; } = Color.White;
 
         public Color AxisColor { get; set; } = Color.Yellow;
 
@@ -62,7 +62,7 @@ namespace SDIS37Stats.Controls.Type.Graph
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            e.Graphics.Clear(this.BackGroundColor);
+            e.Graphics.Clear(this.BackGroundGraphColor);
         }
 
         protected override void OnPaddingChanged(EventArgs e)

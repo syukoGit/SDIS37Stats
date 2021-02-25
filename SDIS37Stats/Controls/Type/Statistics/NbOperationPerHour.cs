@@ -40,9 +40,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.BackColor = theme.Form_BackgroundColor();
             this.ForeColor = theme.Form_FontColor();
 
+            this.tableLayoutPanel1.BackColor = theme.Graph_BackgroundColor();
+
             this.fix_label.ForeColor = theme.Form_FontColor();
 
-            this.barGraph.BackGroundColor = theme.Graph_BackgroundColor();
+            this.barGraph.BackGroundGraphColor = theme.Graph_BackgroundGraphColor();
             this.barGraph.AxisColor = theme.Graph_AxisColor();
             this.barGraph.MainBarColor = theme.Graph_MainColor();
             this.barGraph.ValueColor = theme.Form_FontColor();

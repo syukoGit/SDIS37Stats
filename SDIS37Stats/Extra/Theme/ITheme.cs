@@ -18,6 +18,7 @@
 
         #region Graph
         Color Graph_BackgroundColor();
+        Color Graph_BackgroundGraphColor();
         Color Graph_AxisColor();
         Color Graph_MainColor();
         #endregion

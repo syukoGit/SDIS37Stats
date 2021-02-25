@@ -4,44 +4,46 @@
 
     public class LightTheme : ITheme
     {
-        public Color FirefighterAvailabilityListView_BackgroundColor() => ColorPalette.gray5;
+        public Color FirefighterAvailabilityListView_BackgroundColor() => ColorPalette.white2;
 
-        public Color FirefighterAvailabilityListView_BackgroundColorItem() => Color.Red;
+        public Color FirefighterAvailabilityListView_BackgroundColorItem() => ColorPalette.white3;
 
-        public Color FirefighterAvailabilityListView_BackgroundList() => Color.Aqua;
+        public Color FirefighterAvailabilityListView_BackgroundList() => ColorPalette.white2;
 
         public Color Form_BackgroundColor() => ColorPalette.white1;
 
-        public Color Form_BackgroundColorButton() => ColorPalette.white2;
+        public Color Form_BackgroundColorButton() => ColorPalette.white3;
 
-        public Color Form_BackgroundColorTextbox() => ColorPalette.white2;
+        public Color Form_BackgroundColorTextbox() => ColorPalette.white3;
 
         public Color Form_FontColor() => ColorPalette.gray7;
 
-        public Color Graph_AxisColor() => ColorPalette.gray7;
+        public Color Graph_AxisColor() => ColorPalette.blue1;
 
-        public Color Graph_BackgroundColor() => ColorPalette.white1;
+        public Color Graph_BackgroundColor() => ColorPalette.white2;
 
-        public Color Graph_MainColor() => ColorPalette.debugColor;
+        public Color Graph_BackgroundGraphColor() => ColorPalette.white2;
 
-        public Color OperationListView_BackgroundColor() => ColorPalette.gray6;
+        public Color Graph_MainColor() => ColorPalette.white4;
 
-        public Color OperationListView_BackgroundColorHighlightItem() => ColorPalette.yellow2;
+        public Color OperationListView_BackgroundColor() => ColorPalette.white2;
 
-        public Color OperationListView_BackgroundColorItem() => ColorPalette.yellow2;
+        public Color OperationListView_BackgroundColorHighlightItem() => ColorPalette.blue1;
 
-        public Color OperationListView_BackgroundColorList() => Color.Red;
+        public Color OperationListView_BackgroundColorItem() => ColorPalette.white3;
 
-        public Color OperationListView_FontColorHighlightItem() => ColorPalette.yellow2;
+        public Color OperationListView_BackgroundColorList() => ColorPalette.white2;
 
-        public Color OperationListView_FontColorItem() => Color.Blue;
+        public Color OperationListView_FontColorHighlightItem() => ColorPalette.white1;
 
-        public Color SettingsButton_BackgroundColorWhenSelected() => ColorPalette.yellow2;
+        public Color OperationListView_FontColorItem() => ColorPalette.gray7;
+
+        public Color SettingsButton_BackgroundColorWhenSelected() => ColorPalette.blue1;
 
         public Color SettingsButton_DefaultBackgroundColor() => ColorPalette.transparent;
 
-        public Color SevenSegment_DarkColor() => ColorPalette.debugColor;
+        public Color SevenSegment_DarkColor() => ColorPalette.white2;
 
-        public Color SevenSegment_LightColor() => ColorPalette.yellow1;
+        public Color SevenSegment_LightColor() => ColorPalette.gray4;
     }
 }

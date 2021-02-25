@@ -113,9 +113,13 @@
             // RecentOperationList
             // 
             this.RecentOperationList.AutoSize = true;
+            this.RecentOperationList.BackgroundColorHighlightItem = System.Drawing.Color.Red;
+            this.RecentOperationList.BackgroundColorItem = System.Drawing.Color.White;
             this.tableLayoutPanel1.SetColumnSpan(this.RecentOperationList, 2);
             this.RecentOperationList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RecentOperationList.FirehouseName = "RID";
+            this.RecentOperationList.FontColorHighLightItem = System.Drawing.Color.Green;
+            this.RecentOperationList.FontColorItem = System.Drawing.Color.Blue;
             this.RecentOperationList.HighlightOperationOfYourFirehouse = true;
             this.RecentOperationList.Location = new System.Drawing.Point(419, 140);
             this.RecentOperationList.Name = "RecentOperationList";
@@ -127,9 +131,13 @@
             // RecentOperationOfUserFirehouse
             // 
             this.RecentOperationOfUserFirehouse.AutoSize = true;
+            this.RecentOperationOfUserFirehouse.BackgroundColorHighlightItem = System.Drawing.Color.Red;
+            this.RecentOperationOfUserFirehouse.BackgroundColorItem = System.Drawing.Color.White;
             this.tableLayoutPanel1.SetColumnSpan(this.RecentOperationOfUserFirehouse, 2);
             this.RecentOperationOfUserFirehouse.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RecentOperationOfUserFirehouse.FirehouseName = null;
+            this.RecentOperationOfUserFirehouse.FontColorHighLightItem = System.Drawing.Color.Green;
+            this.RecentOperationOfUserFirehouse.FontColorItem = System.Drawing.Color.Blue;
             this.RecentOperationOfUserFirehouse.HighlightOperationOfYourFirehouse = false;
             this.RecentOperationOfUserFirehouse.Location = new System.Drawing.Point(419, 400);
             this.RecentOperationOfUserFirehouse.Name = "RecentOperationOfUserFirehouse";
