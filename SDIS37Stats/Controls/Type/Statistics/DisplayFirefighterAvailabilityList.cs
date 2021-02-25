@@ -63,13 +63,23 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             InitializeComponent();
 
-            this.panel.BackColor = MainForm.Instance.Settings.Theme.FirefighterAvailabilityListView_BackgroundList();
-            this.tableLayoutDisplayFirefighterAvailability.BackColor = MainForm.Instance.Settings.Theme.FirefighterAvailabilityListView_BackgroundList();
-
             this.timerAutoScroll.Start();
         }
 
         #region Public
+        public void ApplyTheme(Extra.Theme.ITheme theme)
+        {
+            this.BackColor = theme.Form_BackgroundColor();
+            this.ForeColor = theme.Form_FontColor();
+
+            this.tableLayoutMain.BackColor = theme.FirefighterAvailabilityListView_BackgroundColor();
+
+            this.title.ForeColor = theme.Form_FontColor();
+
+            this.panel.BackColor = theme.FirefighterAvailabilityListView_BackgroundList();
+            this.tableLayoutDisplayFirefighterAvailability.BackColor = theme.FirefighterAvailabilityListView_BackgroundList();
+        }
+
         public void SetValue(List<Core.Statistics.FirefighterAvailability> firefighters)
         {
             this.timerAutoScroll.Stop();

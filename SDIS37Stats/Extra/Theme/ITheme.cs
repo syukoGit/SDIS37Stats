@@ -37,6 +37,7 @@
         #endregion
 
         #region FirefighterAvailabilityListView
+        Color FirefighterAvailabilityListView_BackgroundColor();
         Color FirefighterAvailabilityListView_BackgroundList();
         Color FirefighterAvailabilityListView_BackgroundColorItem();
         #endregion

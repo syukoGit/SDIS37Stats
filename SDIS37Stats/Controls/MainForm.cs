@@ -54,6 +54,7 @@ namespace SDIS37Stats.Controls
             this.OnThemeUpdated += this.NbOperationPerHour.ApplyTheme;
             this.OnThemeUpdated += this.RecentOperationList.ApplyTheme;
             this.OnThemeUpdated += this.RecentOperationOfUserFirehouse.ApplyTheme;
+            this.OnThemeUpdated += this.displayFirefighterAvailabilityList.ApplyTheme;
 
             this.ApplyTheme();
 
