@@ -72,6 +72,8 @@ namespace SDIS37Stats.Controls
             this.BackColor = this.Settings.Theme.Form_BackgroundColor();
             this.ForeColor = this.Settings.Theme.Form_FontColor();
 
+            this.LastUpdate.ForeColor = this.Settings.Theme.Form_FontColor();
+
             this.OnThemeUpdated?.Invoke(this.Settings.Theme);
         }
 

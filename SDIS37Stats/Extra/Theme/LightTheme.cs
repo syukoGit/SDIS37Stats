@@ -12,11 +12,11 @@
 
         public Color Form_BackgroundColor() => ColorPalette.white1;
 
-        public Color Form_BackgroundColorButton() => ColorPalette.gray6;
+        public Color Form_BackgroundColorButton() => ColorPalette.white2;
 
-        public Color Form_BackgroundColorTextbox() => ColorPalette.gray6;
+        public Color Form_BackgroundColorTextbox() => ColorPalette.white2;
 
-        public Color Form_FontColor() => ColorPalette.debugColor;
+        public Color Form_FontColor() => ColorPalette.gray7;
 
         public Color Graph_AxisColor() => ColorPalette.gray7;
 
