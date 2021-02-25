@@ -139,6 +139,7 @@
     <Compile Include="Core\Web\WebServiceURL.cs" />
     <Compile Include="Extra\Image\Image.cs" />
     <Compile Include="Extra\Sound\Sound.cs" />
+    <Compile Include="Extra\Theme\LightTheme.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Statistics\Statistics.cs" />
