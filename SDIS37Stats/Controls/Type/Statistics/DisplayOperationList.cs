@@ -59,6 +59,14 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
         public string FirehouseName { get; set; } = null;
 
+        public Color BackgroundColorItem { get; set; } = Color.White;
+
+        public Color FontColorItem { get; set; } = Color.Blue;
+
+        public Color BackgroundColorHighlightItem { get; set; } = Color.Red;
+
+        public Color FontColorHighLightItem { get; set; } = Color.Green;
+
         public string Title
         {
             get => this.title.Text;
@@ -76,6 +84,17 @@ namespace SDIS37Stats.Controls.Type.Statistics
         }
 
         #region Public
+        public void ApplyTheme(Extra.Theme.ITheme theme)
+        {
+            this.BackColor = theme.OperationListView_BackgroundColorList();
+            this.ForeColor = theme.Form_FontColor();
+
+            this.panel.BackColor = theme.OperationListView_BackgroundColorList();
+            this.tableOperationDisplayed.BackColor = theme.OperationListView_BackgroundColorList();
+
+            this.title.ForeColor = theme.Form_FontColor();
+        }
+
         public void SetValue(List<Core.Statistics.Operation> operations)
         {
             this.timerAutoScroll.Stop();
