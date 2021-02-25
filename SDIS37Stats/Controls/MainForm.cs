@@ -49,6 +49,7 @@ namespace SDIS37Stats.Controls
             this.statistics.OnOperationPerHourUpdated += (c) => this.NbOperationPerHour.Value = c;
 
             // RecentOperationList
+            this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationList.FirehouseName = c;
             this.statistics.OnRecentOperationListUpdated += (c) =>
             {
                 var value = c.Select(t => t.Value).ToList();
