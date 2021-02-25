@@ -22,6 +22,8 @@ namespace SDIS37Stats.Extra.Theme
 
         public Color Graph_MainColor() => ColorPalette.white1;
 
+        public Color OperationListView_BackgroundColor() => ColorPalette.gray7;
+
         public Color OperationListView_BackgroundColorHighlightItem() => ColorPalette.yellow2;
 
         public Color OperationListView_BackgroundColorItem() => ColorPalette.gray5;

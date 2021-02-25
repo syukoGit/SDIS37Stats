@@ -86,6 +86,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.BackColor = theme.OperationListView_BackgroundColorList();
             this.ForeColor = theme.Form_FontColor();
 
+            this.tableLayoutPanel.BackColor = theme.OperationListView_BackgroundColor();
             this.panel.BackColor = theme.OperationListView_BackgroundColorList();
             this.tableOperationDisplayed.BackColor = theme.OperationListView_BackgroundColorList();
 

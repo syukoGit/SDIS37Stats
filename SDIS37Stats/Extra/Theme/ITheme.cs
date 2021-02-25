@@ -23,6 +23,7 @@
         #endregion
 
         #region OperationListView
+        Color OperationListView_BackgroundColor();
         Color OperationListView_BackgroundColorList();
         Color OperationListView_BackgroundColorItem();
         Color OperationListView_FontColorItem();
