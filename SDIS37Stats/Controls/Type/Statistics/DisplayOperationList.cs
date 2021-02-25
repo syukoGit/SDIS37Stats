@@ -77,9 +77,6 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             InitializeComponent();
 
-            this.panel.BackColor = MainForm.Instance.Settings.Theme.OperationListView_BackgroundColorList();
-            this.tableOperationDisplayed.BackColor = MainForm.Instance.Settings.Theme.OperationListView_BackgroundColorList();
-
             this.timerAutoScroll.Start();
         }
 
