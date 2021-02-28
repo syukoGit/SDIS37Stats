@@ -20,9 +20,9 @@ namespace SDIS37Stats.Extra.Theme
 
         public Color Graph_AxisColor() => ColorPalette.yellow1;
 
-        public Color Graph_BackgroundColor() => ColorPalette.gray6;
+        public Color Graph_BackgroundColor() => ColorPalette.gray7;
 
-        public Color Graph_BackgroundGraphColor() => ColorPalette.gray7;
+        public Color Graph_BackgroundGraphColor() => ColorPalette.gray6;
 
         public Color Graph_MainColor() => ColorPalette.white2;
 
@@ -34,7 +34,7 @@ namespace SDIS37Stats.Extra.Theme
 
         public Color OperationListView_BackgroundColorList() => ColorPalette.gray6;
 
-        public Color OperationListView_FontColorHighlightItem() => ColorPalette.yellow2;
+        public Color OperationListView_FontColorHighlightItem() => ColorPalette.gray7;
 
         public Color OperationListView_FontColorItem() => ColorPalette.white2;
 
