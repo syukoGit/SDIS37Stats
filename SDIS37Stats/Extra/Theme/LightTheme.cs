@@ -42,6 +42,10 @@
 
         public Color SettingsButton_DefaultBackgroundColor() => ColorPalette.transparent;
 
+        public Color SettingsForm_CheckBox_BackgroundColor() => ColorPalette.white3;
+
+        public Color SettingsForm_ComboBox_BackgroundColor() => ColorPalette.white3;
+
         public Color SevenSegment_DarkColor() => ColorPalette.white2;
 
         public Color SevenSegment_LightColor() => ColorPalette.gray4;

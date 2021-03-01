@@ -42,6 +42,10 @@ namespace SDIS37Stats.Extra.Theme
 
         public Color SettingsButton_DefaultBackgroundColor() => ColorPalette.transparent;
 
+        public Color SettingsForm_CheckBox_BackgroundColor() => ColorPalette.gray6;
+
+        public Color SettingsForm_ComboBox_BackgroundColor() => ColorPalette.gray6;
+
         public Color SevenSegment_DarkColor() => ColorPalette.gray6;
 
         public Color SevenSegment_LightColor() => ColorPalette.white2;

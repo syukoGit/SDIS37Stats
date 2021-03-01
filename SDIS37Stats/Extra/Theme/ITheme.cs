@@ -42,5 +42,10 @@
         Color FirefighterAvailabilityListView_BackgroundList();
         Color FirefighterAvailabilityListView_BackgroundColorItem();
         #endregion
+
+        #region SettingsForm
+        Color SettingsForm_ComboBox_BackgroundColor();
+        Color SettingsForm_CheckBox_BackgroundColor();
+        #endregion
     }
 }
