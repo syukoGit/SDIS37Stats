@@ -28,6 +28,9 @@ namespace SDIS37Stats.Controls.Type.Statistics
             set
             {
                 this.nbAvailibilitiesDisplayed = value;
+
+                var settings = MainForm.Instance == null || MainForm.Instance.Settings == null ? new Core.Syst.Setting() : MainForm.Instance.Settings;
+
                 if (this.nbAvailibilitiesDisplayed > this.tableLayoutDisplayFirefighterAvailability.Controls.Count)
                 {
                     int nbNewRow = this.nbAvailibilitiesDisplayed - this.tableLayoutDisplayFirefighterAvailability.Controls.Count;
@@ -37,8 +40,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
                         {
                             Visible = false,
                             Dock = DockStyle.Fill,
-                            BackColor = MainForm.Instance.Settings.Theme.FirefighterAvailabilityListView_BackgroundColorItem(),
-                            ForeColor = MainForm.Instance.Settings.Theme.Form_FontColor()
+                            BackColor = settings.Theme.FirefighterAvailabilityListView_BackgroundColorItem(),
+                            ForeColor = settings.Theme.Form_FontColor()
                         });
                     }
                 }
