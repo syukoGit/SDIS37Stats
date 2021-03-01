@@ -11,7 +11,7 @@ namespace SDIS37Stats.Controls
 
         private Core.Statistics.Statistics statistics;
 
-        private SettingsForm settingsForm = new SettingsForm();
+        private SettingsForm settingsForm;
 
         public static MainForm Instance { get; private set; }
 
@@ -86,6 +86,7 @@ namespace SDIS37Stats.Controls
             this.statistics.OnOperationPerHourUpdated += (c) => this.NbOperationPerHour.Value = c;
 
             // RecentOperationList
+            this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationList.FirehouseName = c;
             this.statistics.OnRecentOperationListUpdated += (c) =>
             {
                 var value = c.Select(t => t.Value).ToList();
@@ -155,7 +156,26 @@ namespace SDIS37Stats.Controls
 
         private void SettingsPicture_Click(object sender, EventArgs e)
         {
+            if (this.settingsForm != null)
+            {
+                this.settingsForm.Dispose();
+            }
+
+            this.settingsForm = new SettingsForm(this.Settings);
+            this.settingsForm.FormClosing += this.SettingsForm_FormClosing;
+
             this.settingsForm.Show(this);
+        }
+
+        private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.settingsForm.DialogResult == DialogResult.OK)
+            {
+                this.settingsForm.FormClosing -= this.SettingsForm_FormClosing;
+
+                this.Settings = this.settingsForm.Settings;
+                this.ApplyTheme();
+            }
         }
         #endregion
     }
