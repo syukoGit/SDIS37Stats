@@ -41,8 +41,15 @@
 
             this.comboBoxThemeType.BackColor = theme.SettingsForm_ComboBox_BackgroundColor();
 
-            this.checkBoxMuteSound.BackColor = theme.SettingsForm_CheckBox_BackgroundColor();
             this.checkBoxMuteSound.ForeColor = theme.Form_FontColor();
+
+            this.labelNbOperationOfDepartmentDisplayed.ForeColor = theme.Form_FontColor();
+            this.nbOperationOfDepartmentDisplayed.BackColor = theme.Form_BackgroundColorTextbox();
+            this.nbOperationOfDepartmentDisplayed.ForeColor = theme.Form_FontColor();
+
+            this.labelNbOperationOfUserFirehouseDisplayed.ForeColor = theme.Form_FontColor();
+            this.nbOperationOfUserFirehouseDisplayed.BackColor = theme.Form_BackgroundColorTextbox();
+            this.nbOperationOfUserFirehouseDisplayed.ForeColor = theme.Form_FontColor();
         }
 
         private void Init()
@@ -50,6 +57,9 @@
             this.comboBoxThemeType.SelectedValue = this.Settings.ThemeType;
 
             this.checkBoxMuteSound.Checked = !this.Settings.MuteSound;
+
+            this.nbOperationOfDepartmentDisplayed.Value = this.Settings.NbOperationOfDepartmentDisplayed;
+            this.nbOperationOfUserFirehouseDisplayed.Value = this.Settings.NbOperationOfUserFirehouseDisplayed;
 
             //Event connection
             this.comboBoxThemeType.SelectedIndexChanged += this.ComboBoxThemeType_SelectedIndexChanged;
@@ -78,6 +88,16 @@
         {
             this.Settings.MuteSound = !this.checkBoxMuteSound.Checked;
             this.checkBoxMuteSound.Text = this.checkBoxMuteSound.Checked ? "Son activé" : "Son désactivé";
+        }
+
+        private void NbOperationOfDepartmentDisplayed_ValueChanged(object sender, EventArgs e)
+        {
+            this.Settings.NbOperationOfDepartmentDisplayed = (int)this.nbOperationOfDepartmentDisplayed.Value;
+        }
+
+        private void NbOperationOfUserFirehouseDisplayed_ValueChanged(object sender, EventArgs e)
+        {
+            this.Settings.NbOperationOfUserFirehouseDisplayed = (int)this.nbOperationOfUserFirehouseDisplayed.Value;
         }
 
         private void ButtonOk_Click(object sender, EventArgs e)

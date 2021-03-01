@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SDIS37Stats.Core.Syst
+﻿namespace SDIS37Stats.Core.Syst
 {
     public class Setting
     {
@@ -16,9 +10,13 @@ namespace SDIS37Stats.Core.Syst
 
         public THEMETYPE ThemeType { get; set; } = THEMETYPE.Light;
 
-        public Extra.Theme.ITheme Theme { get; set; } = new Extra.Theme.DarkTheme();
+        public Extra.Theme.ITheme Theme { get; set; } = new Extra.Theme.LightTheme();
 
         public bool MuteSound { get; set; } = false;
+
+        public int NbOperationOfDepartmentDisplayed { get; set; } = 15;
+
+        public int NbOperationOfUserFirehouseDisplayed { get; set; } = 5;
 
         public Setting DeepCopy()
         {

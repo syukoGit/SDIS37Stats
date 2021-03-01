@@ -174,6 +174,11 @@ namespace SDIS37Stats.Controls
                 this.settingsForm.FormClosing -= this.SettingsForm_FormClosing;
 
                 this.Settings = this.settingsForm.Settings;
+
+                this.RecentOperationList.NbOperationDisplayed = this.Settings.NbOperationOfDepartmentDisplayed;
+
+                this.RecentOperationOfUserFirehouse.NbOperationDisplayed = this.Settings.NbOperationOfUserFirehouseDisplayed;
+
                 this.ApplyTheme();
             }
         }

@@ -35,6 +35,12 @@ namespace SDIS37Stats.Controls
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBoxOperationView = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelNbOperationOfDepartmentDisplayed = new System.Windows.Forms.Label();
+            this.labelNbOperationOfUserFirehouseDisplayed = new System.Windows.Forms.Label();
+            this.nbOperationOfDepartmentDisplayed = new System.Windows.Forms.NumericUpDown();
+            this.nbOperationOfUserFirehouseDisplayed = new System.Windows.Forms.NumericUpDown();
             this.groupBoxSound = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxMuteSound = new System.Windows.Forms.CheckBox();
@@ -44,6 +50,10 @@ namespace SDIS37Stats.Controls
             this.tableLayoutMain.SuspendLayout();
             this.tableLayoutBtnOkCancel.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBoxOperationView.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nbOperationOfDepartmentDisplayed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nbOperationOfUserFirehouseDisplayed)).BeginInit();
             this.groupBoxSound.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBoxThemeAndColor.SuspendLayout();
@@ -118,6 +128,7 @@ namespace SDIS37Stats.Controls
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.groupBoxOperationView);
             this.panel1.Controls.Add(this.groupBoxSound);
             this.panel1.Controls.Add(this.groupBoxThemeAndColor);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -126,6 +137,95 @@ namespace SDIS37Stats.Controls
             this.panel1.Padding = new System.Windows.Forms.Padding(3);
             this.panel1.Size = new System.Drawing.Size(519, 504);
             this.panel1.TabIndex = 2;
+            // 
+            // groupBoxOperationView
+            // 
+            this.groupBoxOperationView.AutoSize = true;
+            this.groupBoxOperationView.Controls.Add(this.tableLayoutPanel2);
+            this.groupBoxOperationView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxOperationView.Location = new System.Drawing.Point(3, 91);
+            this.groupBoxOperationView.Name = "groupBoxOperationView";
+            this.groupBoxOperationView.Size = new System.Drawing.Size(513, 71);
+            this.groupBoxOperationView.TabIndex = 2;
+            this.groupBoxOperationView.TabStop = false;
+            this.groupBoxOperationView.Text = "Affichage des interventions :";
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.AutoSize = true;
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.labelNbOperationOfDepartmentDisplayed, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelNbOperationOfUserFirehouseDisplayed, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nbOperationOfDepartmentDisplayed, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.nbOperationOfUserFirehouseDisplayed, 1, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(507, 52);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // labelNbOperationOfDepartmentDisplayed
+            // 
+            this.labelNbOperationOfDepartmentDisplayed.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelNbOperationOfDepartmentDisplayed.AutoSize = true;
+            this.labelNbOperationOfDepartmentDisplayed.Location = new System.Drawing.Point(133, 6);
+            this.labelNbOperationOfDepartmentDisplayed.Name = "labelNbOperationOfDepartmentDisplayed";
+            this.labelNbOperationOfDepartmentDisplayed.Size = new System.Drawing.Size(166, 13);
+            this.labelNbOperationOfDepartmentDisplayed.TabIndex = 0;
+            this.labelNbOperationOfDepartmentDisplayed.Text = "Nombre d\'intervention  à afficher :";
+            // 
+            // labelNbOperationOfUserFirehouseDisplayed
+            // 
+            this.labelNbOperationOfUserFirehouseDisplayed.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelNbOperationOfUserFirehouseDisplayed.AutoSize = true;
+            this.labelNbOperationOfUserFirehouseDisplayed.Location = new System.Drawing.Point(3, 32);
+            this.labelNbOperationOfUserFirehouseDisplayed.Name = "labelNbOperationOfUserFirehouseDisplayed";
+            this.labelNbOperationOfUserFirehouseDisplayed.Size = new System.Drawing.Size(296, 13);
+            this.labelNbOperationOfUserFirehouseDisplayed.TabIndex = 1;
+            this.labelNbOperationOfUserFirehouseDisplayed.Text = "Nombre d\'intervention de la caserne de l\'utilisateur à afficher :";
+            // 
+            // nbOperationOfDepartmentDisplayed
+            // 
+            this.nbOperationOfDepartmentDisplayed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.nbOperationOfDepartmentDisplayed.Location = new System.Drawing.Point(305, 3);
+            this.nbOperationOfDepartmentDisplayed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nbOperationOfDepartmentDisplayed.Name = "nbOperationOfDepartmentDisplayed";
+            this.nbOperationOfDepartmentDisplayed.Size = new System.Drawing.Size(199, 20);
+            this.nbOperationOfDepartmentDisplayed.TabIndex = 2;
+            this.nbOperationOfDepartmentDisplayed.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nbOperationOfDepartmentDisplayed.ValueChanged += new System.EventHandler(this.NbOperationOfDepartmentDisplayed_ValueChanged);
+            // 
+            // nbOperationOfUserFirehouseDisplayed
+            // 
+            this.nbOperationOfUserFirehouseDisplayed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.nbOperationOfUserFirehouseDisplayed.Location = new System.Drawing.Point(305, 29);
+            this.nbOperationOfUserFirehouseDisplayed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nbOperationOfUserFirehouseDisplayed.Name = "nbOperationOfUserFirehouseDisplayed";
+            this.nbOperationOfUserFirehouseDisplayed.Size = new System.Drawing.Size(199, 20);
+            this.nbOperationOfUserFirehouseDisplayed.TabIndex = 3;
+            this.nbOperationOfUserFirehouseDisplayed.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nbOperationOfUserFirehouseDisplayed.ValueChanged += new System.EventHandler(this.NbOperationOfUserFirehouseDisplayed_ValueChanged);
             // 
             // groupBoxSound
             // 
@@ -219,6 +319,12 @@ namespace SDIS37Stats.Controls
             this.tableLayoutBtnOkCancel.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBoxOperationView.ResumeLayout(false);
+            this.groupBoxOperationView.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nbOperationOfDepartmentDisplayed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nbOperationOfUserFirehouseDisplayed)).EndInit();
             this.groupBoxSound.ResumeLayout(false);
             this.groupBoxSound.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -244,5 +350,11 @@ namespace SDIS37Stats.Controls
         private System.Windows.Forms.Label labelThemeType;
         private System.Windows.Forms.CheckBox checkBoxMuteSound;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.GroupBox groupBoxOperationView;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label labelNbOperationOfDepartmentDisplayed;
+        private System.Windows.Forms.Label labelNbOperationOfUserFirehouseDisplayed;
+        private System.Windows.Forms.NumericUpDown nbOperationOfDepartmentDisplayed;
+        private System.Windows.Forms.NumericUpDown nbOperationOfUserFirehouseDisplayed;
     }
 }
