@@ -47,9 +47,9 @@
 
         private void Init()
         {
-            this.comboBoxThemeType.SelectedItem = SettingsForm.themeTypeList[this.Settings.ThemeType];
+            this.comboBoxThemeType.SelectedValue = this.Settings.ThemeType;
 
-            this.checkBoxMuteSound.Checked = this.Settings.MuteSound;
+            this.checkBoxMuteSound.Checked = !this.Settings.MuteSound;
 
             //Event connection
             this.comboBoxThemeType.SelectedIndexChanged += this.ComboBoxThemeType_SelectedIndexChanged;
