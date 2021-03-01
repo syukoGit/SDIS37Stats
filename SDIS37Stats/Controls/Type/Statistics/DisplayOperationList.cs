@@ -35,9 +35,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
                         this.tableOperationDisplayed.Controls.Add(new DisplayOperation()
                         {
                             Visible = false,
-                            Dock = DockStyle.Fill,
-                            BackColor = settings.Theme.OperationListView_BackgroundColorItem(),
-                            ForeColor = settings.Theme.OperationListView_FontColorItem()
+                            Dock = DockStyle.Fill
                         });
                     }
                 }
@@ -94,6 +92,13 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.tableOperationDisplayed.BackColor = theme.OperationListView_BackgroundColorList();
 
             this.title.ForeColor = theme.Form_FontColor();
+
+            foreach (Control item in this.tableOperationDisplayed.Controls)
+            {
+
+                item.BackColor = theme.OperationListView_BackgroundColorItem();
+                item.ForeColor = theme.OperationListView_FontColorItem();
+            }
         }
 
         public void SetValue(List<Core.Statistics.Operation> operations)
