@@ -29,8 +29,6 @@ namespace SDIS37Stats.Controls.Type.Statistics
             {
                 this.nbAvailibilitiesDisplayed = value;
 
-                var settings = MainForm.Instance == null || MainForm.Instance.Settings == null ? new Core.Syst.Setting() : MainForm.Instance.Settings;
-
                 if (this.nbAvailibilitiesDisplayed > this.tableLayoutDisplayFirefighterAvailability.Controls.Count)
                 {
                     int nbNewRow = this.nbAvailibilitiesDisplayed - this.tableLayoutDisplayFirefighterAvailability.Controls.Count;
@@ -39,9 +37,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
                         this.tableLayoutDisplayFirefighterAvailability.Controls.Add(new DisplayFirefighterAvailability()
                         {
                             Visible = false,
-                            Dock = DockStyle.Fill,
-                            BackColor = settings.Theme.FirefighterAvailabilityListView_BackgroundColorItem(),
-                            ForeColor = settings.Theme.Form_FontColor()
+                            Dock = DockStyle.Fill
                         });
                     }
                 }
@@ -81,6 +77,12 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
             this.panel.BackColor = theme.FirefighterAvailabilityListView_BackgroundList();
             this.tableLayoutDisplayFirefighterAvailability.BackColor = theme.FirefighterAvailabilityListView_BackgroundList();
+
+            foreach (Control item in this.tableLayoutDisplayFirefighterAvailability.Controls)
+            {
+                item.BackColor = theme.FirefighterAvailabilityListView_BackgroundColorItem();
+                item.ForeColor = theme.Form_FontColor();
+            }
         }
 
         public void SetValue(List<Core.Statistics.FirefighterAvailability> firefighters)
