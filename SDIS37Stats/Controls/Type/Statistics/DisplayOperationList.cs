@@ -25,8 +25,6 @@ namespace SDIS37Stats.Controls.Type.Statistics
             {
                 this.nbOperationDisplayed = value;
 
-                var settings = MainForm.Instance == null || MainForm.Instance.Settings == null ? new Core.Syst.Setting() : MainForm.Instance.Settings;
-
                 if (this.nbOperationDisplayed > this.tableOperationDisplayed.Controls.Count)
                 {
                     int nbNewRow = this.nbOperationDisplayed - this.tableOperationDisplayed.Controls.Count;
