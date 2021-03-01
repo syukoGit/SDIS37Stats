@@ -29,85 +29,50 @@ namespace SDIS37Stats.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.comboBoxThemeType = new System.Windows.Forms.ComboBox();
             this.tableLayoutMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutBtnOkCancel = new System.Windows.Forms.TableLayoutPanel();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.groupBoxSound = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxMuteSound = new System.Windows.Forms.CheckBox();
-            this.flowLayoutSound = new System.Windows.Forms.FlowLayoutPanel();
-            this.tabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.groupBoxThemeAndColor = new System.Windows.Forms.GroupBox();
+            this.tableLayoutTheme = new System.Windows.Forms.TableLayoutPanel();
+            this.labelThemeType = new System.Windows.Forms.Label();
             this.tableLayoutMain.SuspendLayout();
             this.tableLayoutBtnOkCancel.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.groupBoxSound.SuspendLayout();
-            this.flowLayoutSound.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.groupBoxThemeAndColor.SuspendLayout();
+            this.tableLayoutTheme.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl
+            // comboBoxThemeType
             // 
-            this.tabControl.Controls.Add(this.tabPage1);
-            this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Location = new System.Drawing.Point(3, 3);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(399, 389);
-            this.tabControl.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.tableLayoutPanel1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(391, 363);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "General";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(369, 578);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.groupBoxSound, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(385, 357);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.comboBoxThemeType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxThemeType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxThemeType.FormattingEnabled = true;
+            this.comboBoxThemeType.Location = new System.Drawing.Point(55, 3);
+            this.comboBoxThemeType.Name = "comboBoxThemeType";
+            this.comboBoxThemeType.Size = new System.Drawing.Size(449, 21);
+            this.comboBoxThemeType.TabIndex = 0;
             // 
             // tableLayoutMain
             // 
             this.tableLayoutMain.ColumnCount = 1;
             this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutMain.Controls.Add(this.tabControl, 0, 0);
             this.tableLayoutMain.Controls.Add(this.tableLayoutBtnOkCancel, 0, 1);
+            this.tableLayoutMain.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutMain.Name = "tableLayoutMain";
             this.tableLayoutMain.RowCount = 2;
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutMain.Size = new System.Drawing.Size(405, 424);
+            this.tableLayoutMain.Size = new System.Drawing.Size(525, 539);
             this.tableLayoutMain.TabIndex = 1;
             // 
             // tableLayoutBtnOkCancel
@@ -120,104 +85,164 @@ namespace SDIS37Stats.Controls
             this.tableLayoutBtnOkCancel.Controls.Add(this.buttonOk, 1, 0);
             this.tableLayoutBtnOkCancel.Controls.Add(this.buttonCancel, 0, 0);
             this.tableLayoutBtnOkCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutBtnOkCancel.Location = new System.Drawing.Point(0, 395);
+            this.tableLayoutBtnOkCancel.Location = new System.Drawing.Point(0, 510);
             this.tableLayoutBtnOkCancel.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutBtnOkCancel.Name = "tableLayoutBtnOkCancel";
             this.tableLayoutBtnOkCancel.RowCount = 1;
             this.tableLayoutBtnOkCancel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutBtnOkCancel.Size = new System.Drawing.Size(405, 29);
+            this.tableLayoutBtnOkCancel.Size = new System.Drawing.Size(525, 29);
             this.tableLayoutBtnOkCancel.TabIndex = 1;
             // 
             // buttonOk
             // 
             this.buttonOk.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.buttonOk.Location = new System.Drawing.Point(266, 3);
+            this.buttonOk.Location = new System.Drawing.Point(356, 3);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 0;
             this.buttonOk.Text = "&Valider";
             this.buttonOk.UseVisualStyleBackColor = true;
+            this.buttonOk.Click += new System.EventHandler(this.ButtonOk_Click);
             // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.buttonCancel.Location = new System.Drawing.Point(63, 3);
+            this.buttonCancel.Location = new System.Drawing.Point(93, 3);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 1;
             this.buttonCancel.Text = "&Annuler";
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.groupBoxSound);
+            this.panel1.Controls.Add(this.groupBoxThemeAndColor);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(3);
+            this.panel1.Size = new System.Drawing.Size(519, 504);
+            this.panel1.TabIndex = 2;
             // 
             // groupBoxSound
             // 
             this.groupBoxSound.AutoSize = true;
-            this.groupBoxSound.Controls.Add(this.flowLayoutSound);
-            this.groupBoxSound.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxSound.Location = new System.Drawing.Point(3, 3);
+            this.groupBoxSound.Controls.Add(this.tableLayoutPanel1);
+            this.groupBoxSound.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxSound.Location = new System.Drawing.Point(3, 49);
             this.groupBoxSound.Name = "groupBoxSound";
-            this.groupBoxSound.Size = new System.Drawing.Size(379, 42);
-            this.groupBoxSound.TabIndex = 0;
+            this.groupBoxSound.Size = new System.Drawing.Size(513, 42);
+            this.groupBoxSound.TabIndex = 1;
             this.groupBoxSound.TabStop = false;
-            this.groupBoxSound.Text = "Son de l\'application";
+            this.groupBoxSound.Text = "Sons";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.checkBoxMuteSound, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(507, 23);
+            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // checkBoxMuteSound
             // 
+            this.checkBoxMuteSound.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.checkBoxMuteSound.AutoSize = true;
             this.checkBoxMuteSound.Location = new System.Drawing.Point(3, 3);
             this.checkBoxMuteSound.Name = "checkBoxMuteSound";
-            this.checkBoxMuteSound.Size = new System.Drawing.Size(146, 17);
+            this.checkBoxMuteSound.Size = new System.Drawing.Size(90, 17);
             this.checkBoxMuteSound.TabIndex = 0;
-            this.checkBoxMuteSound.Text = "Activer/Désactiver le son";
+            this.checkBoxMuteSound.Text = "Activer le son";
+            this.checkBoxMuteSound.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxMuteSound.UseVisualStyleBackColor = true;
+            this.checkBoxMuteSound.CheckedChanged += new System.EventHandler(this.CheckBoxMuteSound_CheckedChanged);
             // 
-            // flowLayoutSound
+            // groupBoxThemeAndColor
             // 
-            this.flowLayoutSound.AutoSize = true;
-            this.flowLayoutSound.Controls.Add(this.checkBoxMuteSound);
-            this.flowLayoutSound.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutSound.Location = new System.Drawing.Point(3, 16);
-            this.flowLayoutSound.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutSound.Name = "flowLayoutSound";
-            this.flowLayoutSound.Size = new System.Drawing.Size(373, 23);
-            this.flowLayoutSound.TabIndex = 0;
+            this.groupBoxThemeAndColor.AutoSize = true;
+            this.groupBoxThemeAndColor.Controls.Add(this.tableLayoutTheme);
+            this.groupBoxThemeAndColor.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxThemeAndColor.Location = new System.Drawing.Point(3, 3);
+            this.groupBoxThemeAndColor.Name = "groupBoxThemeAndColor";
+            this.groupBoxThemeAndColor.Size = new System.Drawing.Size(513, 46);
+            this.groupBoxThemeAndColor.TabIndex = 0;
+            this.groupBoxThemeAndColor.TabStop = false;
+            this.groupBoxThemeAndColor.Text = "Thèmes et couleurs";
+            // 
+            // tableLayoutTheme
+            // 
+            this.tableLayoutTheme.AutoSize = true;
+            this.tableLayoutTheme.ColumnCount = 2;
+            this.tableLayoutTheme.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutTheme.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutTheme.Controls.Add(this.comboBoxThemeType, 1, 0);
+            this.tableLayoutTheme.Controls.Add(this.labelThemeType, 0, 0);
+            this.tableLayoutTheme.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutTheme.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutTheme.Name = "tableLayoutTheme";
+            this.tableLayoutTheme.RowCount = 1;
+            this.tableLayoutTheme.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutTheme.Size = new System.Drawing.Size(507, 27);
+            this.tableLayoutTheme.TabIndex = 0;
+            // 
+            // labelThemeType
+            // 
+            this.labelThemeType.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelThemeType.AutoSize = true;
+            this.labelThemeType.Location = new System.Drawing.Point(3, 7);
+            this.labelThemeType.Name = "labelThemeType";
+            this.labelThemeType.Size = new System.Drawing.Size(46, 13);
+            this.labelThemeType.TabIndex = 0;
+            this.labelThemeType.Text = "Thème :";
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(405, 424);
+            this.ClientSize = new System.Drawing.Size(525, 539);
             this.Controls.Add(this.tableLayoutMain);
             this.Name = "SettingsForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "SettingsForm";
-            this.tabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.Text = "Paramètres";
             this.tableLayoutMain.ResumeLayout(false);
             this.tableLayoutMain.PerformLayout();
             this.tableLayoutBtnOkCancel.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBoxSound.ResumeLayout(false);
             this.groupBoxSound.PerformLayout();
-            this.flowLayoutSound.ResumeLayout(false);
-            this.flowLayoutSound.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.groupBoxThemeAndColor.ResumeLayout(false);
+            this.groupBoxThemeAndColor.PerformLayout();
+            this.tableLayoutTheme.ResumeLayout(false);
+            this.tableLayoutTheme.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.GroupBox groupBoxSound;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutSound;
-        private System.Windows.Forms.CheckBox checkBoxMuteSound;
         private System.Windows.Forms.TableLayoutPanel tableLayoutMain;
         private System.Windows.Forms.TableLayoutPanel tableLayoutBtnOkCancel;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.ComboBox comboBoxThemeType;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.GroupBox groupBoxSound;
+        private System.Windows.Forms.GroupBox groupBoxThemeAndColor;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutTheme;
+        private System.Windows.Forms.Label labelThemeType;
+        private System.Windows.Forms.CheckBox checkBoxMuteSound;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }
