@@ -28,6 +28,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             set
             {
                 this.nbAvailibilitiesDisplayed = value;
+
                 if (this.nbAvailibilitiesDisplayed > this.tableLayoutDisplayFirefighterAvailability.Controls.Count)
                 {
                     int nbNewRow = this.nbAvailibilitiesDisplayed - this.tableLayoutDisplayFirefighterAvailability.Controls.Count;
@@ -36,9 +37,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
                         this.tableLayoutDisplayFirefighterAvailability.Controls.Add(new DisplayFirefighterAvailability()
                         {
                             Visible = false,
-                            Dock = DockStyle.Fill,
-                            BackColor = Theme.DisplayFirefighterAvailabilityList.BackgroundColorItem,
-                            ForeColor = Theme.DisplayFirefighterAvailabilityList.FontColorItem
+                            Dock = DockStyle.Fill
                         });
                     }
                 }
@@ -63,13 +62,29 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             InitializeComponent();
 
-            this.panel.BackColor = Theme.DisplayFirefighterAvailabilityList.BackgroundList;
-            this.tableLayoutDisplayFirefighterAvailability.BackColor = Theme.DisplayOperationList.BackgroundList;
-
             this.timerAutoScroll.Start();
         }
 
         #region Public
+        public void ApplyTheme(Extra.Theme.ITheme theme)
+        {
+            this.BackColor = theme.Form_BackgroundColor();
+            this.ForeColor = theme.Form_FontColor();
+
+            this.tableLayoutMain.BackColor = theme.FirefighterAvailabilityListView_BackgroundColor();
+
+            this.title.ForeColor = theme.Form_FontColor();
+
+            this.panel.BackColor = theme.FirefighterAvailabilityListView_BackgroundList();
+            this.tableLayoutDisplayFirefighterAvailability.BackColor = theme.FirefighterAvailabilityListView_BackgroundList();
+
+            foreach (Control item in this.tableLayoutDisplayFirefighterAvailability.Controls)
+            {
+                item.BackColor = theme.FirefighterAvailabilityListView_BackgroundColorItem();
+                item.ForeColor = theme.Form_FontColor();
+            }
+        }
+
         public void SetValue(List<Core.Statistics.FirefighterAvailability> firefighters)
         {
             this.timerAutoScroll.Stop();

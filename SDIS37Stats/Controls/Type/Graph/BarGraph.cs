@@ -46,13 +46,13 @@ namespace SDIS37Stats.Controls.Type.Graph
             }
         }
 
-        public Color BackGroundColor { get; set; } = Theme.Graph.BackgroundColor;
+        public Color BackGroundGraphColor { get; set; } = Color.White;
 
-        public Color AxisColor { get; set; } = Theme.Graph.AxisColor;
+        public Color AxisColor { get; set; } = Color.Yellow;
 
-        public Color MainBarColor { get; set; } = Theme.Graph.MainBarColor;
+        public Color MainBarColor { get; set; } = Color.Blue;
 
-        public Color ValueColor { get; set; } = Theme.Default.FontColor;
+        public Color ValueColor { get; set; } = Color.Red;
 
         #region Event
         private void Graph_Resize(object sender, EventArgs e)
@@ -62,7 +62,7 @@ namespace SDIS37Stats.Controls.Type.Graph
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            e.Graphics.Clear(this.BackGroundColor);
+            e.Graphics.Clear(this.BackGroundGraphColor);
         }
 
         protected override void OnPaddingChanged(EventArgs e)

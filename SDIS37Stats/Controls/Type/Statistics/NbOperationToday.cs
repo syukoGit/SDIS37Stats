@@ -29,5 +29,17 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             InitializeComponent();
         }
+
+        public void ApplyTheme(Extra.Theme.ITheme theme)
+        {
+            this.BackColor = theme.Form_BackgroundColor();
+            this.ForeColor = theme.Form_FontColor();
+
+            this.fix_label.ForeColor = theme.Form_FontColor();
+
+            this.sevenSegmentArray1.ColorBackground = theme.Form_BackgroundColor();
+            this.sevenSegmentArray1.ColorDark = theme.SevenSegment_DarkColor();
+            this.sevenSegmentArray1.ColorLight = theme.SevenSegment_LightColor();
+        }
     }
 }

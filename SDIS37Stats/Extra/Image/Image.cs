@@ -9,6 +9,10 @@ namespace SDIS37Stats.Extra.Image
 {
     public static class Image
     {
+        #region MainForm
+        public static Bitmap SettingsPicture => new Bitmap(@"Extra\Image\PNG\Gear.png");
+        #endregion
+
         #region Availabilities
         public static Bitmap NotAvailableImage => new Bitmap(@"Extra\Image\PNG\BlackCircle.png");
 
