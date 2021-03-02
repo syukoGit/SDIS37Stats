@@ -175,6 +175,8 @@ namespace SDIS37Stats.Controls
 
                 this.Settings = this.settingsForm.Settings;
 
+                Extra.Sound.Sound.Mute = this.Settings.MuteSound;
+
                 this.RecentOperationList.NbOperationDisplayed = this.Settings.NbOperationOfDepartmentDisplayed;
 
                 this.RecentOperationOfUserFirehouse.NbOperationDisplayed = this.Settings.NbOperationOfUserFirehouseDisplayed;
