@@ -18,6 +18,8 @@
 
         public int NbOperationOfUserFirehouseDisplayed { get; set; } = 5;
 
+        public int NbFirefighterAvailabilityDisplayed { get; set; } = 100;
+
         public Setting DeepCopy()
         {
             var copy = (Setting)this.MemberwiseClone();

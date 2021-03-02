@@ -47,6 +47,10 @@ namespace SDIS37Stats.Controls
             this.groupBoxThemeAndColor = new System.Windows.Forms.GroupBox();
             this.tableLayoutTheme = new System.Windows.Forms.TableLayoutPanel();
             this.labelThemeType = new System.Windows.Forms.Label();
+            this.groupBoxFirefighterAvailability = new System.Windows.Forms.GroupBox();
+            this.tableLayoutFirefighterAvailability = new System.Windows.Forms.TableLayoutPanel();
+            this.labelNbFirefighterAvailabilityDisplayed = new System.Windows.Forms.Label();
+            this.nbFirefighterAvailabilityDisplayed = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutMain.SuspendLayout();
             this.tableLayoutBtnOkCancel.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -58,6 +62,9 @@ namespace SDIS37Stats.Controls
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBoxThemeAndColor.SuspendLayout();
             this.tableLayoutTheme.SuspendLayout();
+            this.groupBoxFirefighterAvailability.SuspendLayout();
+            this.tableLayoutFirefighterAvailability.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nbFirefighterAvailabilityDisplayed)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBoxThemeType
@@ -128,6 +135,7 @@ namespace SDIS37Stats.Controls
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.groupBoxFirefighterAvailability);
             this.panel1.Controls.Add(this.groupBoxOperationView);
             this.panel1.Controls.Add(this.groupBoxSound);
             this.panel1.Controls.Add(this.groupBoxThemeAndColor);
@@ -304,6 +312,68 @@ namespace SDIS37Stats.Controls
             this.labelThemeType.TabIndex = 0;
             this.labelThemeType.Text = "Thème :";
             // 
+            // groupBoxFirefighterAvailability
+            // 
+            this.groupBoxFirefighterAvailability.AutoSize = true;
+            this.groupBoxFirefighterAvailability.Controls.Add(this.tableLayoutFirefighterAvailability);
+            this.groupBoxFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxFirefighterAvailability.Location = new System.Drawing.Point(3, 162);
+            this.groupBoxFirefighterAvailability.Name = "groupBoxFirefighterAvailability";
+            this.groupBoxFirefighterAvailability.Size = new System.Drawing.Size(513, 45);
+            this.groupBoxFirefighterAvailability.TabIndex = 3;
+            this.groupBoxFirefighterAvailability.TabStop = false;
+            this.groupBoxFirefighterAvailability.Text = "Affichage des disponibilités :";
+            // 
+            // tableLayoutFirefighterAvailability
+            // 
+            this.tableLayoutFirefighterAvailability.AutoSize = true;
+            this.tableLayoutFirefighterAvailability.ColumnCount = 2;
+            this.tableLayoutFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutFirefighterAvailability.Controls.Add(this.labelNbFirefighterAvailabilityDisplayed, 0, 0);
+            this.tableLayoutFirefighterAvailability.Controls.Add(this.nbFirefighterAvailabilityDisplayed, 1, 0);
+            this.tableLayoutFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutFirefighterAvailability.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutFirefighterAvailability.Name = "tableLayoutFirefighterAvailability";
+            this.tableLayoutFirefighterAvailability.RowCount = 1;
+            this.tableLayoutFirefighterAvailability.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutFirefighterAvailability.Size = new System.Drawing.Size(507, 26);
+            this.tableLayoutFirefighterAvailability.TabIndex = 0;
+            // 
+            // labelNbFirefighterAvailabilityDisplayed
+            // 
+            this.labelNbFirefighterAvailabilityDisplayed.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelNbFirefighterAvailabilityDisplayed.AutoSize = true;
+            this.labelNbFirefighterAvailabilityDisplayed.Location = new System.Drawing.Point(3, 6);
+            this.labelNbFirefighterAvailabilityDisplayed.Name = "labelNbFirefighterAvailabilityDisplayed";
+            this.labelNbFirefighterAvailabilityDisplayed.Size = new System.Drawing.Size(169, 13);
+            this.labelNbFirefighterAvailabilityDisplayed.TabIndex = 0;
+            this.labelNbFirefighterAvailabilityDisplayed.Text = "Nombre de disponibilité à afficher :";
+            // 
+            // nbFirefighterAvailabilityDisplayed
+            // 
+            this.nbFirefighterAvailabilityDisplayed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.nbFirefighterAvailabilityDisplayed.Location = new System.Drawing.Point(178, 3);
+            this.nbFirefighterAvailabilityDisplayed.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nbFirefighterAvailabilityDisplayed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nbFirefighterAvailabilityDisplayed.Name = "nbFirefighterAvailabilityDisplayed";
+            this.nbFirefighterAvailabilityDisplayed.Size = new System.Drawing.Size(326, 20);
+            this.nbFirefighterAvailabilityDisplayed.TabIndex = 1;
+            this.nbFirefighterAvailabilityDisplayed.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nbFirefighterAvailabilityDisplayed.ValueChanged += new System.EventHandler(this.NbFirefighterAvailabilityDisplayed_ValueChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -333,6 +403,11 @@ namespace SDIS37Stats.Controls
             this.groupBoxThemeAndColor.PerformLayout();
             this.tableLayoutTheme.ResumeLayout(false);
             this.tableLayoutTheme.PerformLayout();
+            this.groupBoxFirefighterAvailability.ResumeLayout(false);
+            this.groupBoxFirefighterAvailability.PerformLayout();
+            this.tableLayoutFirefighterAvailability.ResumeLayout(false);
+            this.tableLayoutFirefighterAvailability.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nbFirefighterAvailabilityDisplayed)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -356,5 +431,9 @@ namespace SDIS37Stats.Controls
         private System.Windows.Forms.Label labelNbOperationOfUserFirehouseDisplayed;
         private System.Windows.Forms.NumericUpDown nbOperationOfDepartmentDisplayed;
         private System.Windows.Forms.NumericUpDown nbOperationOfUserFirehouseDisplayed;
+        private System.Windows.Forms.GroupBox groupBoxFirefighterAvailability;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutFirefighterAvailability;
+        private System.Windows.Forms.Label labelNbFirefighterAvailabilityDisplayed;
+        private System.Windows.Forms.NumericUpDown nbFirefighterAvailabilityDisplayed;
     }
 }

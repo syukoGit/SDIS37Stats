@@ -181,6 +181,8 @@ namespace SDIS37Stats.Controls
 
                 this.RecentOperationOfUserFirehouse.NbOperationDisplayed = this.Settings.NbOperationOfUserFirehouseDisplayed;
 
+                this.displayFirefighterAvailabilityList.NbAvailibilitiesDisplayed = this.Settings.NbFirefighterAvailabilityDisplayed;
+
                 this.ApplyTheme();
             }
         }

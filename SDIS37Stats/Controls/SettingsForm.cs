@@ -50,6 +50,10 @@
             this.labelNbOperationOfUserFirehouseDisplayed.ForeColor = theme.Form_FontColor();
             this.nbOperationOfUserFirehouseDisplayed.BackColor = theme.Form_BackgroundColorTextbox();
             this.nbOperationOfUserFirehouseDisplayed.ForeColor = theme.Form_FontColor();
+
+            this.labelNbFirefighterAvailabilityDisplayed.ForeColor = theme.Form_FontColor();
+            this.nbFirefighterAvailabilityDisplayed.BackColor = theme.Form_BackgroundColorTextbox();
+            this.nbFirefighterAvailabilityDisplayed.ForeColor = theme.Form_FontColor();
         }
 
         private void Init()
@@ -60,6 +64,8 @@
 
             this.nbOperationOfDepartmentDisplayed.Value = this.Settings.NbOperationOfDepartmentDisplayed;
             this.nbOperationOfUserFirehouseDisplayed.Value = this.Settings.NbOperationOfUserFirehouseDisplayed;
+
+            this.nbFirefighterAvailabilityDisplayed.Value = this.Settings.NbFirefighterAvailabilityDisplayed;
 
             //Event connection
             this.comboBoxThemeType.SelectedIndexChanged += this.ComboBoxThemeType_SelectedIndexChanged;
@@ -98,6 +104,11 @@
         private void NbOperationOfUserFirehouseDisplayed_ValueChanged(object sender, EventArgs e)
         {
             this.Settings.NbOperationOfUserFirehouseDisplayed = (int)this.nbOperationOfUserFirehouseDisplayed.Value;
+        }
+
+        private void NbFirefighterAvailabilityDisplayed_ValueChanged(object sender, EventArgs e)
+        {
+            this.Settings.NbFirefighterAvailabilityDisplayed = (int)this.nbFirefighterAvailabilityDisplayed.Value;
         }
 
         private void ButtonOk_Click(object sender, EventArgs e)
