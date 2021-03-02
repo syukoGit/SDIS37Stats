@@ -35,6 +35,10 @@ namespace SDIS37Stats.Controls
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBoxFirefighterAvailability = new System.Windows.Forms.GroupBox();
+            this.tableLayoutFirefighterAvailability = new System.Windows.Forms.TableLayoutPanel();
+            this.labelNbFirefighterAvailabilityDisplayed = new System.Windows.Forms.Label();
+            this.nbFirefighterAvailabilityDisplayed = new System.Windows.Forms.NumericUpDown();
             this.groupBoxOperationView = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.labelNbOperationOfDepartmentDisplayed = new System.Windows.Forms.Label();
@@ -47,13 +51,12 @@ namespace SDIS37Stats.Controls
             this.groupBoxThemeAndColor = new System.Windows.Forms.GroupBox();
             this.tableLayoutTheme = new System.Windows.Forms.TableLayoutPanel();
             this.labelThemeType = new System.Windows.Forms.Label();
-            this.groupBoxFirefighterAvailability = new System.Windows.Forms.GroupBox();
-            this.tableLayoutFirefighterAvailability = new System.Windows.Forms.TableLayoutPanel();
-            this.labelNbFirefighterAvailabilityDisplayed = new System.Windows.Forms.Label();
-            this.nbFirefighterAvailabilityDisplayed = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutMain.SuspendLayout();
             this.tableLayoutBtnOkCancel.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBoxFirefighterAvailability.SuspendLayout();
+            this.tableLayoutFirefighterAvailability.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nbFirefighterAvailabilityDisplayed)).BeginInit();
             this.groupBoxOperationView.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nbOperationOfDepartmentDisplayed)).BeginInit();
@@ -62,9 +65,6 @@ namespace SDIS37Stats.Controls
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBoxThemeAndColor.SuspendLayout();
             this.tableLayoutTheme.SuspendLayout();
-            this.groupBoxFirefighterAvailability.SuspendLayout();
-            this.tableLayoutFirefighterAvailability.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nbFirefighterAvailabilityDisplayed)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBoxThemeType
@@ -145,6 +145,68 @@ namespace SDIS37Stats.Controls
             this.panel1.Padding = new System.Windows.Forms.Padding(3);
             this.panel1.Size = new System.Drawing.Size(519, 504);
             this.panel1.TabIndex = 2;
+            // 
+            // groupBoxFirefighterAvailability
+            // 
+            this.groupBoxFirefighterAvailability.AutoSize = true;
+            this.groupBoxFirefighterAvailability.Controls.Add(this.tableLayoutFirefighterAvailability);
+            this.groupBoxFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxFirefighterAvailability.Location = new System.Drawing.Point(3, 162);
+            this.groupBoxFirefighterAvailability.Name = "groupBoxFirefighterAvailability";
+            this.groupBoxFirefighterAvailability.Size = new System.Drawing.Size(513, 45);
+            this.groupBoxFirefighterAvailability.TabIndex = 3;
+            this.groupBoxFirefighterAvailability.TabStop = false;
+            this.groupBoxFirefighterAvailability.Text = "Affichage des disponibilités :";
+            // 
+            // tableLayoutFirefighterAvailability
+            // 
+            this.tableLayoutFirefighterAvailability.AutoSize = true;
+            this.tableLayoutFirefighterAvailability.ColumnCount = 2;
+            this.tableLayoutFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutFirefighterAvailability.Controls.Add(this.labelNbFirefighterAvailabilityDisplayed, 0, 0);
+            this.tableLayoutFirefighterAvailability.Controls.Add(this.nbFirefighterAvailabilityDisplayed, 1, 0);
+            this.tableLayoutFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutFirefighterAvailability.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutFirefighterAvailability.Name = "tableLayoutFirefighterAvailability";
+            this.tableLayoutFirefighterAvailability.RowCount = 1;
+            this.tableLayoutFirefighterAvailability.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutFirefighterAvailability.Size = new System.Drawing.Size(507, 26);
+            this.tableLayoutFirefighterAvailability.TabIndex = 0;
+            // 
+            // labelNbFirefighterAvailabilityDisplayed
+            // 
+            this.labelNbFirefighterAvailabilityDisplayed.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelNbFirefighterAvailabilityDisplayed.AutoSize = true;
+            this.labelNbFirefighterAvailabilityDisplayed.Location = new System.Drawing.Point(3, 6);
+            this.labelNbFirefighterAvailabilityDisplayed.Name = "labelNbFirefighterAvailabilityDisplayed";
+            this.labelNbFirefighterAvailabilityDisplayed.Size = new System.Drawing.Size(169, 13);
+            this.labelNbFirefighterAvailabilityDisplayed.TabIndex = 0;
+            this.labelNbFirefighterAvailabilityDisplayed.Text = "Nombre de disponibilité à afficher :";
+            // 
+            // nbFirefighterAvailabilityDisplayed
+            // 
+            this.nbFirefighterAvailabilityDisplayed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.nbFirefighterAvailabilityDisplayed.Location = new System.Drawing.Point(178, 3);
+            this.nbFirefighterAvailabilityDisplayed.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nbFirefighterAvailabilityDisplayed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nbFirefighterAvailabilityDisplayed.Name = "nbFirefighterAvailabilityDisplayed";
+            this.nbFirefighterAvailabilityDisplayed.Size = new System.Drawing.Size(326, 20);
+            this.nbFirefighterAvailabilityDisplayed.TabIndex = 1;
+            this.nbFirefighterAvailabilityDisplayed.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nbFirefighterAvailabilityDisplayed.ValueChanged += new System.EventHandler(this.NbFirefighterAvailabilityDisplayed_ValueChanged);
             // 
             // groupBoxOperationView
             // 
@@ -312,68 +374,6 @@ namespace SDIS37Stats.Controls
             this.labelThemeType.TabIndex = 0;
             this.labelThemeType.Text = "Thème :";
             // 
-            // groupBoxFirefighterAvailability
-            // 
-            this.groupBoxFirefighterAvailability.AutoSize = true;
-            this.groupBoxFirefighterAvailability.Controls.Add(this.tableLayoutFirefighterAvailability);
-            this.groupBoxFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBoxFirefighterAvailability.Location = new System.Drawing.Point(3, 162);
-            this.groupBoxFirefighterAvailability.Name = "groupBoxFirefighterAvailability";
-            this.groupBoxFirefighterAvailability.Size = new System.Drawing.Size(513, 45);
-            this.groupBoxFirefighterAvailability.TabIndex = 3;
-            this.groupBoxFirefighterAvailability.TabStop = false;
-            this.groupBoxFirefighterAvailability.Text = "Affichage des disponibilités :";
-            // 
-            // tableLayoutFirefighterAvailability
-            // 
-            this.tableLayoutFirefighterAvailability.AutoSize = true;
-            this.tableLayoutFirefighterAvailability.ColumnCount = 2;
-            this.tableLayoutFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutFirefighterAvailability.Controls.Add(this.labelNbFirefighterAvailabilityDisplayed, 0, 0);
-            this.tableLayoutFirefighterAvailability.Controls.Add(this.nbFirefighterAvailabilityDisplayed, 1, 0);
-            this.tableLayoutFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutFirefighterAvailability.Location = new System.Drawing.Point(3, 16);
-            this.tableLayoutFirefighterAvailability.Name = "tableLayoutFirefighterAvailability";
-            this.tableLayoutFirefighterAvailability.RowCount = 1;
-            this.tableLayoutFirefighterAvailability.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutFirefighterAvailability.Size = new System.Drawing.Size(507, 26);
-            this.tableLayoutFirefighterAvailability.TabIndex = 0;
-            // 
-            // labelNbFirefighterAvailabilityDisplayed
-            // 
-            this.labelNbFirefighterAvailabilityDisplayed.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.labelNbFirefighterAvailabilityDisplayed.AutoSize = true;
-            this.labelNbFirefighterAvailabilityDisplayed.Location = new System.Drawing.Point(3, 6);
-            this.labelNbFirefighterAvailabilityDisplayed.Name = "labelNbFirefighterAvailabilityDisplayed";
-            this.labelNbFirefighterAvailabilityDisplayed.Size = new System.Drawing.Size(169, 13);
-            this.labelNbFirefighterAvailabilityDisplayed.TabIndex = 0;
-            this.labelNbFirefighterAvailabilityDisplayed.Text = "Nombre de disponibilité à afficher :";
-            // 
-            // nbFirefighterAvailabilityDisplayed
-            // 
-            this.nbFirefighterAvailabilityDisplayed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.nbFirefighterAvailabilityDisplayed.Location = new System.Drawing.Point(178, 3);
-            this.nbFirefighterAvailabilityDisplayed.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.nbFirefighterAvailabilityDisplayed.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nbFirefighterAvailabilityDisplayed.Name = "nbFirefighterAvailabilityDisplayed";
-            this.nbFirefighterAvailabilityDisplayed.Size = new System.Drawing.Size(326, 20);
-            this.nbFirefighterAvailabilityDisplayed.TabIndex = 1;
-            this.nbFirefighterAvailabilityDisplayed.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nbFirefighterAvailabilityDisplayed.ValueChanged += new System.EventHandler(this.NbFirefighterAvailabilityDisplayed_ValueChanged);
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -389,6 +389,11 @@ namespace SDIS37Stats.Controls
             this.tableLayoutBtnOkCancel.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBoxFirefighterAvailability.ResumeLayout(false);
+            this.groupBoxFirefighterAvailability.PerformLayout();
+            this.tableLayoutFirefighterAvailability.ResumeLayout(false);
+            this.tableLayoutFirefighterAvailability.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nbFirefighterAvailabilityDisplayed)).EndInit();
             this.groupBoxOperationView.ResumeLayout(false);
             this.groupBoxOperationView.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -403,11 +408,6 @@ namespace SDIS37Stats.Controls
             this.groupBoxThemeAndColor.PerformLayout();
             this.tableLayoutTheme.ResumeLayout(false);
             this.tableLayoutTheme.PerformLayout();
-            this.groupBoxFirefighterAvailability.ResumeLayout(false);
-            this.groupBoxFirefighterAvailability.PerformLayout();
-            this.tableLayoutFirefighterAvailability.ResumeLayout(false);
-            this.tableLayoutFirefighterAvailability.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nbFirefighterAvailabilityDisplayed)).EndInit();
             this.ResumeLayout(false);
 
         }
