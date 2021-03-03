@@ -39,6 +39,11 @@
             this.buttonOk.BackColor = theme.Form_BackgroundColorButton();
             this.buttonCancel.BackColor = theme.Form_BackgroundColorButton();
 
+            this.groupBoxFirefighterAvailability.ForeColor = theme.Form_FontColor();
+            this.groupBoxOperationView.ForeColor = theme.Form_FontColor();
+            this.groupBoxSound.ForeColor = theme.Form_FontColor();
+            this.groupBoxThemeAndColor.ForeColor = theme.Form_FontColor();
+
             this.comboBoxThemeType.BackColor = theme.SettingsForm_ComboBox_BackgroundColor();
 
             this.checkBoxMuteSound.ForeColor = theme.Form_FontColor();
