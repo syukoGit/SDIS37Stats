@@ -54,7 +54,7 @@ namespace SDIS37Stats.Controls
             this.OnThemeUpdated += this.NbOperationPerHour.ApplyTheme;
             this.OnThemeUpdated += this.RecentOperationList.ApplyTheme;
             this.OnThemeUpdated += this.RecentOperationOfUserFirehouse.ApplyTheme;
-            this.OnThemeUpdated += this.displayFirefighterAvailabilityList.ApplyTheme;
+            this.OnThemeUpdated += this.FirefighterAvailabilityListView.ApplyTheme;
 
             this.ApplyTheme();
 
@@ -94,9 +94,9 @@ namespace SDIS37Stats.Controls
                 this.RecentOperationList.SetValue(value);
             };
 
-            // displayFirefighterAvailabilityList
-            this.statistics.OnFirehouseNameUpdated += (c) => this.displayFirefighterAvailabilityList.Title = "Liste des disponibilités de " + c + " :";
-            this.statistics.OnFirefighterAvailabilitiesUpdated += this.displayFirefighterAvailabilityList.SetValue;
+            // FirefighterAvailabilityListView
+            this.statistics.OnFirehouseNameUpdated += (c) => this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de " + c + " :";
+            this.statistics.OnFirefighterAvailabilitiesUpdated += this.FirefighterAvailabilityListView.SetValue;
 
             // RecentOperationOfUserFirehouse
             this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + c + " :";
@@ -182,7 +182,7 @@ namespace SDIS37Stats.Controls
 
                 this.RecentOperationOfUserFirehouse.NbOperationDisplayed = this.Settings.NbOperationOfUserFirehouseDisplayed;
 
-                this.displayFirefighterAvailabilityList.NbAvailibilitiesDisplayed = this.Settings.NbFirefighterAvailabilityDisplayed;
+                this.FirefighterAvailabilityListView.NbAvailibilitiesDisplayed = this.Settings.NbFirefighterAvailabilityDisplayed;
 
                 this.ApplyTheme();
             }

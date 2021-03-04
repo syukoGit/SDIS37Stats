@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SDIS37Stats.Controls.Type.Statistics
 {
-    public partial class DisplayFirefighterAvailabilityList : UserControl
+    public partial class FirefighterAvailabilityListView : UserControl
     {
         private int currentControl = 0;
 
@@ -58,7 +58,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             }
         }
 
-        public DisplayFirefighterAvailabilityList()
+        public FirefighterAvailabilityListView()
         {
             InitializeComponent();
 

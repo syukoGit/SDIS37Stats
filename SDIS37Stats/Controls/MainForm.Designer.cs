@@ -37,7 +37,7 @@
             this.NbOperationPerHour = new SDIS37Stats.Controls.Type.Statistics.NbOperationPerHour();
             this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.OperationListView();
             this.RecentOperationOfUserFirehouse = new SDIS37Stats.Controls.Type.Statistics.OperationListView();
-            this.displayFirefighterAvailabilityList = new SDIS37Stats.Controls.Type.Statistics.DisplayFirefighterAvailabilityList();
+            this.FirefighterAvailabilityListView = new SDIS37Stats.Controls.Type.Statistics.FirefighterAvailabilityListView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.SettingsPicture = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
@@ -76,7 +76,7 @@
             this.tableLayoutPanel1.Controls.Add(this.NbOperationPerHour, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.RecentOperationList, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.RecentOperationOfUserFirehouse, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.displayFirefighterAvailabilityList, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.FirefighterAvailabilityListView, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -146,15 +146,15 @@
             this.RecentOperationOfUserFirehouse.TabIndex = 6;
             this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de ... :";
             // 
-            // displayFirefighterAvailabilityList
+            // FirefighterAvailabilityListView
             // 
-            this.displayFirefighterAvailabilityList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.displayFirefighterAvailabilityList.Location = new System.Drawing.Point(3, 400);
-            this.displayFirefighterAvailabilityList.Name = "displayFirefighterAvailabilityList";
-            this.displayFirefighterAvailabilityList.NbAvailibilitiesDisplayed = 50;
-            this.displayFirefighterAvailabilityList.Size = new System.Drawing.Size(410, 255);
-            this.displayFirefighterAvailabilityList.TabIndex = 7;
-            this.displayFirefighterAvailabilityList.Title = "Liste des disponibilités de ... :";
+            this.FirefighterAvailabilityListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FirefighterAvailabilityListView.Location = new System.Drawing.Point(3, 400);
+            this.FirefighterAvailabilityListView.Name = "FirefighterAvailabilityListView";
+            this.FirefighterAvailabilityListView.NbAvailibilitiesDisplayed = 50;
+            this.FirefighterAvailabilityListView.Size = new System.Drawing.Size(410, 255);
+            this.FirefighterAvailabilityListView.TabIndex = 7;
+            this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de ... :";
             // 
             // tableLayoutPanel2
             // 
@@ -216,7 +216,7 @@
         private Type.Statistics.NbOperationPerHour NbOperationPerHour;
         private Type.Statistics.OperationListView RecentOperationList;
         private Type.Statistics.OperationListView RecentOperationOfUserFirehouse;
-        private Type.Statistics.DisplayFirefighterAvailabilityList displayFirefighterAvailabilityList;
+        private Type.Statistics.FirefighterAvailabilityListView FirefighterAvailabilityListView;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.PictureBox SettingsPicture;
     }

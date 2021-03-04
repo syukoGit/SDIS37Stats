@@ -1,7 +1,7 @@
 ﻿
 namespace SDIS37Stats.Controls.Type.Statistics
 {
-    partial class DisplayFirefighterAvailabilityList
+    partial class FirefighterAvailabilityListView
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.
