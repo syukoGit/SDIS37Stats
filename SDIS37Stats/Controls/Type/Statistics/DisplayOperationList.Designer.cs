@@ -32,7 +32,7 @@
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.title = new System.Windows.Forms.Label();
             this.panel = new System.Windows.Forms.Panel();
-            this.tableOperationDisplayed = new System.Windows.Forms.TableLayoutPanel();
+            this.tableOperationViews = new System.Windows.Forms.TableLayoutPanel();
             this.timerAutoScroll = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel.SuspendLayout();
             this.panel.SuspendLayout();
@@ -67,7 +67,7 @@
             // panel
             // 
             this.panel.AutoScroll = true;
-            this.panel.Controls.Add(this.tableOperationDisplayed);
+            this.panel.Controls.Add(this.tableOperationViews);
             this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel.Location = new System.Drawing.Point(0, 23);
             this.panel.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
@@ -75,19 +75,19 @@
             this.panel.Size = new System.Drawing.Size(495, 77);
             this.panel.TabIndex = 2;
             // 
-            // tableOperationDisplayed
+            // tableOperationViews
             // 
-            this.tableOperationDisplayed.AutoSize = true;
-            this.tableOperationDisplayed.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableOperationDisplayed.ColumnCount = 1;
-            this.tableOperationDisplayed.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableOperationDisplayed.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableOperationDisplayed.Location = new System.Drawing.Point(0, 0);
-            this.tableOperationDisplayed.Name = "tableOperationDisplayed";
-            this.tableOperationDisplayed.RowCount = 1;
-            this.tableOperationDisplayed.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableOperationDisplayed.Size = new System.Drawing.Size(495, 0);
-            this.tableOperationDisplayed.TabIndex = 0;
+            this.tableOperationViews.AutoSize = true;
+            this.tableOperationViews.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableOperationViews.ColumnCount = 1;
+            this.tableOperationViews.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableOperationViews.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableOperationViews.Location = new System.Drawing.Point(0, 0);
+            this.tableOperationViews.Name = "tableOperationViews";
+            this.tableOperationViews.RowCount = 1;
+            this.tableOperationViews.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableOperationViews.Size = new System.Drawing.Size(495, 0);
+            this.tableOperationViews.TabIndex = 0;
             // 
             // timerAutoScroll
             // 
@@ -115,6 +115,6 @@
         private System.Windows.Forms.Label title;
         private System.Windows.Forms.Timer timerAutoScroll;
         private System.Windows.Forms.Panel panel;
-        private System.Windows.Forms.TableLayoutPanel tableOperationDisplayed;
+        private System.Windows.Forms.TableLayoutPanel tableOperationViews;
     }
 }

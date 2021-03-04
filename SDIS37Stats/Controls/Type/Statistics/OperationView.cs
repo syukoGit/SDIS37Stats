@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace SDIS37Stats.Controls.Type.Statistics
 {
-    public partial class DisplayOperation : UserControl
+    public partial class OperationView : UserControl
     {
         private Core.Statistics.Operation operation;
 
         private readonly ToolTip toolTip = new ToolTip();
 
-        public DisplayOperation()
+        public OperationView()
         {
             InitializeComponent();
         }

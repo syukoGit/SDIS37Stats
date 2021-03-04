@@ -25,24 +25,24 @@ namespace SDIS37Stats.Controls.Type.Statistics
             {
                 this.nbOperationDisplayed = value;
 
-                if (this.nbOperationDisplayed > this.tableOperationDisplayed.Controls.Count)
+                if (this.nbOperationDisplayed > this.tableOperationViews.Controls.Count)
                 {
-                    int nbNewRow = this.nbOperationDisplayed - this.tableOperationDisplayed.Controls.Count;
+                    int nbNewRow = this.nbOperationDisplayed - this.tableOperationViews.Controls.Count;
                     for (int i = 0; i < nbNewRow; i++)
                     {
-                        this.tableOperationDisplayed.Controls.Add(new DisplayOperation()
+                        this.tableOperationViews.Controls.Add(new OperationView()
                         {
                             Visible = false,
                             Dock = DockStyle.Fill
                         });
                     }
                 }
-                else if (this.nbOperationDisplayed < this.tableOperationDisplayed.Controls.Count)
+                else if (this.nbOperationDisplayed < this.tableOperationViews.Controls.Count)
                 {
-                    while (this.tableOperationDisplayed.Controls.Count - this.nbOperationDisplayed > 0)
+                    while (this.tableOperationViews.Controls.Count - this.nbOperationDisplayed > 0)
                     {
-                        var item = this.tableOperationDisplayed.Controls[this.tableOperationDisplayed.Controls.Count - 1];
-                        this.tableOperationDisplayed.Controls.Remove(item);
+                        var item = this.tableOperationViews.Controls[this.tableOperationViews.Controls.Count - 1];
+                        this.tableOperationViews.Controls.Remove(item);
                         item.Dispose();
                     }
                 }
@@ -87,11 +87,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
             this.tableLayoutPanel.BackColor = theme.OperationListView_BackgroundColor();
             this.panel.BackColor = theme.OperationListView_BackgroundColorList();
-            this.tableOperationDisplayed.BackColor = theme.OperationListView_BackgroundColorList();
+            this.tableOperationViews.BackColor = theme.OperationListView_BackgroundColorList();
 
             this.title.ForeColor = theme.Form_FontColor();
 
-            foreach (Control item in this.tableOperationDisplayed.Controls)
+            foreach (Control item in this.tableOperationViews.Controls)
             {
 
                 item.BackColor = theme.OperationListView_BackgroundColorItem();
@@ -110,28 +110,28 @@ namespace SDIS37Stats.Controls.Type.Statistics
             int i;
             for (i = 0; i < this.NbOperationDisplayed && i < operations.Count(); i++)
             {
-                ((DisplayOperation)this.tableOperationDisplayed.Controls[i]).Operation = operations[i];
+                ((OperationView)this.tableOperationViews.Controls[i]).Operation = operations[i];
 
                 if (this.HighlightOperationOfYourFirehouse && !string.IsNullOrWhiteSpace(this.FirehouseName))
                 {
                     if (operations[i].VehiculeEnrolled.Where(c => c.Contains(this.FirehouseName)).Count() > 0)
                     {
-                        this.tableOperationDisplayed.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorHighlightItem();
-                        this.tableOperationDisplayed.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorHighlightItem();
+                        this.tableOperationViews.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorHighlightItem();
+                        this.tableOperationViews.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorHighlightItem();
                     }
                     else
                     {
-                        this.tableOperationDisplayed.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorItem();
-                        this.tableOperationDisplayed.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorItem();
+                        this.tableOperationViews.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorItem();
+                        this.tableOperationViews.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorItem();
                     }
                 }
 
-                this.tableOperationDisplayed.Controls[i].Visible = true;
+                this.tableOperationViews.Controls[i].Visible = true;
             }
 
             for (; i < this.NbOperationDisplayed; i++)
             {
-                this.tableOperationDisplayed.Controls[i].Visible = false;
+                this.tableOperationViews.Controls[i].Visible = false;
             }
 
             this.timerAutoScroll.Start();
@@ -143,9 +143,9 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             this.timerAutoScroll.Stop();
 
-            if (this.tableOperationDisplayed.Controls.Count > 0)
+            if (this.tableOperationViews.Controls.Count > 0)
             {
-                if (this.currentControl < this.tableOperationDisplayed.Controls.Count - 1)
+                if (this.currentControl < this.tableOperationViews.Controls.Count - 1)
                 {
                     this.currentControl++;
                 }
@@ -154,7 +154,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
                     this.currentControl = 0;
                 }
 
-                this.panel.ScrollControlIntoView(this.tableOperationDisplayed.Controls[this.currentControl]);
+                this.panel.ScrollControlIntoView(this.tableOperationViews.Controls[this.currentControl]);
             }
 
             this.timerAutoScroll.Start();
