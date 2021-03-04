@@ -12,6 +12,8 @@
     /// </remarks>
     class WebService : IDisposable
     {
+        private static readonly List<string> UrlWichUseJS = new List<string>();
+
         /// <summary>
         /// Private queue for set and get a url queue to execute.
         /// </summary>
@@ -50,6 +52,9 @@
         public delegate void OnListRecentOperationUpdatedHandler(HtmlDocument htmlDocument);
         public event OnListRecentOperationUpdatedHandler OnRecentOperationListUpdated;
 
+        public delegate void OnRecentOperationListOfUserFirehouseUpdatedHandler(HtmlDocument htmlDocument);
+        public event OnRecentOperationListOfUserFirehouseUpdatedHandler OnRecentOperationListOfUserFirehouseUpdated;
+
         public delegate void OnListFirefighterAvailabilityUpdatedHandler(HtmlDocument htmlDocument);
         public event OnListFirefighterAvailabilityUpdatedHandler OnListFirefighterAvailabilityUpdated;
 
@@ -58,6 +63,9 @@
         /// </summary>
         public WebService()
         {
+            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceRecentOperationListURL);
+            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL);
+
             this.WebBrowser = new WebBrowser();
 
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
@@ -112,6 +120,7 @@
 
             this.urlQueue.Enqueue((WebServiceURL.WebServiceStatsForOperationPerHourURL, null));
             this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL, null));
             this.urlQueue.Enqueue((WebServiceURL.WebServiceFirefighterAvailabilityURL, null));
             this.urlQueue.Enqueue((WebServiceURL.WebServiceNbOperationInDayURL, postDataNbOperationInDay));
 
@@ -133,9 +142,11 @@
                 this.startedTimeHttpRequest = DateTime.Now;
 
                 var (url, postData) = this.urlQueue.Dequeue();
+
+                this.WebBrowser.ScriptErrorsSuppressed = WebService.UrlWichUseJS.Contains(url);
+
                 if (string.IsNullOrEmpty(postData))
                 {
-                    this.WebBrowser.ScriptErrorsSuppressed = url == WebServiceURL.WebServiceRecentOperationListURL;
                     this.WebBrowser.Navigate(url);
                 }
                 else
@@ -224,6 +235,16 @@
         }
 
         /// <summary>
+        /// Called when the web page with the recent operations of the user's firehouse is loaded.
+        /// </summary>
+        /// <param name="document">Html document with the recent operations of the user's firehouse</param>
+        private void RecentOperationListOfUserFirehouseLoaded(HtmlDocument document)
+        {
+            this.OnRecentOperationListOfUserFirehouseUpdated?.Invoke(document);
+            this.NavigateToNextUrl();
+        }
+
+        /// <summary>
         /// Called when the web page with the firefighter availabilities is loaded.
         /// </summary>
         /// <param name="document">Html document with the firefighter availabilities</param>
@@ -302,6 +323,10 @@
                     else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceNbOperationInDayURL)
                     {
                         this.NbOperationInDayLoaded(document);
+                    }
+                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL)
+                    {
+                        this.RecentOperationListOfUserFirehouseLoaded(document);
                     }
                     else
                     {

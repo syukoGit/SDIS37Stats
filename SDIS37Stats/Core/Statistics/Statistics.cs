@@ -23,7 +23,7 @@
 
         private Dictionary<int, Operation> recentOperationList;
 
-        private List<Operation> recentOperationOfUserFirehouse;
+        private Dictionary<int, Operation> recentOperationOfUserFirehouse;
 
         private List<FirefighterAvailability> firefighterAvailabilities;
 
@@ -46,7 +46,7 @@
         public delegate void OnRecentOperationListUpdatedHandler(Dictionary<int, Operation> recentOperationList);
         public event OnRecentOperationListUpdatedHandler OnRecentOperationListUpdated;
 
-        public delegate void OnRecentOperationOfUserFirehouseUpdatedHandler(List<Operation> recentOperationOfUserFirehouse);
+        public delegate void OnRecentOperationOfUserFirehouseUpdatedHandler(Dictionary<int, Operation> recentOperationOfUserFirehouse);
         public event OnRecentOperationOfUserFirehouseUpdatedHandler OnRecentOperationOfUserFirehouseUpdated;
 
         public delegate void OnFirefighterAvailabilitiesUpdatedHandler(List<FirefighterAvailability> firefighterAvailabilities);
@@ -61,6 +61,7 @@
             this.webService.OnNbOperationPerHourUpdated += this.WebService_NbOperationPerHour;
             this.webService.OnRecentOperationListUpdated += this.WebService_RecentOperationList;
             this.webService.OnListFirefighterAvailabilityUpdated += this.WebService_FirefighterAvailabilityList;
+            this.webService.OnRecentOperationListOfUserFirehouseUpdated += this.WebService_RecentOperationListOfUserFirehouseUpdated;
         }
 
         #region Property
@@ -129,7 +130,7 @@
             }
         }
 
-        public List<Operation> RecentOperationOfUserFirehouse
+        public Dictionary<int, Operation> RecentOperationOfUserFirehouse
         {
             get
             {
@@ -227,7 +228,7 @@
             }
 
             this.RecentOperationList = newList;
-            this.RecentOperationOfUserFirehouse = newList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
+            //this.RecentOperationOfUserFirehouse = newList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
 
             if (newOperation)
             {
@@ -286,12 +287,46 @@
 
             this.FirefighterAvailabilities = newList;
         }
+
+        private void WebService_RecentOperationListOfUserFirehouseUpdated(HtmlDocument htmlDocument)
+        {
+            var data = htmlDocument.GetElementsByTagName("tbody")[0];
+            var list = data.GetElementsByTagName("tr");
+
+            var newList = this.RecentOperationOfUserFirehouse != null ? new Dictionary<int, Operation>(this.RecentOperationOfUserFirehouse) : new Dictionary<int, Operation>();
+
+            foreach (HtmlElement item in list)
+            {
+                var operation = Statistics.HtmlElementToOperation(item);
+
+                if (newList.Where(c => c.Key == operation.NumOperation).Count() > 0)
+                {
+                    this.UpdateOperation(newList, operation);
+                }
+                else
+                {
+                    newList.Add(operation.NumOperation, operation);
+                }
+            }
+
+            this.RecentOperationOfUserFirehouse = newList;
+        }
         #endregion
 
         #region Static
         private static Operation HtmlElementToOperation(HtmlElement item)
         {
-            DateTime time = DateTime.ParseExact(item.Children[0].InnerHtml, "HH:mm", DateTimeProvider);
+            string dateTimePatern;
+            if (Regex.IsMatch(item.Children[0].InnerHtml, @"^[0-2]{0,1}[0-9]:[0-5]{0,1}[0-9]$"))
+            {
+                dateTimePatern = "HH:mm";
+            }
+            else
+            {
+                dateTimePatern = "dd/MM/yy HH:mm";
+            }
+
+            DateTime time = DateTime.ParseExact(item.Children[0].InnerHtml, dateTimePatern, DateTimeProvider);
             int numOperation = int.Parse(item.Children[1].InnerText);
             string localisation = item.Children[2].GetElementsByTagName("b")[0].InnerHtml;
             string operationDescription = item.Children[2].Children[1].InnerText;
