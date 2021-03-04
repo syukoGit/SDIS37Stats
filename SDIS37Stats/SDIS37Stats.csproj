@@ -101,11 +101,11 @@
     <Compile Include="Controls\Type\Statistics\DisplayFirefighterAvailabilityList.Designer.cs">
       <DependentUpon>DisplayFirefighterAvailabilityList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\DisplayFirefighterAvailability.cs">
+    <Compile Include="Controls\Type\Statistics\FirefighterAvailabilityView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\DisplayFirefighterAvailability.Designer.cs">
-      <DependentUpon>DisplayFirefighterAvailability.cs</DependentUpon>
+    <Compile Include="Controls\Type\Statistics\FirefighterAvailabilityView.Designer.cs">
+      <DependentUpon>FirefighterAvailabilityView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Type\Statistics\OperationView.cs">
       <SubType>UserControl</SubType>
@@ -158,8 +158,8 @@
     <EmbeddedResource Include="Controls\Type\Statistics\DisplayFirefighterAvailabilityList.resx">
       <DependentUpon>DisplayFirefighterAvailabilityList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Statistics\DisplayFirefighterAvailability.resx">
-      <DependentUpon>DisplayFirefighterAvailability.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\Type\Statistics\FirefighterAvailabilityView.resx">
+      <DependentUpon>FirefighterAvailabilityView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Type\Statistics\OperationView.resx">
       <DependentUpon>OperationView.cs</DependentUpon>

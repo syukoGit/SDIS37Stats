@@ -34,7 +34,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.title = new System.Windows.Forms.Label();
             this.timerAutoScroll = new System.Windows.Forms.Timer(this.components);
             this.panel = new System.Windows.Forms.Panel();
-            this.tableLayoutDisplayFirefighterAvailability = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutFirefighterAvailabilityView = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutMain.SuspendLayout();
             this.panel.SuspendLayout();
             this.SuspendLayout();
@@ -73,7 +73,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             // panel
             // 
             this.panel.AutoScroll = true;
-            this.panel.Controls.Add(this.tableLayoutDisplayFirefighterAvailability);
+            this.panel.Controls.Add(this.tableLayoutFirefighterAvailabilityView);
             this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel.Location = new System.Drawing.Point(0, 23);
             this.panel.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
@@ -81,22 +81,22 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.panel.Size = new System.Drawing.Size(382, 95);
             this.panel.TabIndex = 1;
             // 
-            // tableLayoutDisplayFirefighterAvailability
+            // tableLayoutFirefighterAvailabilityView
             // 
-            this.tableLayoutDisplayFirefighterAvailability.AutoSize = true;
-            this.tableLayoutDisplayFirefighterAvailability.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutDisplayFirefighterAvailability.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutDisplayFirefighterAvailability.ColumnCount = 1;
-            this.tableLayoutDisplayFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutDisplayFirefighterAvailability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutDisplayFirefighterAvailability.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutDisplayFirefighterAvailability.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutDisplayFirefighterAvailability.Name = "tableLayoutDisplayFirefighterAvailability";
-            this.tableLayoutDisplayFirefighterAvailability.RowCount = 1;
-            this.tableLayoutDisplayFirefighterAvailability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutDisplayFirefighterAvailability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutDisplayFirefighterAvailability.Size = new System.Drawing.Size(382, 2);
-            this.tableLayoutDisplayFirefighterAvailability.TabIndex = 0;
+            this.tableLayoutFirefighterAvailabilityView.AutoSize = true;
+            this.tableLayoutFirefighterAvailabilityView.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutFirefighterAvailabilityView.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutFirefighterAvailabilityView.ColumnCount = 1;
+            this.tableLayoutFirefighterAvailabilityView.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutFirefighterAvailabilityView.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutFirefighterAvailabilityView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutFirefighterAvailabilityView.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutFirefighterAvailabilityView.Name = "tableLayoutFirefighterAvailabilityView";
+            this.tableLayoutFirefighterAvailabilityView.RowCount = 1;
+            this.tableLayoutFirefighterAvailabilityView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutFirefighterAvailabilityView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutFirefighterAvailabilityView.Size = new System.Drawing.Size(382, 2);
+            this.tableLayoutFirefighterAvailabilityView.TabIndex = 0;
             // 
             // DisplayFirefighterAvailabilityList
             // 
@@ -119,6 +119,6 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private System.Windows.Forms.Label title;
         private System.Windows.Forms.Timer timerAutoScroll;
         private System.Windows.Forms.Panel panel;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutDisplayFirefighterAvailability;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutFirefighterAvailabilityView;
     }
 }

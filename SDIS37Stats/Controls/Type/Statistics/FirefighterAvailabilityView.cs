@@ -3,13 +3,13 @@ using System.Windows.Forms;
 
 namespace SDIS37Stats.Controls.Type.Statistics
 {
-    public partial class DisplayFirefighterAvailability : UserControl
+    public partial class FirefighterAvailabilityView : UserControl
     {
         private FirefighterAvailability firefighterAvailability;
 
         private readonly ToolTip toolTip = new ToolTip();
 
-        public DisplayFirefighterAvailability()
+        public FirefighterAvailabilityView()
         {
             InitializeComponent();
         }
