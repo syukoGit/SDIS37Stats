@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace SDIS37Stats.Controls.Type.Statistics
 {
-    public partial class DisplayOperationList : UserControl
+    public partial class OperationListView : UserControl
     {
         private int currentControl = 0;
 
@@ -72,7 +72,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             set => this.title.Text = value;
         }
 
-        public DisplayOperationList()
+        public OperationListView()
         {
             InitializeComponent();
 

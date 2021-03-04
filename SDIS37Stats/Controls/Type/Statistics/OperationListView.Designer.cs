@@ -1,6 +1,6 @@
 ﻿namespace SDIS37Stats.Controls.Type.Statistics
 {
-    partial class DisplayOperationList
+    partial class OperationListView
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.

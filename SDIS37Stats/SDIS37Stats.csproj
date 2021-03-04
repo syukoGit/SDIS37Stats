@@ -113,11 +113,11 @@
     <Compile Include="Controls\Type\Statistics\OperationView.Designer.cs">
       <DependentUpon>OperationView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\DisplayOperationList.cs">
+    <Compile Include="Controls\Type\Statistics\OperationListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\DisplayOperationList.Designer.cs">
-      <DependentUpon>DisplayOperationList.cs</DependentUpon>
+    <Compile Include="Controls\Type\Statistics\OperationListView.Designer.cs">
+      <DependentUpon>OperationListView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Type\Statistics\NbOperationPerHour.cs">
       <SubType>UserControl</SubType>
@@ -164,8 +164,8 @@
     <EmbeddedResource Include="Controls\Type\Statistics\OperationView.resx">
       <DependentUpon>OperationView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Statistics\DisplayOperationList.resx">
-      <DependentUpon>DisplayOperationList.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\Type\Statistics\OperationListView.resx">
+      <DependentUpon>OperationListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Type\Statistics\NbOperationPerHour.resx">
       <DependentUpon>NbOperationPerHour.cs</DependentUpon>

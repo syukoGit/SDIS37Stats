@@ -35,8 +35,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.NbOperationToday = new SDIS37Stats.Controls.Type.Statistics.NbOperationToday();
             this.NbOperationPerHour = new SDIS37Stats.Controls.Type.Statistics.NbOperationPerHour();
-            this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
-            this.RecentOperationOfUserFirehouse = new SDIS37Stats.Controls.Type.Statistics.DisplayOperationList();
+            this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.OperationListView();
+            this.RecentOperationOfUserFirehouse = new SDIS37Stats.Controls.Type.Statistics.OperationListView();
             this.displayFirefighterAvailabilityList = new SDIS37Stats.Controls.Type.Statistics.DisplayFirefighterAvailabilityList();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.SettingsPicture = new System.Windows.Forms.PictureBox();
@@ -214,8 +214,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private Type.Statistics.NbOperationToday NbOperationToday;
         private Type.Statistics.NbOperationPerHour NbOperationPerHour;
-        private Type.Statistics.DisplayOperationList RecentOperationList;
-        private Type.Statistics.DisplayOperationList RecentOperationOfUserFirehouse;
+        private Type.Statistics.OperationListView RecentOperationList;
+        private Type.Statistics.OperationListView RecentOperationOfUserFirehouse;
         private Type.Statistics.DisplayFirefighterAvailabilityList displayFirefighterAvailabilityList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.PictureBox SettingsPicture;
