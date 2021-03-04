@@ -28,6 +28,11 @@
         public const string WebServiceRecentOperationListURL = "https://webservices.sdis37.fr/interventions/liste?direction=desc&sort=Depart";
 
         /// <summary>
+        /// Const string used for get the list of the recent operations in the user's firehouse.
+        /// </summary>
+        public const string WebServiceRecentOperationListOfTheUserFirehouseURL = "https://webservices.sdis37.fr/interventions/listestats/undefined?direction=desc&sort=Depart";
+
+        /// <summary>
         /// Const string used for get the availabilities of the firefighters of the user's firehouse.
         /// </summary>
         public const string WebServiceFirefighterAvailabilityURL = "https://webservices.sdis37.fr/personnels";

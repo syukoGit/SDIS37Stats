@@ -102,8 +102,9 @@ namespace SDIS37Stats.Controls
             this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + c + " :";
             this.statistics.OnRecentOperationOfUserFirehouseUpdated += (c) =>
             {
-                c.Sort((a, b) => b.Time.CompareTo(a.Time));
-                this.RecentOperationOfUserFirehouse.SetValue(c);
+                var value = c.Select(t => t.Value).ToList();
+                value.Sort((a, b) => b.Time.CompareTo(a.Time));
+                this.RecentOperationOfUserFirehouse.SetValue(value);
             };
         }
 
