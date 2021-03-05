@@ -17,7 +17,7 @@
         /// <summary>
         /// Private queue for set and get a url queue to execute.
         /// </summary>
-        private readonly Queue<(string url, string postData)> urlQueue = new Queue<(string, string)>();
+        private readonly Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> urlQueue = new Queue<(URL, Dictionary<string, string>, Dictionary<string, string>)>();
 
         /// <summary>
         /// Private integer for get and set a connection state.
@@ -63,14 +63,14 @@
         /// </summary>
         public WebService()
         {
-            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceRecentOperationListURL);
-            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL);
+            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceRecentOperationListURL.Url);
+            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL.Url);
 
             this.WebBrowser = new WebBrowser();
 
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
 
-            this.WebBrowser.Url = new Uri(WebServiceURL.WebServiceMainPageURL);
+            this.WebBrowser.Url = new Uri(WebServiceURL.WebServiceMainPageURL.GetAbsoluteUrl(null));
         }
 
         /// <summary>
@@ -104,7 +104,7 @@
         {
             Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "WebService -> Clear authentification cache");
             this.WebBrowser.Document.ExecCommand("ClearAuthenticationCache", false, null);
-            this.urlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null, null));
 
             this.NavigateToNextUrl();
         }
@@ -116,17 +116,19 @@
         {
             Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "WebService -> Refresh");
 
-            string postDataNbOperationInDay = "date=" + DateTime.Now.ToString("dd/MM/yyyy") + "&rbcsp=SDIS";
+            Dictionary<string, string> postDataNbOperationInDay = new Dictionary<string, string>
+            {
+                { "date", DateTime.Now.ToString("dd/MM/yyyy") }
+            };
 
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceStatsForOperationPerHourURL, null));
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListURL, null));
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL, null));
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceFirefighterAvailabilityURL, null));
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceNbOperationInDayURL, postDataNbOperationInDay));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceStatsForOperationPerHourURL, null, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListURL, null, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL, null, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
+            this.urlQueue.Enqueue((WebServiceURL.WebServiceNbOperationInDayURL, null, postDataNbOperationInDay));
 
             this.NavigateToNextUrl();
         }
-
         #endregion
 
         #region Private
@@ -141,21 +143,23 @@
 
                 this.startedTimeHttpRequest = DateTime.Now;
 
-                var (url, postData) = this.urlQueue.Dequeue();
+                var (url, queryParams, postDatas) = this.urlQueue.Dequeue();
 
-                this.WebBrowser.ScriptErrorsSuppressed = WebService.UrlWichUseJS.Contains(url);
+                this.WebBrowser.ScriptErrorsSuppressed = !url.UseJS;
 
-                if (string.IsNullOrEmpty(postData))
+                var (strUrl, strPostDatas) = url.GetAbsoluteUrlAndPostData(queryParams, postDatas);
+
+                if (string.IsNullOrEmpty(strPostDatas))
                 {
-                    this.WebBrowser.Navigate(url);
+                    this.WebBrowser.Navigate(strUrl);
                 }
                 else
                 {
-                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(postData);
-                    this.WebBrowser.Navigate(url, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(strPostDatas);
+                    this.WebBrowser.Navigate(strUrl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
                 }
 
-                Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request. URL: " + url + (string.IsNullOrEmpty(postData) ? string.Empty : " (Post data : " + postData + ")"));
+                Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request. URL: " + strUrl + (string.IsNullOrEmpty(strPostDatas) ? string.Empty : " (Post data : " + strPostDatas + ")"));
             }
         }
 
@@ -300,31 +304,33 @@
 
                     Syst.Log.WriteLog(Syst.Log.TYPE.Normal, log);
 
-                    if (document.Url.AbsoluteUri == WebServiceURL.WebServicesLoginURL)
+                    string urlWithoutQuery = document.Url.Scheme + "://" + document.Url.Host + document.Url.AbsolutePath;
+
+                    if (urlWithoutQuery == WebServiceURL.WebServicesLoginURL.Url)
                     {
                         this.LoginPageLoaded(document);
                     }
-                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceMainPageURL)
+                    else if (urlWithoutQuery == WebServiceURL.WebServiceMainPageURL.Url)
                     {
                         this.MainPageLoaded(document);
                     }
-                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceStatsForOperationPerHourURL)
+                    else if (urlWithoutQuery == WebServiceURL.WebServiceStatsForOperationPerHourURL.Url)
                     {
                         this.NbOperationPerHourLoaded(document);
                     }
-                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceRecentOperationListURL)
+                    else if (urlWithoutQuery == WebServiceURL.WebServiceRecentOperationListURL.Url)
                     {
                         this.RecentOperationListLoaded(document);
                     }
-                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceFirefighterAvailabilityURL)
+                    else if (urlWithoutQuery == WebServiceURL.WebServiceFirefighterAvailabilityURL.Url)
                     {
                         this.FirefighterAvailabilitiesLoaded(document);
                     }
-                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceNbOperationInDayURL)
+                    else if (urlWithoutQuery == WebServiceURL.WebServiceNbOperationInDayURL.Url)
                     {
                         this.NbOperationInDayLoaded(document);
                     }
-                    else if (document.Url.AbsoluteUri == WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL)
+                    else if (urlWithoutQuery == WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL.Url)
                     {
                         this.RecentOperationListOfUserFirehouseLoaded(document);
                     }
@@ -339,7 +345,6 @@
                 Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error when processing the web page. URL: " + this.WebBrowser.Document.Url.AbsoluteUri);
             }
         }
-
         #endregion
     }
 }
