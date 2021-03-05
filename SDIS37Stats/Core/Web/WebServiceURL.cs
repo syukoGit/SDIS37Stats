@@ -5,36 +5,59 @@
         /// <summary>
         /// Const string used for get the login url of the webservice.
         /// </summary>
-        public const string WebServicesLoginURL = "https://webservices.sdis37.fr/users/login";
+        public static URL WebServicesLoginURL = new URL("https://webservices.sdis37.fr/users/login");
 
         /// <summary>
         /// Const string used for get the main page of the webservice.
         /// </summary>
-        public const string WebServiceMainPageURL = "https://webservices.sdis37.fr/interventions";
+        public static URL WebServiceMainPageURL = new URL("https://webservices.sdis37.fr/interventions");
 
         /// <summary>
         /// Const string used for get the number of operation in day.
         /// </summary>
-        public const string WebServiceNbOperationInDayURL = "https://webservices.sdis37.fr/interventions/nbInterventions";
+        public static URL WebServiceNbOperationInDayURL = new URL("https://webservices.sdis37.fr/interventions/nbInterventions")
+        {
+            PostDatas = new PostData[]
+            {
+                new PostData("date") { DefaultValue = "01/01/2021" },
+                new PostData("rbcsp") { DefaultValue = "SDIS" }
+            }
+        };
 
         /// <summary>
         /// Const string used for get the number of operations per hour.
         /// </summary>
-        public const string WebServiceStatsForOperationPerHourURL = "https://webservices.sdis37.fr/interventions/getNb";
+        public static URL WebServiceStatsForOperationPerHourURL = new URL("https://webservices.sdis37.fr/interventions/getNb");
 
         /// <summary>
         /// Const string used for get the lis of recent operations in SDIS37.
         /// </summary>
-        public const string WebServiceRecentOperationListURL = "https://webservices.sdis37.fr/interventions/liste?direction=desc&sort=Depart";
+        public static URL WebServiceRecentOperationListURL = new URL("https://webservices.sdis37.fr/interventions/liste")
+        {
+            QueryParameters = new QueryParameter[]
+            { 
+                new QueryParameter("direction") { DefaultValue = "desc" },
+                new QueryParameter("sort") { DefaultValue = "Depart" },
+                new QueryParameter("page")
+            }
+        };
 
         /// <summary>
         /// Const string used for get the list of the recent operations in the user's firehouse.
         /// </summary>
-        public const string WebServiceRecentOperationListOfTheUserFirehouseURL = "https://webservices.sdis37.fr/interventions/listestats/undefined?direction=desc&sort=Depart";
+        public static URL WebServiceRecentOperationListOfTheUserFirehouseURL = new URL("https://webservices.sdis37.fr/interventions/listestats/undefined")
+        {
+            QueryParameters = new QueryParameter[]
+            {
+                new QueryParameter("direction") { DefaultValue = "desc" },
+                new QueryParameter("sort") { DefaultValue = "Depart" },
+                new QueryParameter("page")
+            }
+        };
 
         /// <summary>
         /// Const string used for get the availabilities of the firefighters of the user's firehouse.
         /// </summary>
-        public const string WebServiceFirefighterAvailabilityURL = "https://webservices.sdis37.fr/personnels";
+        public static URL WebServiceFirefighterAvailabilityURL = new URL("https://webservices.sdis37.fr/personnels");
     }
 }

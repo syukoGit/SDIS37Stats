@@ -80,6 +80,7 @@
     <Compile Include="Controls\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\Web\URL.cs" />
     <Compile Include="Extra\Theme\ColorPalette.cs" />
     <Compile Include="Extra\Theme\ITheme.cs" />
     <Compile Include="Extra\Theme\DarkTheme.cs" />
