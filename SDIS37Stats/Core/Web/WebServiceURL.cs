@@ -3,17 +3,17 @@
     internal class WebServiceURL
     {
         /// <summary>
-        /// Const string used for get the login url of the webservice.
+        /// Used for get the login url of the webservice.
         /// </summary>
         public static URL WebServicesLoginURL = new URL("https://webservices.sdis37.fr/users/login");
 
         /// <summary>
-        /// Const string used for get the main page of the webservice.
+        /// Used for get the main page of the webservice.
         /// </summary>
         public static URL WebServiceMainPageURL = new URL("https://webservices.sdis37.fr/interventions");
 
         /// <summary>
-        /// Const string used for get the number of operation in day.
+        /// Used for get the number of operation in day.
         /// </summary>
         public static URL WebServiceNbOperationInDayURL = new URL("https://webservices.sdis37.fr/interventions/nbInterventions")
         {
@@ -25,12 +25,12 @@
         };
 
         /// <summary>
-        /// Const string used for get the number of operations per hour.
+        /// Used for get the number of operations per hour.
         /// </summary>
         public static URL WebServiceStatsForOperationPerHourURL = new URL("https://webservices.sdis37.fr/interventions/getNb");
 
         /// <summary>
-        /// Const string used for get the lis of recent operations in SDIS37.
+        /// Used for get the lis of recent operations in SDIS37.
         /// </summary>
         public static URL WebServiceRecentOperationListURL = new URL("https://webservices.sdis37.fr/interventions/liste")
         {
@@ -43,7 +43,7 @@
         };
 
         /// <summary>
-        /// Const string used for get the list of the recent operations in the user's firehouse.
+        /// Used for get the list of the recent operations in the user's firehouse.
         /// </summary>
         public static URL WebServiceRecentOperationListOfTheUserFirehouseURL = new URL("https://webservices.sdis37.fr/interventions/listestats/undefined")
         {
@@ -56,7 +56,7 @@
         };
 
         /// <summary>
-        /// Const string used for get the availabilities of the firefighters of the user's firehouse.
+        /// Used for get the availabilities of the firefighters of the user's firehouse.
         /// </summary>
         public static URL WebServiceFirefighterAvailabilityURL = new URL("https://webservices.sdis37.fr/personnels");
     }
