@@ -56,6 +56,9 @@
         public Statistics(Web.WebService webService)
         {
             this.webService = webService;
+
+            this.Init();
+
             this.webService.OnMainPageLoaded += this.WebService_MainPage;
             this.webService.OnNbOperationInDayUpdated += this.WebService_OnNbOperationInDayUpdated;
             this.webService.OnNbOperationPerHourUpdated += this.WebService_NbOperationPerHour;
@@ -158,6 +161,12 @@
         #endregion
 
         #region Private
+        private void Init()
+        {
+            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceRecentOperationListURL, null, null));
+            this.webService.OnRecentOperationListUpdated += this.WebService_RecentOperationList_Init;
+        }
+
         private void UpdateOperation(Dictionary<int, Operation> operationList, Operation operationUpdated)
         {
             var operation = operationList.Where(c => operationUpdated.NumOperation == c.Key).Select(c => c.Value).ToList()[0];
@@ -171,6 +180,33 @@
         #endregion
 
         #region Event
+        private void WebService_RecentOperationList_Init(HtmlDocument htmlDocument)
+        {
+            try
+            {
+                var data = htmlDocument.GetElementsByTagName("tbody")[0];
+                var list = data.GetElementsByTagName("tr");
+
+                var paginator = htmlDocument.GetElementsByTagName("li").Cast<HtmlElement>();
+                var currentPage = int.Parse(paginator.Where(c => c.OuterHtml.Contains("class=active")).First().InnerText);
+                bool isLastPage = paginator.Where(c => c.OuterHtml.Contains("class=last")).Count() == 0;
+
+                if (isLastPage)
+                {
+                    this.webService.OnRecentOperationListUpdated -= this.WebService_RecentOperationList_Init;
+                    this.webService.RefreshAllValue();
+                }
+                else
+                {
+                    this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceRecentOperationListURL, new Dictionary<string, string> { { "page", (currentPage + 1).ToString() } }, null));
+                }
+            }
+            catch (Exception e)
+            {
+                Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error. " + e.Message);
+            }
+        }
+
         private void WebService_MainPage(HtmlDocument htmlDocument)
         {
             string dateTimeStr = htmlDocument.GetElementById("date").InnerText + " " + htmlDocument.GetElementById("last_refresh").InnerText;
@@ -189,7 +225,7 @@
 
             this.LastRefreshDateTimeLocal = DateTime.ParseExact(dateTimeStr, DateTimeFormat, DateTimeProvider);
 
-            this.webService.RefreshAllValue();
+            // this.webService.RefreshAllValue();
         }
 
         private void WebService_OnNbOperationInDayUpdated(HtmlDocument htmlDocument)

@@ -88,6 +88,9 @@
         /// </summary>
         public WebBrowser WebBrowser { get; private set; }
 
+
+        public Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> UrlQueue => this.urlQueue;
+
         #region Public
         /// <summary>
         /// Dispose all objects disposable.
@@ -104,7 +107,7 @@
         {
             Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "WebService -> Clear authentification cache");
             this.WebBrowser.Document.ExecCommand("ClearAuthenticationCache", false, null);
-            this.urlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null, null));
+            this.UrlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null, null));
 
             this.NavigateToNextUrl();
         }
@@ -121,11 +124,11 @@
                 { "date", DateTime.Now.ToString("dd/MM/yyyy") }
             };
 
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceStatsForOperationPerHourURL, null, null));
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListURL, null, null));
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL, null, null));
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
-            this.urlQueue.Enqueue((WebServiceURL.WebServiceNbOperationInDayURL, null, postDataNbOperationInDay));
+            this.UrlQueue.Enqueue((WebServiceURL.WebServiceStatsForOperationPerHourURL, null, null));
+            this.UrlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListURL, null, null));
+            this.UrlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL, null, null));
+            this.UrlQueue.Enqueue((WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
+            this.UrlQueue.Enqueue((WebServiceURL.WebServiceNbOperationInDayURL, null, postDataNbOperationInDay));
 
             this.NavigateToNextUrl();
         }
@@ -137,13 +140,13 @@
         /// </summary>
         private void NavigateToNextUrl()
         {
-            if (this.urlQueue.Count > 0 && !this.webPageDuringLoading)
+            if (this.UrlQueue.Count > 0 && !this.webPageDuringLoading)
             {
                 this.webPageDuringLoading = true;
 
                 this.startedTimeHttpRequest = DateTime.Now;
 
-                var (url, queryParams, postDatas) = this.urlQueue.Dequeue();
+                var (url, queryParams, postDatas) = this.UrlQueue.Dequeue();
 
                 this.WebBrowser.ScriptErrorsSuppressed = !url.UseJS;
 

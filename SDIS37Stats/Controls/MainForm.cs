@@ -40,8 +40,6 @@ namespace SDIS37Stats.Controls
 
                 this.Controls.Add(this.webService.WebBrowser);
             }
-
-            this.timer.Start();
         }
 
         #region Private
