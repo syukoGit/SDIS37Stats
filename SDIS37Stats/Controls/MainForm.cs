@@ -57,6 +57,7 @@ namespace SDIS37Stats.Controls
             this.ApplyTheme();
 
             this.webService = new Core.Web.WebService();
+            this.webService.OnUrlQueueEmpty += this.WebService_OnUrlQueueEmpty;
 
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
@@ -85,7 +86,7 @@ namespace SDIS37Stats.Controls
 
             // RecentOperationList
             this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationList.FirehouseName = c;
-            this.statistics.OnRecentOperationListUpdated += (c) =>
+            this.statistics.OnOperationListUpdated += (c) =>
             {
                 var value = c.Select(t => t.Value).ToList();
                 value.Sort((a, b) => b.Time.CompareTo(a.Time));
@@ -98,7 +99,7 @@ namespace SDIS37Stats.Controls
 
             // RecentOperationOfUserFirehouse
             this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + c + " :";
-            this.statistics.OnRecentOperationOfUserFirehouseUpdated += (c) =>
+            this.statistics.OnOperationListOfUserFirehouseUpdated += (c) =>
             {
                 var value = c.Select(t => t.Value).ToList();
                 value.Sort((a, b) => b.Time.CompareTo(a.Time));
@@ -133,14 +134,17 @@ namespace SDIS37Stats.Controls
                 this.webService.ClearSession();
             }
 
-            this.webService.RefreshAllValue();
+            this.statistics.Refresh();
 
             this.LastUpdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+        }
 
+        private void WebService_OnUrlQueueEmpty()
+        {
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
         }
-        
+
         private void SettingsPicture_MouseEnter(object sender, EventArgs e)
         {
             this.SettingsPicture.BorderStyle = BorderStyle.FixedSingle;

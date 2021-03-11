@@ -32,7 +32,7 @@
         /// <summary>
         /// Used for get the lis of recent operations in SDIS37.
         /// </summary>
-        public static URL WebServiceRecentOperationListURL = new URL("https://webservices.sdis37.fr/interventions/liste")
+        public static URL WebServiceOperationListURL = new URL("https://webservices.sdis37.fr/interventions/liste")
         {
             QueryParameters = new QueryParameter[]
             { 
@@ -45,7 +45,7 @@
         /// <summary>
         /// Used for get the list of the recent operations in the user's firehouse.
         /// </summary>
-        public static URL WebServiceRecentOperationListOfTheUserFirehouseURL = new URL("https://webservices.sdis37.fr/interventions/listestats/undefined")
+        public static URL WebServiceOperationListOfTheUserFirehouseURL = new URL("https://webservices.sdis37.fr/interventions/listestats/undefined")
         {
             QueryParameters = new QueryParameter[]
             {

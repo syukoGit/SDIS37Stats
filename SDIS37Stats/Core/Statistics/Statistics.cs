@@ -11,19 +11,12 @@
         private readonly Web.WebService webService;
 
         private static readonly System.Globalization.CultureInfo DateTimeProvider = new System.Globalization.CultureInfo("fr-FR");
-        private const string DateTimeFormat = "g";
 
         private string firehouseName = string.Empty;
 
         private int totalOperationInDay = 0;
 
-        private DateTime lastRefreshDateTimeLocal;
-
-        private List<int> operationPerHour;
-
-        private Dictionary<int, Operation> recentOperationList;
-
-        private Dictionary<int, Operation> recentOperationOfUserFirehouse;
+        private int[] operationPerHour = new int[24] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
         private List<FirefighterAvailability> firefighterAvailabilities;
 
@@ -37,17 +30,14 @@
         public delegate void OnTotalOperationInDayUpdatedHandler(int totalOperationInDay);
         public event OnTotalOperationInDayUpdatedHandler OnTotalOperationInDayUpdated;
 
-        public delegate void OnLastRefreshDateTimeLocalUpdatedHandler(DateTime lastRefreshDateTimeLocal);
-        public event OnLastRefreshDateTimeLocalUpdatedHandler OnLastRefreshDateTimeLocalUpdated;
-
         public delegate void OnOperationPerHourUpdatedHandler(List<int> operationPerHour);
         public event OnOperationPerHourUpdatedHandler OnOperationPerHourUpdated;
 
-        public delegate void OnRecentOperationListUpdatedHandler(Dictionary<int, Operation> recentOperationList);
-        public event OnRecentOperationListUpdatedHandler OnRecentOperationListUpdated;
+        public delegate void OnOperationListUpdatedHandler(Dictionary<int, Operation> operationList);
+        public event OnOperationListUpdatedHandler OnOperationListUpdated;
 
-        public delegate void OnRecentOperationOfUserFirehouseUpdatedHandler(Dictionary<int, Operation> recentOperationOfUserFirehouse);
-        public event OnRecentOperationOfUserFirehouseUpdatedHandler OnRecentOperationOfUserFirehouseUpdated;
+        public delegate void OnOperationOfUserFirehouseUpdatedHandler(Dictionary<int, Operation> operationListOfUserFirehouse);
+        public event OnOperationOfUserFirehouseUpdatedHandler OnOperationListOfUserFirehouseUpdated;
 
         public delegate void OnFirefighterAvailabilitiesUpdatedHandler(List<FirefighterAvailability> firefighterAvailabilities);
         public event OnFirefighterAvailabilitiesUpdatedHandler OnFirefighterAvailabilitiesUpdated;
@@ -60,11 +50,11 @@
             this.Init();
 
             this.webService.OnMainPageLoaded += this.WebService_MainPage;
-            this.webService.OnNbOperationInDayUpdated += this.WebService_OnNbOperationInDayUpdated;
+            this.webService.OnNbOperationInDayUpdated += this.WebService_NbOperationInDayUpdated;
             this.webService.OnNbOperationPerHourUpdated += this.WebService_NbOperationPerHour;
-            this.webService.OnRecentOperationListUpdated += this.WebService_RecentOperationList;
+            this.webService.OnOperationListUpdated += this.WebService_OperationList;
             this.webService.OnListFirefighterAvailabilityUpdated += this.WebService_FirefighterAvailabilityList;
-            this.webService.OnRecentOperationListOfUserFirehouseUpdated += this.WebService_RecentOperationListOfUserFirehouseUpdated;
+            this.webService.OnOperationListOfUserFirehouseUpdated += this.WebService_OperationListOfUserFirehouseUpdated;
         }
 
         #region Property
@@ -94,20 +84,7 @@
             }
         }
 
-        public DateTime LastRefreshDateTimeLocal
-        {
-            get
-            {
-                return this.lastRefreshDateTimeLocal;
-            }
-            private set
-            {
-                this.lastRefreshDateTimeLocal = value;
-                this.OnLastRefreshDateTimeLocalUpdated?.Invoke(this.lastRefreshDateTimeLocal);
-            }
-        }
-
-        public List<int> OperationPerHour
+        public int[] OperationPerHour
         {
             get
             {
@@ -116,35 +93,13 @@
             private set
             {
                 this.operationPerHour = value;
-                this.OnOperationPerHourUpdated?.Invoke(this.operationPerHour);
+                this.OnOperationPerHourUpdated?.Invoke(this.operationPerHour.ToList());
             }
         }
 
-        public Dictionary<int, Operation> RecentOperationList
-        {
-            get
-            {
-                return this.recentOperationList;
-            }
-            private set
-            {
-                this.recentOperationList = value;
-                this.OnRecentOperationListUpdated?.Invoke(this.recentOperationList);
-            }
-        }
+        public Dictionary<int, Operation> OperationList { get; private set; } = new Dictionary<int, Operation>();
 
-        public Dictionary<int, Operation> RecentOperationOfUserFirehouse
-        {
-            get
-            {
-                return this.recentOperationOfUserFirehouse;
-            }
-            private set
-            {
-                this.recentOperationOfUserFirehouse = value;
-                this.OnRecentOperationOfUserFirehouseUpdated?.Invoke(this.recentOperationOfUserFirehouse);
-            }
-        }
+        public Dictionary<int, Operation> OperationListOfUserFirehouse { get; private set; } = new Dictionary<int, Operation>();
 
         public List<FirefighterAvailability> FirefighterAvailabilities
         {
@@ -160,11 +115,22 @@
         }
         #endregion
 
+        #region Public
+        public void Refresh()
+        {
+            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListURL, null, null));
+            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
+            this.webService.NavigateToNextUrl();
+        }
+        #endregion
+
         #region Private
         private void Init()
         {
-            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceRecentOperationListURL, null, null));
-            this.webService.OnRecentOperationListUpdated += this.WebService_RecentOperationList_Init;
+            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListURL, null, null));
+            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
+            this.webService.OnOperationListUpdated += this.WebService_OperationList_Init;
+            this.webService.NavigateToNextUrl();
         }
 
         private void UpdateOperation(Dictionary<int, Operation> operationList, Operation operationUpdated)
@@ -180,25 +146,22 @@
         #endregion
 
         #region Event
-        private void WebService_RecentOperationList_Init(HtmlDocument htmlDocument)
+        private void WebService_OperationList_Init(HtmlDocument htmlDocument)
         {
             try
             {
-                var data = htmlDocument.GetElementsByTagName("tbody")[0];
-                var list = data.GetElementsByTagName("tr");
-
                 var paginator = htmlDocument.GetElementsByTagName("li").Cast<HtmlElement>();
                 var currentPage = int.Parse(paginator.Where(c => c.OuterHtml.Contains("class=active")).First().InnerText);
                 bool isLastPage = paginator.Where(c => c.OuterHtml.Contains("class=last")).Count() == 0;
 
                 if (isLastPage)
                 {
-                    this.webService.OnRecentOperationListUpdated -= this.WebService_RecentOperationList_Init;
-                    this.webService.RefreshAllValue();
+                    this.webService.OnOperationListUpdated -= this.WebService_OperationList_Init;
                 }
                 else
                 {
-                    this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceRecentOperationListURL, new Dictionary<string, string> { { "page", (currentPage + 1).ToString() } }, null));
+                    this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListURL, new Dictionary<string, string> { { "page", (currentPage + 1).ToString() } }, null));
+                    this.webService.NavigateToNextUrl();
                 }
             }
             catch (Exception e)
@@ -209,8 +172,6 @@
 
         private void WebService_MainPage(HtmlDocument htmlDocument)
         {
-            string dateTimeStr = htmlDocument.GetElementById("date").InnerText + " " + htmlDocument.GetElementById("last_refresh").InnerText;
-
             if (string.IsNullOrWhiteSpace(this.FirehouseName))
             {
                 foreach (HtmlElement item in htmlDocument.GetElementsByTagName("a"))
@@ -222,13 +183,9 @@
                     }
                 }
             }
-
-            this.LastRefreshDateTimeLocal = DateTime.ParseExact(dateTimeStr, DateTimeFormat, DateTimeProvider);
-
-            // this.webService.RefreshAllValue();
         }
 
-        private void WebService_OnNbOperationInDayUpdated(HtmlDocument htmlDocument)
+        private void WebService_NbOperationInDayUpdated(HtmlDocument htmlDocument)
         {
             this.TotalOperationInDay = int.Parse(htmlDocument.Body.InnerHtml.ToString());
         }
@@ -237,34 +194,55 @@
         {
             string data = htmlDocument.Body.InnerHtml;
             data = data.Replace("[", string.Empty).Replace("]", string.Empty);
-            this.OperationPerHour = data.Split(',').Select(c => int.Parse(c)).ToList();
+            this.OperationPerHour = data.Split(',').Select(c => int.Parse(c)).ToArray();
         }
 
-        private void WebService_RecentOperationList(HtmlDocument htmlDocument)
+        private void WebService_OperationList(HtmlDocument htmlDocument)
         {
             var data = htmlDocument.GetElementsByTagName("tbody")[0];
             var list = data.GetElementsByTagName("tr");
 
             bool newOperation = false;
-            var newList = this.RecentOperationList != null ? new Dictionary<int, Operation>(this.RecentOperationList) : new Dictionary<int, Operation>();
 
             foreach (HtmlElement item in list)
             {
-                var operation = HtmlElementToOperation(item);
+                var operation = Statistics.HtmlElementToOperation(item);
 
-                if (newList.Where(c => c.Key == operation.NumOperation).Count() > 0)
+                if (this.OperationList.ContainsKey(operation.NumOperation))
                 {
-                    this.UpdateOperation(newList, operation);
+                    this.UpdateOperation(this.OperationList, operation);
                 }
                 else
                 {
-                    newList.Add(operation.NumOperation, operation);
+                    this.OperationList.Add(operation.NumOperation, operation);
+                    if (operation.VehiculeEnrolled.Where(c => c.Contains(this.FirehouseName)).Count() > 0)
+                    {
+                        if (this.OperationListOfUserFirehouse.ContainsKey(operation.NumOperation))
+                        {
+                            this.UpdateOperation(this.OperationListOfUserFirehouse, operation);
+                        }
+                        else
+                        {
+                            this.OperationListOfUserFirehouse.Add(operation.NumOperation, operation);
+                        }
+                    }
                     newOperation = true;
                 }
             }
 
-            this.RecentOperationList = newList;
-            //this.RecentOperationOfUserFirehouse = newList.Where(c => c.Value.VehiculeEnrolled.Where(t => t.Contains(this.FirehouseName)).Count() > 0).Select(c => c.Value).ToList();
+            this.TotalOperationInDay = this.OperationList.Where(c => c.Value.Time.Date == DateTime.Now.Date).Count();
+
+            var operationPerHour = this.OperationList.Values.GroupBy(c => c.Time.Hour, c => c.Time, (hour, times) => (Hour: hour, Count: times.Count())).ToArray();
+            Array.Sort(operationPerHour, (x, y) => x.Hour.CompareTo(y.Hour));
+            int[] operationPerHourArray = new int[24] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            foreach (var (Hour, Count) in operationPerHour)
+            {
+                operationPerHourArray[Hour] = Count;
+            }
+            this.OperationPerHour = operationPerHourArray;
+
+            this.OnOperationListUpdated?.Invoke(this.OperationList);
+            this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
 
             if (newOperation)
             {
@@ -324,28 +302,26 @@
             this.FirefighterAvailabilities = newList;
         }
 
-        private void WebService_RecentOperationListOfUserFirehouseUpdated(HtmlDocument htmlDocument)
+        private void WebService_OperationListOfUserFirehouseUpdated(HtmlDocument htmlDocument)
         {
             var data = htmlDocument.GetElementsByTagName("tbody")[0];
             var list = data.GetElementsByTagName("tr");
-
-            var newList = this.RecentOperationOfUserFirehouse != null ? new Dictionary<int, Operation>(this.RecentOperationOfUserFirehouse) : new Dictionary<int, Operation>();
 
             foreach (HtmlElement item in list)
             {
                 var operation = Statistics.HtmlElementToOperation(item);
 
-                if (newList.Where(c => c.Key == operation.NumOperation).Count() > 0)
+                if (this.OperationListOfUserFirehouse.ContainsKey(operation.NumOperation))
                 {
-                    this.UpdateOperation(newList, operation);
+                    this.UpdateOperation(this.OperationList, operation);
                 }
                 else
                 {
-                    newList.Add(operation.NumOperation, operation);
+                    this.OperationListOfUserFirehouse.Add(operation.NumOperation, operation);
                 }
             }
 
-            this.RecentOperationOfUserFirehouse = newList;
+            this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
         }
         #endregion
 
