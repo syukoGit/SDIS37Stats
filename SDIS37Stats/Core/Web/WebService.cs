@@ -19,6 +19,8 @@
         /// </summary>
         private readonly Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> urlQueue = new Queue<(URL, Dictionary<string, string>, Dictionary<string, string>)>();
 
+        private int connectionState = 0;
+
         /// <summary>
         /// Private integer for get and set a connection state.
         /// </summary>
@@ -27,7 +29,29 @@
         /// 1 : attempt connection.
         /// 2 : connection success.
         /// </remarks>
-        private int connectionState = 0;
+        private int ConnectionState
+        {
+            get
+            {
+                return this.connectionState;
+            }
+            set
+            {
+                this.connectionState = value;
+                switch (this.connectionState)
+                {
+                    default:
+                    case 0:
+                    case 1:
+                        this.isLogged = false;
+                        break;
+                    case 2:
+                        Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "Successful authentication");
+                        this.isLogged = true;
+                        break;
+                }
+            }
+        }
 
         /// <summary>
         /// Started date and time to http request is send.
@@ -40,6 +64,8 @@
         /// </summary>
         private bool webPageDuringLoading = false;
 
+        private bool isLogged = false;
+
         public delegate void OnMainPageLoadedHandler(HtmlDocument htmlDocument);
         public event OnMainPageLoadedHandler OnMainPageLoaded;
 
@@ -49,22 +75,25 @@
         public delegate void OnNbOperationPerHourUpdatedHandler(HtmlDocument htmlDocument);
         public event OnNbOperationPerHourUpdatedHandler OnNbOperationPerHourUpdated;
 
-        public delegate void OnListRecentOperationUpdatedHandler(HtmlDocument htmlDocument);
-        public event OnListRecentOperationUpdatedHandler OnRecentOperationListUpdated;
+        public delegate void OnOperationListUpdatedHandler(HtmlDocument htmlDocument);
+        public event OnOperationListUpdatedHandler OnOperationListUpdated;
 
-        public delegate void OnRecentOperationListOfUserFirehouseUpdatedHandler(HtmlDocument htmlDocument);
-        public event OnRecentOperationListOfUserFirehouseUpdatedHandler OnRecentOperationListOfUserFirehouseUpdated;
+        public delegate void OnOperationListOfUserFirehouseUpdatedHandler(HtmlDocument htmlDocument);
+        public event OnOperationListOfUserFirehouseUpdatedHandler OnOperationListOfUserFirehouseUpdated;
 
         public delegate void OnListFirefighterAvailabilityUpdatedHandler(HtmlDocument htmlDocument);
         public event OnListFirefighterAvailabilityUpdatedHandler OnListFirefighterAvailabilityUpdated;
+
+        public delegate void OnUrlQueueEmptyHandler();
+        public event OnUrlQueueEmptyHandler OnUrlQueueEmpty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebService" /> class.
         /// </summary>
         public WebService()
         {
-            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceRecentOperationListURL.Url);
-            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL.Url);
+            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceOperationListURL.Url);
+            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceOperationListOfTheUserFirehouseURL.Url);
 
             this.WebBrowser = new WebBrowser();
 
@@ -88,7 +117,6 @@
         /// </summary>
         public WebBrowser WebBrowser { get; private set; }
 
-
         public Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> UrlQueue => this.urlQueue;
 
         #region Public
@@ -111,68 +139,54 @@
 
             this.NavigateToNextUrl();
         }
-
-        /// <summary>
-        /// Refreshed the all values used by statistics class.
-        /// </summary>
-        public void RefreshAllValue()
-        {
-            Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "WebService -> Refresh");
-
-            Dictionary<string, string> postDataNbOperationInDay = new Dictionary<string, string>
-            {
-                { "date", DateTime.Now.ToString("dd/MM/yyyy") }
-            };
-
-            this.UrlQueue.Enqueue((WebServiceURL.WebServiceStatsForOperationPerHourURL, null, null));
-            this.UrlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListURL, null, null));
-            this.UrlQueue.Enqueue((WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL, null, null));
-            this.UrlQueue.Enqueue((WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
-            this.UrlQueue.Enqueue((WebServiceURL.WebServiceNbOperationInDayURL, null, postDataNbOperationInDay));
-
-            this.NavigateToNextUrl();
-        }
         #endregion
 
-        #region Private
         /// <summary>
         /// Sets the next url of the queue to <see cref="WebBrowser"/>
         /// </summary>
-        private void NavigateToNextUrl()
+        public void NavigateToNextUrl()
         {
-            if (this.UrlQueue.Count > 0 && !this.webPageDuringLoading)
+            if (this.UrlQueue.Count > 0)
             {
-                this.webPageDuringLoading = true;
-
-                this.startedTimeHttpRequest = DateTime.Now;
-
-                var (url, queryParams, postDatas) = this.UrlQueue.Dequeue();
-
-                this.WebBrowser.ScriptErrorsSuppressed = !url.UseJS;
-
-                var (strUrl, strPostDatas) = url.GetAbsoluteUrlAndPostData(queryParams, postDatas);
-
-                if (string.IsNullOrEmpty(strPostDatas))
+                if (!this.webPageDuringLoading && this.isLogged)
                 {
-                    this.WebBrowser.Navigate(strUrl);
-                }
-                else
-                {
-                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(strPostDatas);
-                    this.WebBrowser.Navigate(strUrl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
-                }
+                    this.webPageDuringLoading = true;
 
-                Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request. URL: " + strUrl + (string.IsNullOrEmpty(strPostDatas) ? string.Empty : " (Post data : " + strPostDatas + ")"));
+                    this.startedTimeHttpRequest = DateTime.Now;
+
+                    var (url, queryParams, postDatas) = this.UrlQueue.Dequeue();
+
+                    this.WebBrowser.ScriptErrorsSuppressed = !url.UseJS;
+
+                    var (strUrl, strPostDatas) = url.GetAbsoluteUrlAndPostData(queryParams, postDatas);
+
+                    if (string.IsNullOrEmpty(strPostDatas))
+                    {
+                        this.WebBrowser.Navigate(strUrl);
+                    }
+                    else
+                    {
+                        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(strPostDatas);
+                        this.WebBrowser.Navigate(strUrl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
+                    }
+
+                    Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request. URL: " + strUrl + (string.IsNullOrEmpty(strPostDatas) ? string.Empty : " (Post data : " + strPostDatas + ")"));
+                }
+            }
+            else
+            {
+                this.OnUrlQueueEmpty?.Invoke();
             }
         }
 
+        #region Private
         /// <summary>
         /// Called when the <see cref="WebBrowser"/> loaded the <see cref="WebServiceURL.WebServicesLoginURL"/> url.
         /// </summary>
         /// <param name="document">Html document of the login page</param>
         private void LoginPageLoaded(HtmlDocument document)
         {
-            if (this.connectionState == 1)
+            if (this.ConnectionState == 1)
             {
                 Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Authentification error. Invalid username or password");
                 return;
@@ -180,7 +194,7 @@
 
             Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "Connection attempt. Username: " + Username);
 
-            this.connectionState = 1;
+            this.ConnectionState = 1;
 
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
@@ -217,6 +231,7 @@
         /// <param name="document">Html document of the main page</param>
         private void MainPageLoaded(HtmlDocument document)
         {
+            this.isLogged = true;
             this.OnMainPageLoaded?.Invoke(document);
             this.NavigateToNextUrl();
         }
@@ -235,9 +250,9 @@
         /// Called when the web page with the recent operations is loaded.
         /// </summary>
         /// <param name="document">Html document with the recent operations</param>
-        private void RecentOperationListLoaded(HtmlDocument document)
+        private void OperationListLoaded(HtmlDocument document)
         {
-            this.OnRecentOperationListUpdated?.Invoke(document);
+            this.OnOperationListUpdated?.Invoke(document);
             this.NavigateToNextUrl();
         }
 
@@ -245,9 +260,9 @@
         /// Called when the web page with the recent operations of the user's firehouse is loaded.
         /// </summary>
         /// <param name="document">Html document with the recent operations of the user's firehouse</param>
-        private void RecentOperationListOfUserFirehouseLoaded(HtmlDocument document)
+        private void OperationListOfUserFirehouseLoaded(HtmlDocument document)
         {
-            this.OnRecentOperationListOfUserFirehouseUpdated?.Invoke(document);
+            this.OnOperationListOfUserFirehouseUpdated?.Invoke(document);
             this.NavigateToNextUrl();
         }
 
@@ -321,9 +336,9 @@
                     {
                         this.NbOperationPerHourLoaded(document);
                     }
-                    else if (urlWithoutQuery == WebServiceURL.WebServiceRecentOperationListURL.Url)
+                    else if (urlWithoutQuery == WebServiceURL.WebServiceOperationListURL.Url)
                     {
-                        this.RecentOperationListLoaded(document);
+                        this.OperationListLoaded(document);
                     }
                     else if (urlWithoutQuery == WebServiceURL.WebServiceFirefighterAvailabilityURL.Url)
                     {
@@ -333,9 +348,9 @@
                     {
                         this.NbOperationInDayLoaded(document);
                     }
-                    else if (urlWithoutQuery == WebServiceURL.WebServiceRecentOperationListOfTheUserFirehouseURL.Url)
+                    else if (urlWithoutQuery == WebServiceURL.WebServiceOperationListOfTheUserFirehouseURL.Url)
                     {
-                        this.RecentOperationListOfUserFirehouseLoaded(document);
+                        this.OperationListOfUserFirehouseLoaded(document);
                     }
                     else
                     {
