@@ -20,6 +20,8 @@
 
         private List<FirefighterAvailability> firefighterAvailabilities;
 
+        private bool initializationInProgress = true;
+
         #region EventHandler
         public delegate void OnNewOperationHandler();
         public event OnNewOperationHandler OnNewOperation;
@@ -129,6 +131,7 @@
         {
             this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListURL, null, null));
             this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
+            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListOfTheUserFirehouseURL, null, null));
             this.webService.OnOperationListUpdated += this.WebService_OperationList_Init;
             this.webService.NavigateToNextUrl();
         }
@@ -151,12 +154,23 @@
             try
             {
                 var paginator = htmlDocument.GetElementsByTagName("li").Cast<HtmlElement>();
-                var currentPage = int.Parse(paginator.Where(c => c.OuterHtml.Contains("class=active")).First().InnerText);
+
+                int currentPage;
+                if (paginator.Where(c => c.OuterHtml.Contains("class=active")).Count() > 0)
+                {
+                    currentPage = int.Parse(paginator.Where(c => c.OuterHtml.Contains("class=active")).First().InnerText);
+                }
+                else
+                {
+                    currentPage = 1;
+                }
+
                 bool isLastPage = paginator.Where(c => c.OuterHtml.Contains("class=last")).Count() == 0;
 
                 if (isLastPage)
                 {
                     this.webService.OnOperationListUpdated -= this.WebService_OperationList_Init;
+                    this.initializationInProgress = false;
                 }
                 else
                 {
@@ -244,7 +258,7 @@
             this.OnOperationListUpdated?.Invoke(this.OperationList);
             this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
 
-            if (newOperation)
+            if (newOperation && !this.initializationInProgress)
             {
                 this.OnNewOperation?.Invoke();
             }

@@ -19,6 +19,8 @@
         /// </summary>
         private readonly Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> urlQueue = new Queue<(URL, Dictionary<string, string>, Dictionary<string, string>)>();
 
+        private int connectionState = 0;
+
         /// <summary>
         /// Private integer for get and set a connection state.
         /// </summary>
@@ -27,7 +29,29 @@
         /// 1 : attempt connection.
         /// 2 : connection success.
         /// </remarks>
-        private int connectionState = 0;
+        private int ConnectionState
+        {
+            get
+            {
+                return this.connectionState;
+            }
+            set
+            {
+                this.connectionState = value;
+                switch (this.connectionState)
+                {
+                    default:
+                    case 0:
+                    case 1:
+                        this.isLogged = false;
+                        break;
+                    case 2:
+                        Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "Successful authentication");
+                        this.isLogged = true;
+                        break;
+                }
+            }
+        }
 
         /// <summary>
         /// Started date and time to http request is send.
@@ -39,6 +63,8 @@
         /// Gets or sets a boolean if a web page is during loading.
         /// </summary>
         private bool webPageDuringLoading = false;
+
+        private bool isLogged = false;
 
         public delegate void OnMainPageLoadedHandler(HtmlDocument htmlDocument);
         public event OnMainPageLoadedHandler OnMainPageLoaded;
@@ -122,7 +148,7 @@
         {
             if (this.UrlQueue.Count > 0)
             {
-                if (!this.webPageDuringLoading)
+                if (!this.webPageDuringLoading && this.isLogged)
                 {
                     this.webPageDuringLoading = true;
 
@@ -160,7 +186,7 @@
         /// <param name="document">Html document of the login page</param>
         private void LoginPageLoaded(HtmlDocument document)
         {
-            if (this.connectionState == 1)
+            if (this.ConnectionState == 1)
             {
                 Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Authentification error. Invalid username or password");
                 return;
@@ -168,7 +194,7 @@
 
             Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "Connection attempt. Username: " + Username);
 
-            this.connectionState = 1;
+            this.ConnectionState = 1;
 
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
@@ -205,6 +231,7 @@
         /// <param name="document">Html document of the main page</param>
         private void MainPageLoaded(HtmlDocument document)
         {
+            this.isLogged = true;
             this.OnMainPageLoaded?.Invoke(document);
             this.NavigateToNextUrl();
         }
