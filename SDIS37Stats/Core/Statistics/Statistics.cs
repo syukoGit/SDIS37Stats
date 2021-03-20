@@ -52,7 +52,7 @@
             this.webService.OnMainPageLoaded += this.WebService_MainPage;
             this.webService.OnOperationListUpdated += this.WebService_OperationList;
             this.webService.OnListFirefighterAvailabilityUpdated += this.WebService_FirefighterAvailabilityList;
-            this.webService.OnOperationListOfUserFirehouseUpdated += this.WebService_OperationListOfUserFirehouseUpdated;
+            this.webService.OnOperationListOfUserFirehouseUpdated += this.WebService_OperationList;
         }
 
         #region Property
@@ -71,7 +71,7 @@
 
         public int TotalOperationToday => this.operationDictionary.Where(c => c.Value.Time.Date == DateTime.Now.Date).Count();
 
-        public int[] OperationPerHour
+        public int[] OperationPerHourToday
         {
             get
             {
@@ -195,7 +195,8 @@
             var data = htmlDocument.GetElementsByTagName("tbody")[0];
             var list = data.GetElementsByTagName("tr");
 
-            bool newOperation = false;
+            var newOperationList = new List<Operation>();
+            var updatedOperationList = new List<Operation>();
 
             foreach (HtmlElement item in list)
             {
@@ -204,20 +205,21 @@
                 if (this.operationDictionary.ContainsKey(operation.NumOperation))
                 {
                     this.UpdateOperation(this.operationDictionary, operation);
+                    updatedOperationList.Add(operation);
                 }
                 else
                 {
                     this.operationDictionary.Add(operation.NumOperation, operation);
-                    newOperation = true;
+                    newOperationList.Add(operation);
                 }
             }
 
             this.OnTotalOperationInDayUpdated?.Invoke(this.TotalOperationToday);
-            this.OnOperationPerHourUpdated?.Invoke(this.OperationPerHour.ToList());
+            this.OnOperationPerHourUpdated?.Invoke(this.OperationPerHourToday.ToList());
             this.OnOperationListUpdated?.Invoke(this.OperationList);
             this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
 
-            if (newOperation && !this.initializationInProgress)
+            if (newOperationList.Count() > 0 && !this.initializationInProgress)
             {
                 this.OnNewOperation?.Invoke();
             }
@@ -273,28 +275,6 @@
             }
 
             this.FirefighterAvailabilities = newList;
-        }
-
-        private void WebService_OperationListOfUserFirehouseUpdated(HtmlDocument htmlDocument)
-        {
-            var data = htmlDocument.GetElementsByTagName("tbody")[0];
-            var list = data.GetElementsByTagName("tr");
-
-            foreach (HtmlElement item in list)
-            {
-                var operation = Statistics.HtmlElementToOperation(item);
-
-                if (this.operationDictionary.ContainsKey(operation.NumOperation))
-                {
-                    this.UpdateOperation(this.operationDictionary, operation);
-                }
-                else
-                {
-                    this.operationDictionary.Add(operation.NumOperation, operation);
-                }
-            }
-
-            this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
         }
         #endregion
 
