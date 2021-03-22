@@ -147,7 +147,7 @@
                 var paginator = htmlDocument.GetElementsByTagName("li").Cast<HtmlElement>();
 
                 int currentPage;
-                if (paginator.Where(c => c.OuterHtml.Contains("class=active")).Count() > 0)
+                if (paginator.Where(c => c.OuterHtml.Contains("class=active")).Any())
                 {
                     currentPage = int.Parse(paginator.Where(c => c.OuterHtml.Contains("class=active")).First().InnerText);
                 }
@@ -156,7 +156,7 @@
                     currentPage = 1;
                 }
 
-                bool isLastPage = paginator.Where(c => c.OuterHtml.Contains("class=last")).Count() == 0;
+                bool isLastPage = !paginator.Where(c => c.OuterHtml.Contains("class=last")).Any();
 
                 if (isLastPage)
                 {
@@ -219,7 +219,7 @@
             this.OnOperationListUpdated?.Invoke(this.OperationList);
             this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
 
-            if (newOperationList.Count() > 0 && !this.initializationInProgress)
+            if (newOperationList.Any() && !this.initializationInProgress)
             {
                 this.OnNewOperation?.Invoke();
             }
