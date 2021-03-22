@@ -14,13 +14,11 @@
 
         private string firehouseName = string.Empty;
 
-        private int totalOperationInDay = 0;
-
-        private int[] operationPerHour = new int[24] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
         private List<FirefighterAvailability> firefighterAvailabilities;
 
         private bool initializationInProgress = true;
+
+        private readonly Dictionary<int, Operation> operationDictionary = new Dictionary<int, Operation>();
 
         #region EventHandler
         public delegate void OnNewOperationHandler();
@@ -35,10 +33,10 @@
         public delegate void OnOperationPerHourUpdatedHandler(List<int> operationPerHour);
         public event OnOperationPerHourUpdatedHandler OnOperationPerHourUpdated;
 
-        public delegate void OnOperationListUpdatedHandler(Dictionary<int, Operation> operationList);
+        public delegate void OnOperationListUpdatedHandler(List<Operation> operationList);
         public event OnOperationListUpdatedHandler OnOperationListUpdated;
 
-        public delegate void OnOperationOfUserFirehouseUpdatedHandler(Dictionary<int, Operation> operationListOfUserFirehouse);
+        public delegate void OnOperationOfUserFirehouseUpdatedHandler(List<Operation> operationListOfUserFirehouse);
         public event OnOperationOfUserFirehouseUpdatedHandler OnOperationListOfUserFirehouseUpdated;
 
         public delegate void OnFirefighterAvailabilitiesUpdatedHandler(List<FirefighterAvailability> firefighterAvailabilities);
@@ -52,11 +50,9 @@
             this.Init();
 
             this.webService.OnMainPageLoaded += this.WebService_MainPage;
-            this.webService.OnNbOperationInDayUpdated += this.WebService_NbOperationInDayUpdated;
-            this.webService.OnNbOperationPerHourUpdated += this.WebService_NbOperationPerHour;
             this.webService.OnOperationListUpdated += this.WebService_OperationList;
             this.webService.OnListFirefighterAvailabilityUpdated += this.WebService_FirefighterAvailabilityList;
-            this.webService.OnOperationListOfUserFirehouseUpdated += this.WebService_OperationListOfUserFirehouseUpdated;
+            this.webService.OnOperationListOfUserFirehouseUpdated += this.WebService_OperationList;
         }
 
         #region Property
@@ -73,35 +69,30 @@
             }
         }
 
-        public int TotalOperationInDay
+        public int TotalOperationToday => this.operationDictionary.Where(c => c.Value.Time.Date == DateTime.Now.Date).Count();
+
+        public int[] OperationPerHourToday
         {
             get
             {
-                return this.totalOperationInDay;
-            }
-            private set
-            {
-                this.totalOperationInDay = value;
-                this.OnTotalOperationInDayUpdated?.Invoke(this.totalOperationInDay);
+                var operationListToday = this.operationDictionary.Values.Where(c => c.Time.Date == DateTime.Now.Date);
+
+                var operationPerHour = operationListToday.GroupBy(c => c.Time.Hour, c => c.Time, (hour, times) => (Hour: hour, Count: times.Count())).ToArray();
+                Array.Sort(operationPerHour, (x, y) => x.Hour.CompareTo(y.Hour));
+
+                int[] operationPerHourArray = new int[24] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                foreach (var (Hour, Count) in operationPerHour)
+                {
+                    operationPerHourArray[Hour] = Count;
+                }
+
+                return operationPerHourArray;
             }
         }
 
-        public int[] OperationPerHour
-        {
-            get
-            {
-                return this.operationPerHour;
-            }
-            private set
-            {
-                this.operationPerHour = value;
-                this.OnOperationPerHourUpdated?.Invoke(this.operationPerHour.ToList());
-            }
-        }
+        public List<Operation> OperationList => this.operationDictionary.Select(c => c.Value).ToList();
 
-        public Dictionary<int, Operation> OperationList { get; private set; } = new Dictionary<int, Operation>();
-
-        public Dictionary<int, Operation> OperationListOfUserFirehouse { get; private set; } = new Dictionary<int, Operation>();
+        public List<Operation> OperationListOfUserFirehouse => this.operationDictionary.Select(c => c.Value).Where(c => c.VehiculeEnrolled.Any(t => t.Contains(this.FirehouseName))).ToList();
 
         public List<FirefighterAvailability> FirefighterAvailabilities
         {
@@ -156,7 +147,7 @@
                 var paginator = htmlDocument.GetElementsByTagName("li").Cast<HtmlElement>();
 
                 int currentPage;
-                if (paginator.Where(c => c.OuterHtml.Contains("class=active")).Count() > 0)
+                if (paginator.Where(c => c.OuterHtml.Contains("class=active")).Any())
                 {
                     currentPage = int.Parse(paginator.Where(c => c.OuterHtml.Contains("class=active")).First().InnerText);
                 }
@@ -165,7 +156,7 @@
                     currentPage = 1;
                 }
 
-                bool isLastPage = paginator.Where(c => c.OuterHtml.Contains("class=last")).Count() == 0;
+                bool isLastPage = !paginator.Where(c => c.OuterHtml.Contains("class=last")).Any();
 
                 if (isLastPage)
                 {
@@ -199,66 +190,36 @@
             }
         }
 
-        private void WebService_NbOperationInDayUpdated(HtmlDocument htmlDocument)
-        {
-            this.TotalOperationInDay = int.Parse(htmlDocument.Body.InnerHtml.ToString());
-        }
-
-        private void WebService_NbOperationPerHour(HtmlDocument htmlDocument)
-        {
-            string data = htmlDocument.Body.InnerHtml;
-            data = data.Replace("[", string.Empty).Replace("]", string.Empty);
-            this.OperationPerHour = data.Split(',').Select(c => int.Parse(c)).ToArray();
-        }
-
         private void WebService_OperationList(HtmlDocument htmlDocument)
         {
             var data = htmlDocument.GetElementsByTagName("tbody")[0];
             var list = data.GetElementsByTagName("tr");
 
-            bool newOperation = false;
+            var newOperationList = new List<Operation>();
+            var updatedOperationList = new List<Operation>();
 
             foreach (HtmlElement item in list)
             {
                 var operation = Statistics.HtmlElementToOperation(item);
 
-                if (this.OperationList.ContainsKey(operation.NumOperation))
+                if (this.operationDictionary.ContainsKey(operation.NumOperation))
                 {
-                    this.UpdateOperation(this.OperationList, operation);
+                    this.UpdateOperation(this.operationDictionary, operation);
+                    updatedOperationList.Add(operation);
                 }
                 else
                 {
-                    this.OperationList.Add(operation.NumOperation, operation);
-                    if (operation.VehiculeEnrolled.Where(c => c.Contains(this.FirehouseName)).Count() > 0)
-                    {
-                        if (this.OperationListOfUserFirehouse.ContainsKey(operation.NumOperation))
-                        {
-                            this.UpdateOperation(this.OperationListOfUserFirehouse, operation);
-                        }
-                        else
-                        {
-                            this.OperationListOfUserFirehouse.Add(operation.NumOperation, operation);
-                        }
-                    }
-                    newOperation = true;
+                    this.operationDictionary.Add(operation.NumOperation, operation);
+                    newOperationList.Add(operation);
                 }
             }
 
-            this.TotalOperationInDay = this.OperationList.Where(c => c.Value.Time.Date == DateTime.Now.Date).Count();
-
-            var operationPerHour = this.OperationList.Values.GroupBy(c => c.Time.Hour, c => c.Time, (hour, times) => (Hour: hour, Count: times.Count())).ToArray();
-            Array.Sort(operationPerHour, (x, y) => x.Hour.CompareTo(y.Hour));
-            int[] operationPerHourArray = new int[24] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            foreach (var (Hour, Count) in operationPerHour)
-            {
-                operationPerHourArray[Hour] = Count;
-            }
-            this.OperationPerHour = operationPerHourArray;
-
+            this.OnTotalOperationInDayUpdated?.Invoke(this.TotalOperationToday);
+            this.OnOperationPerHourUpdated?.Invoke(this.OperationPerHourToday.ToList());
             this.OnOperationListUpdated?.Invoke(this.OperationList);
             this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
 
-            if (newOperation && !this.initializationInProgress)
+            if (newOperationList.Any() && !this.initializationInProgress)
             {
                 this.OnNewOperation?.Invoke();
             }
@@ -314,28 +275,6 @@
             }
 
             this.FirefighterAvailabilities = newList;
-        }
-
-        private void WebService_OperationListOfUserFirehouseUpdated(HtmlDocument htmlDocument)
-        {
-            var data = htmlDocument.GetElementsByTagName("tbody")[0];
-            var list = data.GetElementsByTagName("tr");
-
-            foreach (HtmlElement item in list)
-            {
-                var operation = Statistics.HtmlElementToOperation(item);
-
-                if (this.OperationListOfUserFirehouse.ContainsKey(operation.NumOperation))
-                {
-                    this.UpdateOperation(this.OperationList, operation);
-                }
-                else
-                {
-                    this.OperationListOfUserFirehouse.Add(operation.NumOperation, operation);
-                }
-            }
-
-            this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
         }
         #endregion
 
