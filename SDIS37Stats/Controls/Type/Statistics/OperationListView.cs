@@ -13,7 +13,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
         private int nbOperationDisplayed = 15;
 
-        private IEnumerable<Core.Statistics.Operation> data;
+        private readonly List<Core.Statistics.Operation> data = new List<Core.Statistics.Operation>();
 
         public int NbOperationDisplayed
         {
@@ -25,32 +25,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             {
                 this.nbOperationDisplayed = value;
 
-                if (this.nbOperationDisplayed > this.tableOperationViews.Controls.Count)
-                {
-                    int nbNewRow = this.nbOperationDisplayed - this.tableOperationViews.Controls.Count;
-                    for (int i = 0; i < nbNewRow; i++)
-                    {
-                        this.tableOperationViews.Controls.Add(new OperationView()
-                        {
-                            Visible = false,
-                            Dock = DockStyle.Fill
-                        });
-                    }
-                }
-                else if (this.nbOperationDisplayed < this.tableOperationViews.Controls.Count)
-                {
-                    while (this.tableOperationViews.Controls.Count - this.nbOperationDisplayed > 0)
-                    {
-                        var item = this.tableOperationViews.Controls[this.tableOperationViews.Controls.Count - 1];
-                        this.tableOperationViews.Controls.Remove(item);
-                        item.Dispose();
-                    }
-                }
-
-                if (this.data != null)
-                {
-                    this.SetValue(this.data.ToList());
-                }
+                this.SetOperationViews();
             }
         }
 
@@ -74,7 +49,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
         public OperationListView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.timerAutoScroll.Start();
         }
@@ -99,39 +74,85 @@ namespace SDIS37Stats.Controls.Type.Statistics
             }
         }
 
-        public void SetValue(List<Core.Statistics.Operation> operations)
+        public void AddOperations(IEnumerable<Core.Statistics.Operation> operations)
+        {
+            this.data.AddRange(operations.Where(c => !this.data.Select(t => t.NumOperation).Contains(c.NumOperation)));
+
+            this.SetOperationViews();
+        }
+
+        public void AddOperation(Core.Statistics.Operation operation)
+        {
+            if (this.data.Any(c => c.NumOperation == operation.NumOperation))
+            {
+                this.data.Add(operation);
+            }
+
+            this.SetOperationViews();
+        }
+        #endregion
+
+        #region Private
+        private void SetOperationViews()
         {
             this.timerAutoScroll.Stop();
 
-            this.data = operations;
-
-            var settings = MainForm.Instance == null || MainForm.Instance.Settings == null ? new Core.Syst.Setting() : MainForm.Instance.Settings;
-
-            int i;
-            for (i = 0; i < this.NbOperationDisplayed && i < operations.Count(); i++)
+            if (this.tableOperationViews.Controls.Count > this.nbOperationDisplayed)
             {
-                ((OperationView)this.tableOperationViews.Controls[i]).Operation = operations[i];
-
-                if (this.HighlightOperationOfYourFirehouse && !string.IsNullOrWhiteSpace(this.FirehouseName))
+                for (int i = this.tableOperationViews.Controls.Count - 1; i >= this.nbOperationDisplayed || i >= this.data.Count(); i--)
                 {
-                    if (operations[i].VehiculeEnrolled.Where(c => c.Contains(this.FirehouseName)).Count() > 0)
-                    {
-                        this.tableOperationViews.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorHighlightItem();
-                        this.tableOperationViews.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorHighlightItem();
-                    }
-                    else
-                    {
-                        this.tableOperationViews.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorItem();
-                        this.tableOperationViews.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorItem();
-                    }
+                    var operationView = this.tableOperationViews.Controls[i];
+                    this.tableOperationViews.Controls.Remove(operationView);
+                    operationView?.Dispose();
                 }
-
-                this.tableOperationViews.Controls[i].Visible = true;
+            }
+            else
+            {
+                for (int i = this.tableOperationViews.Controls.Count; i < this.nbOperationDisplayed && i < this.data.Count(); i++)
+                {
+                    this.tableOperationViews.Controls.Add(new OperationView()
+                    {
+                        Dock = DockStyle.Fill
+                    });
+                }
             }
 
-            for (; i < this.NbOperationDisplayed; i++)
+            if (this.data != null && this.data.Any())
             {
-                this.tableOperationViews.Controls[i].Visible = false;
+                this.data.Sort((a, b) => b.Time.CompareTo(a.Time));
+
+                System.Collections.IList controlList = this.tableOperationViews.Controls;
+                for (int i = 0; i < controlList.Count; i++)
+                {
+                    OperationView operationView = (OperationView)controlList[i];
+
+                    var settings = MainForm.Instance == null || MainForm.Instance.Settings == null ? new Core.Syst.Setting() : MainForm.Instance.Settings;
+
+                    if (operationView.Operation != this.data[i])
+                    {
+                        operationView.Operation = this.data[i];
+
+                        if (this.HighlightOperationOfYourFirehouse && !string.IsNullOrWhiteSpace(this.FirehouseName))
+                        {
+                            if (operationView.Operation.VehiculeEnrolled.Any(c => c.Contains(this.FirehouseName)))
+                            {
+                                this.tableOperationViews.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorHighlightItem();
+                                this.tableOperationViews.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorHighlightItem();
+                            }
+                            else
+                            {
+                                this.tableOperationViews.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorItem();
+                                this.tableOperationViews.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorItem();
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (this.tableOperationViews.Controls.Count > 0)
+            {
+                this.currentControl = 0;
+                this.panel.ScrollControlIntoView(this.tableOperationViews.Controls[0]);
             }
 
             this.timerAutoScroll.Start();
