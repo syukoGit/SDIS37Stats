@@ -97,6 +97,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
         {
             this.timerAutoScroll.Stop();
 
+            this.tableOperationViews.SuspendLayout();
+
             if (this.tableOperationViews.Controls.Count > this.nbOperationDisplayed)
             {
                 for (int i = this.tableOperationViews.Controls.Count - 1; i >= this.nbOperationDisplayed || i >= this.data.Count(); i--)
@@ -148,6 +150,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
                     }
                 }
             }
+
+            this.tableOperationViews.ResumeLayout();
 
             if (this.tableOperationViews.Controls.Count > 0)
             {
