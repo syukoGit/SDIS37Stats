@@ -21,7 +21,7 @@ namespace SDIS37Stats.Core.Statistics
 
         public string Rank { get; set; }
 
-        public new string ToString()
+        public override string ToString()
         {
             return Rank + " / " + Name + " / " + Availability.ToString();
         }
