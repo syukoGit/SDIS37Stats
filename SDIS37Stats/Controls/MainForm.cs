@@ -95,7 +95,7 @@ namespace SDIS37Stats.Controls
 
             // FirefighterAvailabilityListView
             this.statistics.OnFirehouseNameUpdated += (c) => this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de " + c + " :";
-            this.statistics.OnFirefighterAvailabilitiesUpdated += this.FirefighterAvailabilityListView.SetValue;
+            this.statistics.OnFirefighterAvailabilitiesUpdated += this.FirefighterAvailabilityListView.SetFirefighterAvailabilities;
 
             // RecentOperationOfUserFirehouse
             this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + c + " :";
