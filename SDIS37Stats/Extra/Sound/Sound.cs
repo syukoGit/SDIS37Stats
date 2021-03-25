@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Media;
+using System.Runtime.Versioning;
 
 namespace SDIS37Stats.Extra.Sound
 {
+    [SupportedOSPlatform("windows")]
     public static class Sound
     {
         public enum SoundType
