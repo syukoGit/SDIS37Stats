@@ -29,7 +29,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
             }
         }
 
-        public bool HighlightOperationOfYourFirehouse { get; set; } = false;
+        public bool HighlightOperationOfUserFirehouse { get; set; } = false;
 
         public string FirehouseName { get; set; } = null;
 
@@ -68,9 +68,16 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
             foreach (Control item in this.tableOperationViews.Controls)
             {
-
-                item.BackColor = theme.OperationListView_BackgroundColorItem();
-                item.ForeColor = theme.OperationListView_FontColorItem();
+                if (this.HighlightOperationOfUserFirehouse && !string.IsNullOrWhiteSpace(this.FirehouseName) && (item as OperationView).Operation.VehiculeEnrolled.Any(c => c.Contains(this.FirehouseName)))
+                {
+                    item.BackColor = theme.OperationListView_BackgroundColorHighlightItem();
+                    item.ForeColor = theme.OperationListView_FontColorHighlightItem();
+                }
+                else
+                {
+                    item.BackColor = theme.OperationListView_BackgroundColorItem();
+                    item.ForeColor = theme.OperationListView_FontColorItem();
+                }
             }
         }
 
@@ -128,28 +135,15 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 {
                     OperationView operationView = (OperationView)controlList[i];
 
-                    var settings = MainForm.Instance == null || MainForm.Instance.Settings == null ? new Core.Syst.Setting() : MainForm.Instance.Settings;
-
                     if (operationView.Operation != this.data[i])
                     {
                         operationView.Operation = this.data[i];
-
-                        if (this.HighlightOperationOfYourFirehouse && !string.IsNullOrWhiteSpace(this.FirehouseName))
-                        {
-                            if (operationView.Operation.VehiculeEnrolled.Any(c => c.Contains(this.FirehouseName)))
-                            {
-                                this.tableOperationViews.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorHighlightItem();
-                                this.tableOperationViews.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorHighlightItem();
-                            }
-                            else
-                            {
-                                this.tableOperationViews.Controls[i].BackColor = settings.Theme.OperationListView_BackgroundColorItem();
-                                this.tableOperationViews.Controls[i].ForeColor = settings.Theme.OperationListView_FontColorItem();
-                            }
-                        }
                     }
                 }
             }
+
+            var settings = MainForm.Instance == null || MainForm.Instance.Settings == null ? new Core.Syst.Setting() : MainForm.Instance.Settings;
+            this.ApplyTheme(settings.Theme);
 
             this.tableOperationViews.ResumeLayout();
 
