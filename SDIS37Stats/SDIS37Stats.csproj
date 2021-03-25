@@ -1,185 +1,114 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{631CE2FB-09CA-42B8-84C6-CBFD95714901}</ProjectGuid>
     <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>SDIS37Stats</RootNamespace>
     <AssemblyName>SDIS37Stats</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Import Include="System" />
+    <Import Include="System.Core" />
+    <Import Include="System.Web" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Data.DataSetExtensions" />
+    <Import Include="Microsoft.CSharp" />
+    <Import Include="System.Data" />
+    <Import Include="System.Deployment" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Net.Http" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\GetCredentials.cs">
+    <SupportedPlatform Include="windows" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Controls\GetCredentials.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\GetCredentials.Designer.cs">
+    <Compile Update="Controls\GetCredentials.Designer.cs">
       <DependentUpon>GetCredentials.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MainForm.cs">
+    <Compile Update="Controls\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\MainForm.Designer.cs">
+    <Compile Update="Controls\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SettingsForm.cs">
+    <Compile Update="Controls\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\SettingsForm.Designer.cs">
+    <Compile Update="Controls\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\Web\URL.cs" />
-    <Compile Include="Extra\Theme\ColorPalette.cs" />
-    <Compile Include="Extra\Theme\ITheme.cs" />
-    <Compile Include="Extra\Theme\DarkTheme.cs" />
-    <Compile Include="Controls\Type\Graph\BarGraph.cs">
+    <Compile Update="Core\Web\URL.cs" />
+    <Compile Update="Extra\Theme\ColorPalette.cs" />
+    <Compile Update="Extra\Theme\ITheme.cs" />
+    <Compile Update="Extra\Theme\DarkTheme.cs" />
+    <Compile Update="Controls\Type\Graph\BarGraph.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Graph\BarGraph.Designer.cs">
+    <Compile Update="Controls\Type\Graph\BarGraph.Designer.cs">
       <DependentUpon>BarGraph.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Type\SevenSegment\SevenSegment.cs">
+    <Compile Update="Controls\Type\SevenSegment\SevenSegment.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\SevenSegment\SevenSegmentArray.cs">
+    <Compile Update="Controls\Type\SevenSegment\SevenSegmentArray.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\FirefighterAvailabilityListView.cs">
+    <Compile Update="Controls\Type\Statistics\FirefighterAvailabilityListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\FirefighterAvailabilityListView.Designer.cs">
+    <Compile Update="Controls\Type\Statistics\FirefighterAvailabilityListView.Designer.cs">
       <DependentUpon>FirefighterAvailabilityListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\FirefighterAvailabilityView.cs">
+    <Compile Update="Controls\Type\Statistics\FirefighterAvailabilityView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\FirefighterAvailabilityView.Designer.cs">
+    <Compile Update="Controls\Type\Statistics\FirefighterAvailabilityView.Designer.cs">
       <DependentUpon>FirefighterAvailabilityView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\OperationView.cs">
+    <Compile Update="Controls\Type\Statistics\OperationView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\OperationView.Designer.cs">
+    <Compile Update="Controls\Type\Statistics\OperationView.Designer.cs">
       <DependentUpon>OperationView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\OperationListView.cs">
+    <Compile Update="Controls\Type\Statistics\OperationListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\OperationListView.Designer.cs">
+    <Compile Update="Controls\Type\Statistics\OperationListView.Designer.cs">
       <DependentUpon>OperationListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\NbOperationPerHour.cs">
+    <Compile Update="Controls\Type\Statistics\NbOperationPerHour.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\NbOperationPerHour.Designer.cs">
+    <Compile Update="Controls\Type\Statistics\NbOperationPerHour.Designer.cs">
       <DependentUpon>NbOperationPerHour.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\NbOperationToday.cs">
+    <Compile Update="Controls\Type\Statistics\NbOperationToday.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Type\Statistics\NbOperationToday.Designer.cs">
+    <Compile Update="Controls\Type\Statistics\NbOperationToday.Designer.cs">
       <DependentUpon>NbOperationToday.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\Statistics\FirefighterAvailability.cs" />
-    <Compile Include="Core\Statistics\Operation.cs" />
-    <Compile Include="Core\Syst\Log.cs" />
-    <Compile Include="Core\Syst\Setting.cs" />
-    <Compile Include="Core\Web\WebService.cs" />
-    <Compile Include="Core\Web\WebServiceURL.cs" />
-    <Compile Include="Extra\Image\Image.cs" />
-    <Compile Include="Extra\Sound\Sound.cs" />
-    <Compile Include="Extra\Theme\LightTheme.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\Statistics\Statistics.cs" />
-    <EmbeddedResource Include="Controls\GetCredentials.resx">
-      <DependentUpon>GetCredentials.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Graph\BarGraph.resx">
-      <DependentUpon>BarGraph.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Statistics\FirefighterAvailabilityListView.resx">
-      <DependentUpon>FirefighterAvailabilityListView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Statistics\FirefighterAvailabilityView.resx">
-      <DependentUpon>FirefighterAvailabilityView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Statistics\OperationView.resx">
-      <DependentUpon>OperationView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Statistics\OperationListView.resx">
-      <DependentUpon>OperationListView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Statistics\NbOperationPerHour.resx">
-      <DependentUpon>NbOperationPerHour.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Type\Statistics\NbOperationToday.resx">
-      <DependentUpon>NbOperationToday.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Core\Statistics\FirefighterAvailability.cs" />
+    <Compile Update="Core\Statistics\Operation.cs" />
+    <Compile Update="Core\Syst\Log.cs" />
+    <Compile Update="Core\Syst\Setting.cs" />
+    <Compile Update="Core\Web\WebService.cs" />
+    <Compile Update="Core\Web\WebServiceURL.cs" />
+    <Compile Update="Extra\Image\Image.cs" />
+    <Compile Update="Extra\Sound\Sound.cs" />
+    <Compile Update="Extra\Theme\LightTheme.cs" />
+    <Compile Update="Program.cs" />
+    <Compile Update="Properties\AssemblyInfo.cs" />
+    <Compile Update="Core\Statistics\Statistics.cs" />
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
@@ -187,64 +116,79 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Update="Controls\GetCredentials.resx">
+      <DependentUpon>GetCredentials.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\Type\Graph\BarGraph.resx">
+      <DependentUpon>BarGraph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\Type\Statistics\FirefighterAvailabilityListView.resx">
+      <DependentUpon>FirefighterAvailabilityListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\Type\Statistics\FirefighterAvailabilityView.resx">
+      <DependentUpon>FirefighterAvailabilityView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\Type\Statistics\OperationView.resx">
+      <DependentUpon>OperationView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\Type\Statistics\OperationListView.resx">
+      <DependentUpon>OperationListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\Type\Statistics\NbOperationPerHour.resx">
+      <DependentUpon>NbOperationPerHour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\Type\Statistics\NbOperationToday.resx">
+      <DependentUpon>NbOperationToday.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Update="Extra\Image\PNG\BlackCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\BlueCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\BlueSquareWithoutInterior.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\Gear.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\GreenCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\GreenSquare.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\PurpleCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\RedCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\RedCircleWithoutInterior.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\YellowTriangle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Sound\StreetFireworksSound.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.8 %28x86 et x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Extra\Image\PNG\BlackCircle.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\BlueCircle.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\BlueSquareWithoutInterior.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\Gear.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\GreenCircle.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\GreenSquare.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\PurpleCircle.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\RedCircle.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\RedCircleWithoutInterior.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Image\PNG\YellowTriangle.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Extra\Sound\StreetFireworksSound.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

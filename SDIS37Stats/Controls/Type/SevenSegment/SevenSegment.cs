@@ -320,12 +320,12 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
             {
                 srcRect = new RectangleF(0.0F, 0.0F, gridWidth, gridHeight);
             }
-            RectangleF destRect = new RectangleF(Padding.Left, Padding.Top, Width - Padding.Left - Padding.Right, Height - Padding.Top - Padding.Bottom);
+            RectangleF destRect = new(Padding.Left, Padding.Top, Width - Padding.Left - Padding.Right, Height - Padding.Top - Padding.Bottom);
 
             // Begin graphics container that remaps coordinates for our convenience
             GraphicsContainer containerState = e.Graphics.BeginContainer(destRect, srcRect, GraphicsUnit.Pixel);
 
-            Matrix trans = new Matrix();
+            Matrix trans = new();
             trans.Shear(italicFactor, 0.0F);
             e.Graphics.Transform = trans;
 

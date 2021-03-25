@@ -7,7 +7,7 @@
 
     public partial class SettingsForm : Form
     {
-        private static readonly Dictionary<Core.Syst.Setting.THEMETYPE, string> themeTypeList = new Dictionary<Core.Syst.Setting.THEMETYPE, string>
+        private static readonly Dictionary<Core.Syst.Setting.THEMETYPE, string> themeTypeList = new()
         {
             { Core.Syst.Setting.THEMETYPE.Dark, "Mode sombre" },
             { Core.Syst.Setting.THEMETYPE.Light, "Mode clair" }

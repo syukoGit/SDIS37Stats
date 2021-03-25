@@ -12,7 +12,7 @@ namespace SDIS37Stats.Controls.Type.Graph
         private int gridHeight = 96;
         private readonly int gridWidth = 116;
 
-        private List<int> value = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        private List<int> value = new() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         public BarGraph()
         {
@@ -76,14 +76,14 @@ namespace SDIS37Stats.Controls.Type.Graph
             Brush brushBar = new SolidBrush(this.MainBarColor);
             Brush brushFont = new SolidBrush(this.ValueColor);
 
-            RectangleF srcRect = new RectangleF(0.0F, 0.0F, gridWidth, gridHeight);
-            RectangleF destRect = new RectangleF(Padding.Left, Padding.Top, Width - Padding.Left - Padding.Right, Height - Padding.Top - Padding.Bottom);
+            RectangleF srcRect = new(0.0F, 0.0F, gridWidth, gridHeight);
+            RectangleF destRect = new(Padding.Left, Padding.Top, Width - Padding.Left - Padding.Right, Height - Padding.Top - Padding.Bottom);
 
             int maximum = this.value.Max();
 
-            Font drawFont = new Font("Microsoft Sans Serif", 2, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Font drawFont = new("Microsoft Sans Serif", 2, FontStyle.Bold, GraphicsUnit.Point, 0);
 
-            Pen pen = new Pen(this.AxisColor, 0.5f);
+            Pen pen = new(this.AxisColor, 0.5f);
 
             GraphicsContainer containerState = e.Graphics.BeginContainer(destRect, srcRect, GraphicsUnit.Pixel);
 
