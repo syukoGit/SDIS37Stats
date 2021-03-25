@@ -13,7 +13,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
         private int nbOperationDisplayed = 15;
 
-        private readonly List<Core.Statistics.Operation> data = new List<Core.Statistics.Operation>();
+        private readonly List<Core.Statistics.Operation> data = new();
 
         public int NbOperationDisplayed
         {

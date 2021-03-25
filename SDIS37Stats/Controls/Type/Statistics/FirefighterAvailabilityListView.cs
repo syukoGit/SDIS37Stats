@@ -11,7 +11,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
         private int nbAvailibilitiesDisplayed = 50;
 
-        private readonly List<Core.Statistics.FirefighterAvailability> data = new List<Core.Statistics.FirefighterAvailability>();
+        private readonly List<Core.Statistics.FirefighterAvailability> data = new();
 
         public string Title
         {

@@ -10,7 +10,7 @@
     {
         private readonly Web.WebService webService;
 
-        private static readonly System.Globalization.CultureInfo DateTimeProvider = new System.Globalization.CultureInfo("fr-FR");
+        private static readonly System.Globalization.CultureInfo DateTimeProvider = new("fr-FR");
 
         private string firehouseName = string.Empty;
 
@@ -18,7 +18,7 @@
 
         private bool initializationInProgress = true;
 
-        private readonly Dictionary<int, Operation> operationDictionary = new Dictionary<int, Operation>();
+        private readonly Dictionary<int, Operation> operationDictionary = new();
 
         #region EventHandler
         public delegate void OnNewOperationHandler();
@@ -310,7 +310,7 @@
                 type = Operation.OperationType.OD;
             }
 
-            HashSet<string> vehiculeEnrolled = new HashSet<string>();
+            HashSet<string> vehiculeEnrolled = new();
             foreach (HtmlElement vehicule in item.Children[3].GetElementsByTagName("div"))
             {
                 vehiculeEnrolled.Add(vehicule.InnerText);

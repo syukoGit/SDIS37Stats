@@ -36,7 +36,7 @@ namespace SDIS37Stats.Core.Web
         {
             string output = this.Url;
 
-            List<string> queryParam = new List<string>();
+            List<string> queryParam = new();
 
             if (queryParameters != null && queryParameters.Count() > 0)
             {
@@ -67,7 +67,7 @@ namespace SDIS37Stats.Core.Web
         {
             string output = string.Empty;
 
-            List<string> postDatas = new List<string>();
+            List<string> postDatas = new();
 
             if (postDataWithValue != null && postDataWithValue.Count() > 0)
             {
