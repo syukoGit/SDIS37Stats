@@ -117,7 +117,10 @@ namespace SDIS37Stats.Controls
         #region Event
         private void Statistics_NewOperation()
         {
-            Extra.Sound.Sound.PlaySound(Extra.Sound.Sound.SoundType.NewOperationNotification);
+            if (OperatingSystem.IsWindows())
+            {
+                Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.SoundType.NewOperationNotification);
+            }
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

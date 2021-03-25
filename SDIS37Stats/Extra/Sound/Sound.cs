@@ -4,7 +4,6 @@ using System.Runtime.Versioning;
 
 namespace SDIS37Stats.Extra.Sound
 {
-    [SupportedOSPlatform("windows")]
     public static class Sound
     {
         public enum SoundType
@@ -12,11 +11,13 @@ namespace SDIS37Stats.Extra.Sound
             NewOperationNotification
         }
 
-        private static readonly SoundPlayer soundPlayer = new SoundPlayer();
+        [SupportedOSPlatform("windows")]
+        private static readonly SoundPlayer soundPlayer = new();
 
-        public static bool Mute = false;
+        public static bool Mute { get; set; }
 
-        public static void PlaySound(SoundType soundType)
+        [SupportedOSPlatform("windows")]
+        public static void PlaySoundOnlyWindows(SoundType soundType)
         {
             if (!Sound.Mute)
             {
