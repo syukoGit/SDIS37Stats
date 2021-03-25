@@ -24,17 +24,17 @@ namespace SDIS37Stats.Controls
         {
             InitializeComponent();
 
-            this.BackColor = MainForm.Instance.Settings.Theme.Form_BackgroundColor();
-            this.ForeColor = MainForm.Instance.Settings.Theme.Form_FontColor();
+            this.BackColor = Core.Syst.Setting.CurrentSetting.Theme.Form_BackgroundColor();
+            this.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
 
-            this.buttonOk.BackColor = MainForm.Instance.Settings.Theme.Form_BackgroundColorButton();
+            this.buttonOk.BackColor = Core.Syst.Setting.CurrentSetting.Theme.Form_BackgroundColorButton();
 
 
-            this.username.BackColor = MainForm.Instance.Settings.Theme.Form_BackgroundColorTextbox();
-            this.username.ForeColor = MainForm.Instance.Settings.Theme.Form_FontColor();
+            this.username.BackColor = Core.Syst.Setting.CurrentSetting.Theme.Form_BackgroundColorTextbox();
+            this.username.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
 
-            this.password.BackColor = MainForm.Instance.Settings.Theme.Form_BackgroundColorTextbox();
-            this.password.ForeColor = MainForm.Instance.Settings.Theme.Form_FontColor();
+            this.password.BackColor = Core.Syst.Setting.CurrentSetting.Theme.Form_BackgroundColorTextbox();
+            this.password.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
         }
 
         #region Event

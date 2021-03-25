@@ -142,8 +142,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 }
             }
 
-            var settings = MainForm.Instance == null || MainForm.Instance.Settings == null ? new Core.Syst.Setting() : MainForm.Instance.Settings;
-            this.ApplyTheme(settings.Theme);
+            this.ApplyTheme(Core.Syst.Setting.CurrentSetting.Theme);
 
             this.tableOperationViews.ResumeLayout();
 

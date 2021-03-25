@@ -13,10 +13,6 @@ namespace SDIS37Stats.Controls
 
         private SettingsForm settingsForm;
 
-        public static MainForm Instance { get; private set; }
-
-        public Core.Syst.Setting Settings { get; set; } = new Core.Syst.Setting();
-
         public bool ShowWebBrowser { get; set; } = false;
 
         public delegate void OnThemeUpdatedHandler(Extra.Theme.ITheme theme);
@@ -24,8 +20,6 @@ namespace SDIS37Stats.Controls
 
         public MainForm()
         {
-            MainForm.Instance = this;
-
             this.InitializeComponent();
 
             this.Init();
@@ -68,12 +62,12 @@ namespace SDIS37Stats.Controls
 
         private void ApplyTheme()
         {
-            this.BackColor = this.Settings.Theme.Form_BackgroundColor();
-            this.ForeColor = this.Settings.Theme.Form_FontColor();
+            this.BackColor = Core.Syst.Setting.CurrentSetting.Theme.Form_BackgroundColor();
+            this.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
 
-            this.LastUpdate.ForeColor = this.Settings.Theme.Form_FontColor();
+            this.LastUpdate.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
 
-            this.OnThemeUpdated?.Invoke(this.Settings.Theme);
+            this.OnThemeUpdated?.Invoke(Core.Syst.Setting.CurrentSetting.Theme);
         }
 
         private void SetStatisticEventConnection()
@@ -151,13 +145,13 @@ namespace SDIS37Stats.Controls
         private void SettingsPicture_MouseEnter(object sender, EventArgs e)
         {
             this.SettingsPicture.BorderStyle = BorderStyle.FixedSingle;
-            this.SettingsPicture.BackColor = this.Settings.Theme.SettingsButton_BackgroundColorWhenSelected();
+            this.SettingsPicture.BackColor = Core.Syst.Setting.CurrentSetting.Theme.SettingsButton_BackgroundColorWhenSelected();
         }
 
         private void SettingsPicture_MouseLeave(object sender, EventArgs e)
         {
             this.SettingsPicture.BorderStyle = BorderStyle.None;
-            this.SettingsPicture.BackColor = this.Settings.Theme.SettingsButton_DefaultBackgroundColor();
+            this.SettingsPicture.BackColor = Core.Syst.Setting.CurrentSetting.Theme.SettingsButton_DefaultBackgroundColor();
         }
 
         private void SettingsPicture_Click(object sender, EventArgs e)
@@ -167,7 +161,7 @@ namespace SDIS37Stats.Controls
                 this.settingsForm.Dispose();
             }
 
-            this.settingsForm = new SettingsForm(this.Settings);
+            this.settingsForm = new SettingsForm(Core.Syst.Setting.CurrentSetting);
             this.settingsForm.FormClosing += this.SettingsForm_FormClosing;
 
             this.settingsForm.Show(this);
@@ -179,15 +173,7 @@ namespace SDIS37Stats.Controls
             {
                 this.settingsForm.FormClosing -= this.SettingsForm_FormClosing;
 
-                this.Settings = this.settingsForm.Settings;
-
-                Extra.Sound.Sound.Mute = this.Settings.MuteSound;
-
-                this.RecentOperationList.NbOperationDisplayed = this.Settings.NbOperationOfDepartmentDisplayed;
-
-                this.RecentOperationOfUserFirehouse.NbOperationDisplayed = this.Settings.NbOperationOfUserFirehouseDisplayed;
-
-                this.FirefighterAvailabilityListView.NbAvailibilitiesDisplayed = this.Settings.NbFirefighterAvailabilityDisplayed;
+                Core.Syst.Setting.CurrentSetting = this.settingsForm.Settings;
 
                 this.ApplyTheme();
             }
