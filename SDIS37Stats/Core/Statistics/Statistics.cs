@@ -2,15 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
+    using System.Xml.Serialization;
 
     class Statistics
     {
         private readonly Web.WebService webService;
 
         private static readonly System.Globalization.CultureInfo DateTimeProvider = new("fr-FR");
+
+        private static readonly string statisticsFolderForSave = @"StatisticsSave\";
 
         private string firehouseName = string.Empty;
 
@@ -334,6 +338,22 @@
                 OperationDescription = operationDescription,
                 VehiculeEnrolled = vehiculeEnrolled
             };
+        }
+
+        public static void ExportOperationListToXml(List<Operation> operations, string fileName)
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(operations.GetType());
+
+            if (!Directory.Exists(Statistics.statisticsFolderForSave))
+            {
+                Directory.CreateDirectory(Statistics.statisticsFolderForSave);
+            }
+
+            using (StreamWriter writer = new StreamWriter(Statistics.statisticsFolderForSave + fileName))
+            {
+                xmlSerializer.Serialize(writer, operations);
+                writer.Close();
+            }
         }
         #endregion
     }

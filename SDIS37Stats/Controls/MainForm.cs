@@ -137,6 +137,8 @@ namespace SDIS37Stats.Controls
 
             if (DateTime.Now.Hour == 0 && DateTime.Now.Minute == 0)
             {
+                List<Core.Statistics.Operation> operations = this.statistics.OperationList.Where(c => c.Time.Date == DateTime.Now.AddHours(-1).Date).ToList();
+                Core.Statistics.Statistics.ExportOperationListToXml(operations, DateTime.Now.AddHours(-1).ToString("yyyy-MM-dd"));
                 this.webService.ClearSession();
             }
 
