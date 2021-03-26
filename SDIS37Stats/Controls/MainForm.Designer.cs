@@ -120,7 +120,7 @@
             this.RecentOperationList.FirehouseName = "RID";
             this.RecentOperationList.FontColorHighLightItem = System.Drawing.Color.Green;
             this.RecentOperationList.FontColorItem = System.Drawing.Color.Blue;
-            this.RecentOperationList.HighlightOperationOfYourFirehouse = true;
+            this.RecentOperationList.HighlightOperationOfUserFirehouse = true;
             this.RecentOperationList.Location = new System.Drawing.Point(419, 140);
             this.RecentOperationList.Name = "RecentOperationList";
             this.RecentOperationList.NbOperationDisplayed = 15;
@@ -138,7 +138,7 @@
             this.RecentOperationOfUserFirehouse.FirehouseName = null;
             this.RecentOperationOfUserFirehouse.FontColorHighLightItem = System.Drawing.Color.Green;
             this.RecentOperationOfUserFirehouse.FontColorItem = System.Drawing.Color.Blue;
-            this.RecentOperationOfUserFirehouse.HighlightOperationOfYourFirehouse = false;
+            this.RecentOperationOfUserFirehouse.HighlightOperationOfUserFirehouse = false;
             this.RecentOperationOfUserFirehouse.Location = new System.Drawing.Point(419, 400);
             this.RecentOperationOfUserFirehouse.Name = "RecentOperationOfUserFirehouse";
             this.RecentOperationOfUserFirehouse.NbOperationDisplayed = 5;

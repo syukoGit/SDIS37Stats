@@ -14,7 +14,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
     {
         private Core.Statistics.Operation operation;
 
-        private readonly ToolTip toolTip = new ToolTip();
+        private readonly ToolTip toolTip = new();
 
         public OperationView()
         {

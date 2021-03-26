@@ -12,12 +12,12 @@
     /// </remarks>
     class WebService : IDisposable
     {
-        private static readonly List<string> UrlWichUseJS = new List<string>();
+        private static readonly List<string> UrlWichUseJS = new();
 
         /// <summary>
         /// Private queue for set and get a url queue to execute.
         /// </summary>
-        private readonly Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> urlQueue = new Queue<(URL, Dictionary<string, string>, Dictionary<string, string>)>();
+        private readonly Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> urlQueue = new();
 
         private int connectionState = 0;
 

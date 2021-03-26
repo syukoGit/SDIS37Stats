@@ -13,10 +13,6 @@ namespace SDIS37Stats.Controls
 
         private SettingsForm settingsForm;
 
-        public static MainForm Instance { get; private set; }
-
-        public Core.Syst.Setting Settings { get; set; } = new Core.Syst.Setting();
-
         public bool ShowWebBrowser { get; set; } = false;
 
         public delegate void OnThemeUpdatedHandler(Extra.Theme.ITheme theme);
@@ -24,8 +20,6 @@ namespace SDIS37Stats.Controls
 
         public MainForm()
         {
-            MainForm.Instance = this;
-
             this.InitializeComponent();
 
             this.Init();
@@ -62,18 +56,19 @@ namespace SDIS37Stats.Controls
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
             this.statistics.OnNewOperation += this.Statistics_NewOperation;
+            this.statistics.OnNewOperationOfUserFirehouse += this.Statistics_NewOperationOfUserFirehouse;
 
             this.SetStatisticEventConnection();
         }
 
         private void ApplyTheme()
         {
-            this.BackColor = this.Settings.Theme.Form_BackgroundColor();
-            this.ForeColor = this.Settings.Theme.Form_FontColor();
+            this.BackColor = Core.Syst.Setting.CurrentSetting.Theme.Form_BackgroundColor();
+            this.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
 
-            this.LastUpdate.ForeColor = this.Settings.Theme.Form_FontColor();
+            this.LastUpdate.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
 
-            this.OnThemeUpdated?.Invoke(this.Settings.Theme);
+            this.OnThemeUpdated?.Invoke(Core.Syst.Setting.CurrentSetting.Theme);
         }
 
         private void SetStatisticEventConnection()
@@ -88,22 +83,22 @@ namespace SDIS37Stats.Controls
             this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationList.FirehouseName = c;
             this.statistics.OnOperationListUpdated += (c) =>
             {
-                var value = c.Select(t => t.Value).ToList();
+                var value = c.Where(t => t.Time.Date == DateTime.Now.Date).ToList();
                 value.Sort((a, b) => b.Time.CompareTo(a.Time));
-                this.RecentOperationList.SetValue(value);
+                this.RecentOperationList.AddOperations(value);
             };
 
             // FirefighterAvailabilityListView
             this.statistics.OnFirehouseNameUpdated += (c) => this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de " + c + " :";
-            this.statistics.OnFirefighterAvailabilitiesUpdated += this.FirefighterAvailabilityListView.SetValue;
+            this.statistics.OnFirefighterAvailabilitiesUpdated += this.FirefighterAvailabilityListView.SetFirefighterAvailabilities;
 
             // RecentOperationOfUserFirehouse
             this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + c + " :";
             this.statistics.OnOperationListOfUserFirehouseUpdated += (c) =>
             {
-                var value = c.Select(t => t.Value).ToList();
+                var value = c.Where(t => t.Time.Date == DateTime.Now.Date).ToList();
                 value.Sort((a, b) => b.Time.CompareTo(a.Time));
-                this.RecentOperationOfUserFirehouse.SetValue(value);
+                this.RecentOperationOfUserFirehouse.AddOperations(value);
             };
         }
 
@@ -117,7 +112,18 @@ namespace SDIS37Stats.Controls
         #region Event
         private void Statistics_NewOperation()
         {
-            Extra.Sound.Sound.PlaySound(Extra.Sound.Sound.SoundType.NewOperationNotification);
+            if (OperatingSystem.IsWindows())
+            {
+                Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.SoundType.NewOperationNotification);
+            }
+        }
+
+        private void Statistics_NewOperationOfUserFirehouse()
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.SoundType.NewOperationOfUserFirehouseNotification);
+            }
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -150,13 +156,13 @@ namespace SDIS37Stats.Controls
         private void SettingsPicture_MouseEnter(object sender, EventArgs e)
         {
             this.SettingsPicture.BorderStyle = BorderStyle.FixedSingle;
-            this.SettingsPicture.BackColor = this.Settings.Theme.SettingsButton_BackgroundColorWhenSelected();
+            this.SettingsPicture.BackColor = Core.Syst.Setting.CurrentSetting.Theme.SettingsButton_BackgroundColorWhenSelected();
         }
 
         private void SettingsPicture_MouseLeave(object sender, EventArgs e)
         {
             this.SettingsPicture.BorderStyle = BorderStyle.None;
-            this.SettingsPicture.BackColor = this.Settings.Theme.SettingsButton_DefaultBackgroundColor();
+            this.SettingsPicture.BackColor = Core.Syst.Setting.CurrentSetting.Theme.SettingsButton_DefaultBackgroundColor();
         }
 
         private void SettingsPicture_Click(object sender, EventArgs e)
@@ -166,7 +172,7 @@ namespace SDIS37Stats.Controls
                 this.settingsForm.Dispose();
             }
 
-            this.settingsForm = new SettingsForm(this.Settings);
+            this.settingsForm = new SettingsForm(Core.Syst.Setting.CurrentSetting);
             this.settingsForm.FormClosing += this.SettingsForm_FormClosing;
 
             this.settingsForm.Show(this);
@@ -178,15 +184,7 @@ namespace SDIS37Stats.Controls
             {
                 this.settingsForm.FormClosing -= this.SettingsForm_FormClosing;
 
-                this.Settings = this.settingsForm.Settings;
-
-                Extra.Sound.Sound.Mute = this.Settings.MuteSound;
-
-                this.RecentOperationList.NbOperationDisplayed = this.Settings.NbOperationOfDepartmentDisplayed;
-
-                this.RecentOperationOfUserFirehouse.NbOperationDisplayed = this.Settings.NbOperationOfUserFirehouseDisplayed;
-
-                this.FirefighterAvailabilityListView.NbAvailibilitiesDisplayed = this.Settings.NbFirefighterAvailabilityDisplayed;
+                Core.Syst.Setting.CurrentSetting = this.settingsForm.Settings;
 
                 this.ApplyTheme();
             }

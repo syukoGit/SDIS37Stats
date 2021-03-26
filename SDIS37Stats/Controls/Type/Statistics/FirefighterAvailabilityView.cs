@@ -7,7 +7,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
     {
         private FirefighterAvailability firefighterAvailability;
 
-        private readonly ToolTip toolTip = new ToolTip();
+        private readonly ToolTip toolTip = new();
 
         public FirefighterAvailabilityView()
         {

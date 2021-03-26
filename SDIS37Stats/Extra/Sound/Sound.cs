@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Media;
+using System.Runtime.Versioning;
 
 namespace SDIS37Stats.Extra.Sound
 {
@@ -7,21 +8,27 @@ namespace SDIS37Stats.Extra.Sound
     {
         public enum SoundType
         {
-            NewOperationNotification
+            NewOperationNotification,
+            NewOperationOfUserFirehouseNotification
         }
 
-        private static readonly SoundPlayer soundPlayer = new SoundPlayer();
+        [SupportedOSPlatform("windows")]
+        private static readonly SoundPlayer soundPlayer = new();
 
-        public static bool Mute = false;
+        public static bool Mute { get; set; }
 
-        public static void PlaySound(SoundType soundType)
+        [SupportedOSPlatform("windows")]
+        public static void PlaySoundOnlyWindows(SoundType soundType)
         {
             if (!Sound.Mute)
             {
                 switch (soundType)
                 {
-                    case SoundType.NewOperationNotification:
+                    case SoundType.NewOperationOfUserFirehouseNotification:
                         soundPlayer.SoundLocation = @"Extra\Sound\StreetFireworksSound.wav";
+                        break;
+                    case SoundType.NewOperationNotification:
+                        soundPlayer.SoundLocation = @"Extra\Sound\Confirmation-alert.wav";
                         break;
                     default:
                         Core.Syst.Log.WriteLog(Core.Syst.Log.TYPE.Error, "The sound type (" + soundType.ToString() + ") is not supported");
@@ -37,7 +44,7 @@ namespace SDIS37Stats.Extra.Sound
                     Core.Syst.Log.WriteLog(Core.Syst.Log.TYPE.Error, e.Message);
                 }
             }
-            
+
         }
     }
 }
