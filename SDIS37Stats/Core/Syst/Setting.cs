@@ -8,6 +8,8 @@
             Light
         }
 
+        public static Setting CurrentSetting { get; set; } = new();
+
         public THEMETYPE ThemeType { get; set; } = THEMETYPE.Light;
 
         public Extra.Theme.ITheme Theme { get; set; } = new Extra.Theme.LightTheme();
