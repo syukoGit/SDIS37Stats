@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
     using System.Windows.Forms;
 
     public partial class SettingsForm : Form
@@ -17,7 +16,7 @@
 
         public SettingsForm(Core.Syst.Setting currentSettings)
         {
-            this.Settings = currentSettings.DeepCopy(); ;
+            this.Settings = currentSettings.DeepCopy();
 
             this.InitializeComponent();
 
