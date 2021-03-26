@@ -187,6 +187,12 @@
     <None Update="Extra\Image\PNG\YellowTriangle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Extra\Sound\Confirmation-alert.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Sound\Siren-short.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Extra\Sound\StreetFireworksSound.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

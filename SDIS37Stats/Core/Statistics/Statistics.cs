@@ -24,6 +24,9 @@
         public delegate void OnNewOperationHandler();
         public event OnNewOperationHandler OnNewOperation;
 
+        public delegate void OnNewOperationOfUserFirehouseHandler();
+        public event OnNewOperationOfUserFirehouseHandler OnNewOperationOfUserFirehouse;
+
         public delegate void OnFirehouseNameUpdatedHandler(string firehouseName);
         public event OnFirehouseNameUpdatedHandler OnFirehouseNameUpdated;
 
@@ -214,14 +217,20 @@
                 }
             }
 
-            this.OnTotalOperationInDayUpdated?.Invoke(this.TotalOperationToday);
-            this.OnOperationPerHourUpdated?.Invoke(this.OperationPerHourToday.ToList());
-            this.OnOperationListUpdated?.Invoke(this.OperationList);
-            this.OnOperationListOfUserFirehouseUpdated?.Invoke(this.OperationListOfUserFirehouse);
-
             if (newOperationList.Any() && !this.initializationInProgress)
             {
+
+                this.OnTotalOperationInDayUpdated?.Invoke(this.TotalOperationToday);
+                this.OnOperationPerHourUpdated?.Invoke(this.OperationPerHourToday.ToList());
+
                 this.OnNewOperation?.Invoke();
+                this.OnOperationListUpdated?.Invoke(newOperationList);
+
+                if (newOperationList.Where(c => c.VehiculeEnrolled.Any(t => t.Contains(this.FirehouseName))).Any())
+                {
+                    this.OnNewOperationOfUserFirehouse?.Invoke();
+                    this.OnOperationListOfUserFirehouseUpdated?.Invoke(newOperationList.Where(c => c.VehiculeEnrolled.Any(t => t.Contains(this.FirehouseName))).ToList());
+                }
             }
         }
 

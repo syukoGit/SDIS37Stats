@@ -8,7 +8,8 @@ namespace SDIS37Stats.Extra.Sound
     {
         public enum SoundType
         {
-            NewOperationNotification
+            NewOperationNotification,
+            NewOperationOfUserFirehouseNotification
         }
 
         [SupportedOSPlatform("windows")]
@@ -23,8 +24,11 @@ namespace SDIS37Stats.Extra.Sound
             {
                 switch (soundType)
                 {
-                    case SoundType.NewOperationNotification:
+                    case SoundType.NewOperationOfUserFirehouseNotification:
                         soundPlayer.SoundLocation = @"Extra\Sound\StreetFireworksSound.wav";
+                        break;
+                    case SoundType.NewOperationNotification:
+                        soundPlayer.SoundLocation = @"Extra\Sound\Confirmation-alert.wav";
                         break;
                     default:
                         Core.Syst.Log.WriteLog(Core.Syst.Log.TYPE.Error, "The sound type (" + soundType.ToString() + ") is not supported");
@@ -40,7 +44,7 @@ namespace SDIS37Stats.Extra.Sound
                     Core.Syst.Log.WriteLog(Core.Syst.Log.TYPE.Error, e.Message);
                 }
             }
-            
+
         }
     }
 }

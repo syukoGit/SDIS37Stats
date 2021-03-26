@@ -56,6 +56,7 @@ namespace SDIS37Stats.Controls
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
             this.statistics.OnNewOperation += this.Statistics_NewOperation;
+            this.statistics.OnNewOperationOfUserFirehouse += this.Statistics_NewOperationOfUserFirehouse;
 
             this.SetStatisticEventConnection();
         }
@@ -114,6 +115,14 @@ namespace SDIS37Stats.Controls
             if (OperatingSystem.IsWindows())
             {
                 Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.SoundType.NewOperationNotification);
+            }
+        }
+
+        private void Statistics_NewOperationOfUserFirehouse()
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.SoundType.NewOperationOfUserFirehouseNotification);
             }
         }
 
