@@ -25,7 +25,7 @@ namespace SDIS37Stats
 
                 SetThreadExecutionState(0x80000000 | 0x00000002 | 0x00000040);
 
-                if(args.Length > 0)
+                if (args.Length > 0)
                 {
                     SetUsernamePassword(args);
                 }

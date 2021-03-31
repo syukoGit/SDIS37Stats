@@ -50,10 +50,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.tableLayoutMain.Controls.Add(this.pictureBoxAvailability, 0, 0);
             this.tableLayoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutMain.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tableLayoutMain.Name = "tableLayoutMain";
             this.tableLayoutMain.RowCount = 1;
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutMain.Size = new System.Drawing.Size(177, 30);
+            this.tableLayoutMain.Size = new System.Drawing.Size(195, 35);
             this.tableLayoutMain.TabIndex = 0;
             // 
             // tableLayoutRankAndName
@@ -66,21 +67,22 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.tableLayoutRankAndName.Controls.Add(this.labelName, 1, 0);
             this.tableLayoutRankAndName.Controls.Add(this.labelRank, 0, 0);
             this.tableLayoutRankAndName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutRankAndName.Location = new System.Drawing.Point(61, 0);
+            this.tableLayoutRankAndName.Location = new System.Drawing.Point(68, 0);
             this.tableLayoutRankAndName.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutRankAndName.Name = "tableLayoutRankAndName";
             this.tableLayoutRankAndName.RowCount = 1;
             this.tableLayoutRankAndName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutRankAndName.Size = new System.Drawing.Size(116, 30);
+            this.tableLayoutRankAndName.Size = new System.Drawing.Size(127, 35);
             this.tableLayoutRankAndName.TabIndex = 2;
             // 
             // labelName
             // 
             this.labelName.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelName.AutoSize = true;
-            this.labelName.Location = new System.Drawing.Point(40, 8);
+            this.labelName.Location = new System.Drawing.Point(43, 10);
+            this.labelName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(72, 13);
+            this.labelName.Size = new System.Drawing.Size(80, 15);
             this.labelName.TabIndex = 0;
             this.labelName.Text = "Antonin Lyaët";
             // 
@@ -88,8 +90,9 @@ namespace SDIS37Stats.Controls.Type.Statistics
             // 
             this.labelRank.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.labelRank.AutoSize = true;
-            this.labelRank.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelRank.Location = new System.Drawing.Point(3, 8);
+            this.labelRank.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelRank.Location = new System.Drawing.Point(4, 11);
+            this.labelRank.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelRank.Name = "labelRank";
             this.labelRank.Size = new System.Drawing.Size(31, 13);
             this.labelRank.TabIndex = 1;
@@ -98,25 +101,25 @@ namespace SDIS37Stats.Controls.Type.Statistics
             // pictureBoxAvailability
             // 
             this.pictureBoxAvailability.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.pictureBoxAvailability.Location = new System.Drawing.Point(36, 7);
-            this.pictureBoxAvailability.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.pictureBoxAvailability.Location = new System.Drawing.Point(41, 10);
+            this.pictureBoxAvailability.Margin = new System.Windows.Forms.Padding(12, 3, 12, 3);
             this.pictureBoxAvailability.Name = "pictureBoxAvailability";
             this.pictureBoxAvailability.Size = new System.Drawing.Size(15, 15);
             this.pictureBoxAvailability.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBoxAvailability.TabIndex = 3;
             this.pictureBoxAvailability.TabStop = false;
             // 
-            // DisplayFirefighterAvailability
+            // FirefighterAvailabilityView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.tableLayoutMain);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.MinimumSize = new System.Drawing.Size(10, 30);
-            this.Name = "DisplayFirefighterAvailability";
-            this.Size = new System.Drawing.Size(177, 30);
+            this.MinimumSize = new System.Drawing.Size(12, 35);
+            this.Name = "FirefighterAvailabilityView";
+            this.Size = new System.Drawing.Size(195, 35);
             this.tableLayoutMain.ResumeLayout(false);
             this.tableLayoutMain.PerformLayout();
             this.tableLayoutRankAndName.ResumeLayout(false);

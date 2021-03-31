@@ -11,7 +11,7 @@ using System.Drawing.Drawing2D;
 
 namespace SDIS37Stats.Controls.Type.Statistics
 {
-    public partial class NbOperationPerHour: UserControl
+    public partial class NbOperationPerHour : UserControl
     {
         public NbOperationPerHour()
         {

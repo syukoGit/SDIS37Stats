@@ -1,161 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <RootNamespace>SDIS37Stats</RootNamespace>
-    <AssemblyName>SDIS37Stats</AssemblyName>
   </PropertyGroup>
+
   <ItemGroup>
-    <Import Include="System" />
-    <Import Include="System.Core" />
-    <Import Include="System.Web" />
-    <Import Include="System.Xml.Linq" />
-    <Import Include="System.Data.DataSetExtensions" />
-    <Import Include="Microsoft.CSharp" />
-    <Import Include="System.Data" />
-    <Import Include="System.Deployment" />
-    <Import Include="System.Drawing" />
-    <Import Include="System.Net.Http" />
-    <Import Include="System.Windows.Forms" />
-    <Import Include="System.Xml" />
+    <Folder Include="Extra\Image\PNG\" />
+    <Folder Include="Extra\Sound\" />
   </ItemGroup>
-  <ItemGroup>
-    <SupportedPlatform Include="windows" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Controls\GetCredentials.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Controls\GetCredentials.Designer.cs">
-      <DependentUpon>GetCredentials.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Controls\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\SettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Controls\SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Core\Web\URL.cs" />
-    <Compile Update="Extra\Theme\ColorPalette.cs" />
-    <Compile Update="Extra\Theme\ITheme.cs" />
-    <Compile Update="Extra\Theme\DarkTheme.cs" />
-    <Compile Update="Controls\Type\Graph\BarGraph.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\Graph\BarGraph.Designer.cs">
-      <DependentUpon>BarGraph.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Type\SevenSegment\SevenSegment.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\SevenSegment\SevenSegmentArray.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\FirefighterAvailabilityListView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\FirefighterAvailabilityListView.Designer.cs">
-      <DependentUpon>FirefighterAvailabilityListView.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\FirefighterAvailabilityView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\FirefighterAvailabilityView.Designer.cs">
-      <DependentUpon>FirefighterAvailabilityView.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\OperationView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\OperationView.Designer.cs">
-      <DependentUpon>OperationView.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\OperationListView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\OperationListView.Designer.cs">
-      <DependentUpon>OperationListView.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\NbOperationPerHour.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\NbOperationPerHour.Designer.cs">
-      <DependentUpon>NbOperationPerHour.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\NbOperationToday.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\Type\Statistics\NbOperationToday.Designer.cs">
-      <DependentUpon>NbOperationToday.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Core\Statistics\FirefighterAvailability.cs" />
-    <Compile Update="Core\Statistics\Operation.cs" />
-    <Compile Update="Core\Syst\Log.cs" />
-    <Compile Update="Core\Syst\Setting.cs" />
-    <Compile Update="Core\Web\WebService.cs" />
-    <Compile Update="Core\Web\WebServiceURL.cs" />
-    <Compile Update="Extra\Image\Image.cs" />
-    <Compile Update="Extra\Sound\Sound.cs" />
-    <Compile Update="Extra\Theme\LightTheme.cs" />
-    <Compile Update="Program.cs" />
-    <Compile Update="Properties\AssemblyInfo.cs" />
-    <Compile Update="Core\Statistics\Statistics.cs" />
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Update="Controls\GetCredentials.resx">
-      <DependentUpon>GetCredentials.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\Type\Graph\BarGraph.resx">
-      <DependentUpon>BarGraph.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\Type\Statistics\FirefighterAvailabilityListView.resx">
-      <DependentUpon>FirefighterAvailabilityListView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\Type\Statistics\FirefighterAvailabilityView.resx">
-      <DependentUpon>FirefighterAvailabilityView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\Type\Statistics\OperationView.resx">
-      <DependentUpon>OperationView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\Type\Statistics\OperationListView.resx">
-      <DependentUpon>OperationListView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\Type\Statistics\NbOperationPerHour.resx">
-      <DependentUpon>NbOperationPerHour.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\Type\Statistics\NbOperationToday.resx">
-      <DependentUpon>NbOperationToday.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+
   <ItemGroup>
     <None Update="Extra\Image\PNG\BlackCircle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -173,6 +28,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Extra\Image\PNG\GreenSquare.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\logo_black.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Extra\Image\PNG\PurpleCircle.png">
@@ -197,4 +55,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
 </Project>
