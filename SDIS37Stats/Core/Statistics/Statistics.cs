@@ -221,19 +221,31 @@
                 }
             }
 
-            if (newOperationList.Any() && !this.initializationInProgress)
+            if (newOperationList.Any())
             {
 
                 this.OnTotalOperationInDayUpdated?.Invoke(this.TotalOperationToday);
                 this.OnOperationPerHourUpdated?.Invoke(this.OperationPerHourToday.ToList());
-
-                this.OnNewOperation?.Invoke();
+                
                 this.OnOperationListUpdated?.Invoke(newOperationList);
 
-                if (newOperationList.Where(c => c.VehiculeEnrolled.Any(t => t.Contains(this.FirehouseName))).Any())
+                var operationListOfUserFirehouse = newOperationList.Where(c => c.VehiculeEnrolled.Any(t => t.Contains(this.FirehouseName)));
+
+                if (operationListOfUserFirehouse.Any())
                 {
-                    this.OnNewOperationOfUserFirehouse?.Invoke();
                     this.OnOperationListOfUserFirehouseUpdated?.Invoke(newOperationList.Where(c => c.VehiculeEnrolled.Any(t => t.Contains(this.FirehouseName))).ToList());
+                }
+
+                if (!this.initializationInProgress)
+                {
+                    if (operationListOfUserFirehouse.Any())
+                    {
+                        this.OnNewOperationOfUserFirehouse?.Invoke();
+                    }
+                    else
+                    {
+                        this.OnNewOperation?.Invoke();
+                    }
                 }
             }
         }
