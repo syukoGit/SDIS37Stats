@@ -2,7 +2,7 @@
 
 namespace SDIS37Stats.Core.Statistics
 {
-    public class FirefighterAvailability : IComparable
+    public class FirefighterAvailability : IComparable<FirefighterAvailability>
     {
         public enum AVAILABILITY
         {
@@ -26,18 +26,18 @@ namespace SDIS37Stats.Core.Statistics
             return Rank + " / " + Name + " / " + Availability.ToString();
         }
 
-        public int CompareTo(object obj)
+        public int CompareTo(FirefighterAvailability obj)
         {
-            if (obj == null || !(obj is FirefighterAvailability))
+            if (obj == null)
             {
                 return 1;
             }
 
-            int compareToValue = this.Availability.CompareTo((obj as FirefighterAvailability).Availability);
+            int compareToValue = this.Availability.CompareTo(obj.Availability);
 
             if (compareToValue == 0)
             {
-                return this.Name.CompareTo((obj as FirefighterAvailability).Name);
+                return this.Name.CompareTo(obj.Name);
             }
             else
             {
