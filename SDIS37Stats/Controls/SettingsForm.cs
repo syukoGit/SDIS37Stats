@@ -6,10 +6,10 @@
 
     public partial class SettingsForm : Form
     {
-        private static readonly Dictionary<Core.Syst.Setting.THEMETYPE, string> themeTypeList = new()
+        private static readonly Dictionary<Extra.Theme.ITheme.EThemeType, string> themeTypeList = new()
         {
-            { Core.Syst.Setting.THEMETYPE.Dark, "Mode sombre" },
-            { Core.Syst.Setting.THEMETYPE.Light, "Mode clair" }
+            { Extra.Theme.ITheme.EThemeType.Dark, "Mode sombre" },
+            { Extra.Theme.ITheme.EThemeType.Light, "Mode clair" }
         };
 
         public Core.Syst.Setting Settings { get; private set; }
@@ -62,7 +62,7 @@
 
         private void Init()
         {
-            this.comboBoxThemeType.SelectedValue = this.Settings.ThemeType;
+            this.comboBoxThemeType.SelectedValue = this.Settings.Theme.ThemeType;
 
             this.checkBoxMuteSound.Checked = !this.Settings.MuteSound;
 
@@ -79,14 +79,12 @@
         #region Event
         private void ComboBoxThemeType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Settings.ThemeType = ((KeyValuePair<Core.Syst.Setting.THEMETYPE, string>)this.comboBoxThemeType.SelectedItem).Key;
-
-            switch (this.Settings.ThemeType)
+            switch (((KeyValuePair<Extra.Theme.ITheme.EThemeType, string>)this.comboBoxThemeType.SelectedItem).Key)
             {
-                case Core.Syst.Setting.THEMETYPE.Dark:
+                case Extra.Theme.ITheme.EThemeType.Dark:
                     this.Settings.Theme = new Extra.Theme.DarkTheme();
                     break;
-                case Core.Syst.Setting.THEMETYPE.Light:
+                case Extra.Theme.ITheme.EThemeType.Light:
                     this.Settings.Theme = new Extra.Theme.LightTheme();
                     break;
                 default:
