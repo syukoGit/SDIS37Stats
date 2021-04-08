@@ -4,6 +4,14 @@
 
     public interface ITheme
     {
+        public enum EThemeType
+        {
+            Dark,
+            Light
+        }
+
+        public EThemeType ThemeType { get; }
+
         #region Form
         Color Form_BackgroundColor();
         Color Form_FontColor();

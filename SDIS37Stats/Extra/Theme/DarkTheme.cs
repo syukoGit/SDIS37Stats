@@ -4,6 +4,8 @@ namespace SDIS37Stats.Extra.Theme
 {
     public class DarkTheme : ITheme
     {
+        public ITheme.EThemeType ThemeType => ITheme.EThemeType.Dark;
+
         public Color FirefighterAvailabilityListView_BackgroundColor() => ColorPalette.gray7;
 
         public Color FirefighterAvailabilityListView_BackgroundColorItem() => ColorPalette.gray5;

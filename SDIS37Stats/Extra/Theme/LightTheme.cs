@@ -4,6 +4,8 @@
 
     public class LightTheme : ITheme
     {
+        public ITheme.EThemeType ThemeType => ITheme.EThemeType.Light;
+
         public Color FirefighterAvailabilityListView_BackgroundColor() => ColorPalette.white2;
 
         public Color FirefighterAvailabilityListView_BackgroundColorItem() => ColorPalette.white3;
