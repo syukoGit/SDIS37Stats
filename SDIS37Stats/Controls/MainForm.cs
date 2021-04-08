@@ -39,6 +39,8 @@ namespace SDIS37Stats.Controls
         #region Private
         private void Init()
         {
+            Core.Syst.Setting.CurrentSetting.PropertyChanged += this.Setting_PropertyChanged;
+
             this.SettingsPicture.Image = Extra.Image.Image.SettingsPicture;
 
             //Event connection
@@ -126,6 +128,35 @@ namespace SDIS37Stats.Controls
             }
         }
 
+        private void Setting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender != null && sender is Core.Syst.Setting && sender == Core.Syst.Setting.CurrentSetting)
+            {
+                var prop = typeof(Core.Syst.Setting).GetProperty(e.PropertyName);
+
+                switch (prop.Name)
+                {
+                    case "Theme":
+                        this.ApplyTheme();
+                        break;
+                    case "MuteSound":
+                        Extra.Sound.Sound.Mute = (bool)prop.GetValue(sender);
+                        break;
+                    case "NbOperationOfDepartmentDisplayed":
+                        this.RecentOperationList.NbOperationDisplayed = (int)prop.GetValue(sender);
+                        break;
+                    case "NbOperationOfUserFirehouseDisplayed":
+                        this.RecentOperationOfUserFirehouse.NbOperationDisplayed = (int)prop.GetValue(sender);
+                        break;
+                    case "NbFirefighterAvailabilityDisplayed":
+                        this.FirefighterAvailabilityListView.NbAvailibilitiesDisplayed = (int)prop.GetValue(sender);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.webService?.Dispose();
@@ -184,7 +215,7 @@ namespace SDIS37Stats.Controls
             {
                 this.settingsForm.FormClosing -= this.SettingsForm_FormClosing;
 
-                Core.Syst.Setting.CurrentSetting = this.settingsForm.Settings;
+                Core.Syst.Setting.UpdateSettings(this.settingsForm.Settings);
 
                 this.ApplyTheme();
             }
