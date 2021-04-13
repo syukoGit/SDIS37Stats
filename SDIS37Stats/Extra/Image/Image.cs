@@ -34,5 +34,19 @@ namespace SDIS37Stats.Extra.Image
 
         public static Bitmap OperationType_Other => new(@"Extra\Image\PNG\GreenSquare.png");
         #endregion
+
+        #region WebServiceState
+        public static Bitmap WebServiceState_NotStated => new(@"Extra\Image\PNG\LightGrayCircle.png");
+
+        public static Bitmap WebServiceState_DataRetrieving => new(@"Extra\Image\PNG\BlueCircle.png");
+
+        public static Bitmap WebServiceState_UpToDate => new(@"Extra\Image\PNG\GreenCircle.png");
+
+        public static Bitmap WebServiceState_AttemptConnection => new(@"Extra\Image\PNG\PurpleCircle.png");
+
+        public static Bitmap WebServiceState_FailedConnection => new(@"Extra\Image\PNG\RedCircleWithYellowExclamationMark.png");
+
+        public static Bitmap WebServiceState_Error => new(@"Extra\Image\PNG\RedCircle.png");
+        #endregion
     }
 }

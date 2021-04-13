@@ -12,6 +12,16 @@
     /// </remarks>
     class WebService : IDisposable
     {
+        public enum EState
+        {
+            NotStated,
+            DataRetrieving,
+            UpToDate,
+            AttemptConnection,
+            FailedConnection,
+            Error
+        };
+
         private static readonly List<string> UrlWichUseJS = new();
 
         /// <summary>
@@ -66,6 +76,8 @@
 
         private bool isLogged = false;
 
+        private EState state = EState.NotStated;
+
         public delegate void OnMainPageLoadedHandler(HtmlDocument htmlDocument);
         public event OnMainPageLoadedHandler OnMainPageLoaded;
 
@@ -87,6 +99,9 @@
         public delegate void OnUrlQueueEmptyHandler();
         public event OnUrlQueueEmptyHandler OnUrlQueueEmpty;
 
+        public delegate void StateChangedEventHandler(object e, EState state);
+        public event StateChangedEventHandler StateChanged;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebService" /> class.
         /// </summary>
@@ -98,6 +113,7 @@
             this.WebBrowser = new WebBrowser();
 
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
+            this.WebBrowser.Navigating += this.WebBrowser_Navigating;
 
             this.WebBrowser.Url = new Uri(WebServiceURL.WebServiceMainPageURL.GetAbsoluteUrl(null));
         }
@@ -111,6 +127,21 @@
         /// Gets or sets the password used for connection.
         /// </summary>
         public static string Password { get; set; }
+
+        public EState State
+        {
+            get
+            {
+                return this.state;
+            }
+            private set
+            {
+                this.state = value;
+                this.StateChanged?.Invoke(this, this.state);
+            }
+        }
+
+        public string CurrentUrl => this.WebBrowser.Url.Scheme + "://" + this.WebBrowser.Url.Host + this.WebBrowser.Url.AbsolutePath;
 
         /// <summary>
         /// Gets the <see cref="System.Windows.Forms.WebBrowser"/> used for connection.
@@ -175,6 +206,7 @@
             }
             else
             {
+                this.State = EState.UpToDate;
                 this.OnUrlQueueEmpty?.Invoke();
             }
         }
@@ -189,6 +221,7 @@
             if (this.ConnectionState == 1)
             {
                 Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Authentification error. Invalid username or password");
+                this.State = EState.FailedConnection;
                 return;
             }
 
@@ -361,6 +394,19 @@
             catch
             {
                 Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error when processing the web page. URL: " + this.WebBrowser.Document.Url.AbsoluteUri);
+            }
+        }
+
+        private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            string url = e.Url.Scheme + "://" + e.Url.Host + e.Url.AbsolutePath;
+            if (url == WebServiceURL.WebServicesLoginURL.Url)
+            {
+                this.State = EState.AttemptConnection;
+            }
+            else
+            {
+                this.State = EState.DataRetrieving;
             }
         }
         #endregion

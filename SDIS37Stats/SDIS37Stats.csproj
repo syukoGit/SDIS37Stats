@@ -31,6 +31,9 @@
     <None Update="Extra\Image\PNG\GreenSquare.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Extra\Image\PNG\LightGrayCircle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Extra\Image\PNG\PurpleCircle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -38,6 +41,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Extra\Image\PNG\RedCircleWithoutInterior.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extra\Image\PNG\RedCircleWithYellowExclamationMark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Extra\Image\PNG\YellowTriangle.png">

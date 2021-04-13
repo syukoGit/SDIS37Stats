@@ -13,6 +13,8 @@ namespace SDIS37Stats.Controls
 
         private SettingsForm settingsForm;
 
+        private ToolTip webServiceStateToolTip = new();
+
         public bool ShowWebBrowser { get; set; } = false;
 
         public delegate void OnThemeUpdatedHandler(Extra.Theme.ITheme theme);
@@ -54,6 +56,7 @@ namespace SDIS37Stats.Controls
 
             this.webService = new Core.Web.WebService();
             this.webService.OnUrlQueueEmpty += this.WebService_OnUrlQueueEmpty;
+            this.webService.StateChanged += this.WebService_StateChanged;
 
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
@@ -182,6 +185,33 @@ namespace SDIS37Stats.Controls
         {
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
+        }
+
+        private void WebService_StateChanged(object e, Core.Web.WebService.EState state)
+        {
+            switch (state)
+            {
+                case Core.Web.WebService.EState.NotStated:
+                    this.webServiceState.Image = Extra.Image.Image.WebServiceState_NotStated;
+                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, "Pas démarré");
+                    break;
+                case Core.Web.WebService.EState.DataRetrieving:
+                    this.webServiceState.Image = Extra.Image.Image.WebServiceState_DataRetrieving;
+                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, $"Récupération des données en cours ({ this.webService.CurrentUrl })");
+                    break;
+                case Core.Web.WebService.EState.UpToDate:
+                    this.webServiceState.Image = Extra.Image.Image.WebServiceState_UpToDate;
+                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, "À jour");
+                    break;
+                case Core.Web.WebService.EState.AttemptConnection:
+                    this.webServiceState.Image = Extra.Image.Image.WebServiceState_AttemptConnection;
+                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, "Tentative de connexion");
+                    break;
+                case Core.Web.WebService.EState.FailedConnection:
+                    this.webServiceState.Image = Extra.Image.Image.WebServiceState_FailedConnection;
+                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, "Impossible de se connecter");
+                    break;
+            }
         }
 
         private void SettingsPicture_MouseEnter(object sender, EventArgs e)
