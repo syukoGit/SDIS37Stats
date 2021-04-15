@@ -46,6 +46,8 @@ namespace SDIS37Stats.Extra.Image
 
         public static Bitmap WebServiceState_FailedConnection => new(@"Extra\Image\PNG\RedCircleWithYellowExclamationMark.png");
 
+        public static Bitmap WebServiceState_NoConnection => new(@"Extra\Image\PNG\RedCircle.png");
+
         public static Bitmap WebServiceState_Error => new(@"Extra\Image\PNG\RedCircle.png");
         #endregion
     }

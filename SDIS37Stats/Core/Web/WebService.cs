@@ -19,6 +19,7 @@
             UpToDate,
             AttemptConnection,
             FailedConnection,
+            NoConnection,
             Error
         };
 
@@ -334,7 +335,7 @@
             try
             {
                 HtmlDocument document = this.WebBrowser.Document;
-
+                
                 this.webPageDuringLoading = false;
 
                 TimeSpan responseTimeHttpRequest = TimeSpan.Zero;
@@ -360,7 +361,24 @@
 
                     string urlWithoutQuery = document.Url.Scheme + "://" + document.Url.Host + document.Url.AbsolutePath;
 
-                    if (urlWithoutQuery == WebServiceURL.WebServicesLoginURL.Url)
+                    if (urlWithoutQuery == "res://ieframe.dll/navcancl.htm")
+                    {
+                        if (Syst.Network.IsNetworkConnected())
+                        {
+                            this.State = EState.Error;
+                            Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error");
+                        }
+                        else
+                        {
+                            Syst.Log.WriteLog(Syst.Log.TYPE.Error, "No connection");
+
+                            this.UrlQueue.Clear();
+                            this.NavigateToNextUrl();
+
+                            this.State = EState.NoConnection;
+                        }
+                    }
+                    else if (urlWithoutQuery == WebServiceURL.WebServicesLoginURL.Url)
                     {
                         this.LoginPageLoaded(document);
                     }
@@ -406,6 +424,10 @@
             if (url == WebServiceURL.WebServicesLoginURL.Url)
             {
                 this.State = EState.AttemptConnection;
+            }
+            else if (url == "res://ieframe.dll/navcancl.htm")
+            {
+                this.State = EState.Error;
             }
             else
             {
