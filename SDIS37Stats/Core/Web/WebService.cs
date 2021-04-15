@@ -22,8 +22,6 @@
             Error
         };
 
-        private static readonly List<string> UrlWichUseJS = new();
-
         /// <summary>
         /// Private queue for set and get a url queue to execute.
         /// </summary>
@@ -107,9 +105,6 @@
         /// </summary>
         public WebService()
         {
-            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceOperationListURL.Url);
-            WebService.UrlWichUseJS.Add(WebServiceURL.WebServiceOperationListOfTheUserFirehouseURL.Url);
-
             this.WebBrowser = new WebBrowser();
 
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
