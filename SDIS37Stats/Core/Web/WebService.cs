@@ -179,29 +179,37 @@
         {
             if (this.UrlQueue.Count > 0)
             {
-                if (!this.webPageDuringLoading && this.isLogged)
+                if (!this.webPageDuringLoading)
                 {
                     this.webPageDuringLoading = true;
 
-                    this.startedTimeHttpRequest = DateTime.Now;
-
-                    var (url, queryParams, postDatas) = this.UrlQueue.Dequeue();
-
-                    this.WebBrowser.ScriptErrorsSuppressed = !url.UseJS;
-
-                    var (strUrl, strPostDatas) = url.GetAbsoluteUrlAndPostData(queryParams, postDatas);
-
-                    if (string.IsNullOrEmpty(strPostDatas))
+                    if (this.isLogged)
                     {
-                        this.WebBrowser.Navigate(strUrl);
+                        this.startedTimeHttpRequest = DateTime.Now;
+
+                        var (url, queryParams, postDatas) = this.UrlQueue.Dequeue();
+
+                        this.WebBrowser.ScriptErrorsSuppressed = !url.UseJS;
+
+                        var (strUrl, strPostDatas) = url.GetAbsoluteUrlAndPostData(queryParams, postDatas);
+
+                        if (string.IsNullOrEmpty(strPostDatas))
+                        {
+                            this.WebBrowser.Navigate(strUrl);
+                        }
+                        else
+                        {
+                            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(strPostDatas);
+                            this.WebBrowser.Navigate(strUrl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
+                        }
+
+                        Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request. URL: " + strUrl + (string.IsNullOrEmpty(strPostDatas) ? string.Empty : " (Post data : " + strPostDatas + ")"));
                     }
                     else
                     {
-                        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(strPostDatas);
-                        this.WebBrowser.Navigate(strUrl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
+                        this.WebBrowser.ScriptErrorsSuppressed = true;
+                        this.WebBrowser.Navigate(WebServiceURL.WebServicesLoginURL.Url);
                     }
-
-                    Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request. URL: " + strUrl + (string.IsNullOrEmpty(strPostDatas) ? string.Empty : " (Post data : " + strPostDatas + ")"));
                 }
             }
             else
