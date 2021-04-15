@@ -211,6 +211,14 @@ namespace SDIS37Stats.Controls
                     this.webServiceState.Image = Extra.Image.Image.WebServiceState_FailedConnection;
                     this.webServiceStateToolTip.SetToolTip(this.webServiceState, "Impossible de se connecter");
                     break;
+                case Core.Web.WebService.EState.NoConnection:
+                    this.webServiceState.Image = Extra.Image.Image.WebServiceState_NoConnection;
+                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, "Aucune connexion");
+                    break;
+                case Core.Web.WebService.EState.Error:
+                    this.webServiceState.Image = Extra.Image.Image.WebServiceState_Error;
+                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, "Erreur");
+                    break;
             }
         }
 
