@@ -360,7 +360,7 @@
 
                     if (urlWithoutQuery == "res://ieframe.dll/navcancl.htm")
                     {
-                        if (Syst.Network.IsNetworkConnected())
+                        if (Syst.Network.IsNetworkAvailable())
                         {
                             this.State = EState.Error;
                             Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error");
@@ -424,7 +424,19 @@
             }
             else if (url == "res://ieframe.dll/navcancl.htm")
             {
-                this.State = EState.Error;
+                if (Syst.Network.IsNetworkAvailable())
+                {
+                    this.State = EState.Error;
+                    Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error");
+                }
+                else
+                {
+                    Syst.Log.WriteLog(Syst.Log.TYPE.Error, "No connection");
+
+                    this.UrlQueue.Clear();
+
+                    this.State = EState.NoConnection;
+                }
             }
             else
             {
