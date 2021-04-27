@@ -258,6 +258,24 @@ namespace SDIS37Stats.Controls
                 this.ApplyTheme();
             }
         }
+
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F11)
+            {
+                if (this.FormBorderStyle == FormBorderStyle.None)
+                {
+                    this.FormBorderStyle = FormBorderStyle.Sizable;
+                }
+                else
+                {
+                    this.WindowState = FormWindowState.Normal;
+                    this.FormBorderStyle = FormBorderStyle.None;
+                    this.WindowState = FormWindowState.Maximized;
+                }
+            }
+            e.Handled = false;
+        }
         #endregion
     }
 }
