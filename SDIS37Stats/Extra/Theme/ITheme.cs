@@ -1,59 +1,151 @@
-﻿namespace SDIS37Stats.Extra.Theme
+﻿// -----------------------------------------------------------------------
+// <copyright file="ITheme.cs" company="SyukoTech">
+// Copyright (c) SyukoTech. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+namespace SDIS37Stats.Extra.Theme
 {
     using System.Drawing;
 
+    /// <summary>
+    /// Interface used by the themes.
+    /// </summary>
     public interface ITheme
     {
+        /// <summary>
+        /// Defines the type of theme.
+        /// </summary>
         public enum EThemeType
         {
+            /// <summary>
+            /// Used by the dark theme.
+            /// </summary>
             Dark,
-            Light
+
+            /// <summary>
+            /// Used by the light theme.
+            /// </summary>
+            Light,
         }
 
+        /// <summary>
+        /// Gets the type of theme.
+        /// </summary>
         public EThemeType ThemeType { get; }
 
-        #region Form
-        Color Form_BackgroundColor();
-        Color Form_FontColor();
-        Color Form_BackgroundColorButton();
-        Color Form_BackgroundColorTextbox();
-        #endregion
+        /// <summary>
+        /// Gets the color to be used to the background color of forms.
+        /// </summary>
+        Color Form_BackgroundColor { get; }
 
-        #region MainForm
-        Color SettingsButton_DefaultBackgroundColor();
-        Color SettingsButton_BackgroundColorWhenSelected();
-        #endregion
+        /// <summary>
+        /// Gets the color to be used to the font color of forms.
+        /// </summary>
+        Color Form_FontColor { get; }
 
-        #region Graph
-        Color Graph_BackgroundColor();
-        Color Graph_BackgroundGraphColor();
-        Color Graph_AxisColor();
-        Color Graph_MainColor();
-        #endregion
+        /// <summary>
+        /// Gets the color to be used to the background color of buttons in the forms.
+        /// </summary>
+        Color Form_BackgroundColorButton { get; }
 
-        #region OperationListView
-        Color OperationListView_BackgroundColor();
-        Color OperationListView_BackgroundColorList();
-        Color OperationListView_BackgroundColorItem();
-        Color OperationListView_FontColorItem();
-        Color OperationListView_BackgroundColorHighlightItem();
-        Color OperationListView_FontColorHighlightItem();
-        #endregion
+        /// <summary>
+        /// Gets the color to be used to the background color of textboxs in the forms.
+        /// </summary>
+        Color Form_BackgroundColorTextbox { get; }
 
-        #region SevenSegment
-        Color SevenSegment_DarkColor();
-        Color SevenSegment_LightColor();
-        #endregion
+        /// <summary>
+        /// Gets the color to be used to the background of settings button.
+        /// </summary>
+        Color SettingsButton_DefaultBackgroundColor { get; }
 
-        #region FirefighterAvailabilityListView
-        Color FirefighterAvailabilityListView_BackgroundColor();
-        Color FirefighterAvailabilityListView_BackgroundList();
-        Color FirefighterAvailabilityListView_BackgroundColorItem();
-        #endregion
+        /// <summary>
+        /// Gets the color to be used to the background of settings button when it is selected.
+        /// </summary>
+        Color SettingsButton_BackgroundColorWhenSelected { get; }
 
-        #region SettingsForm
-        Color SettingsForm_ComboBox_BackgroundColor();
-        Color SettingsForm_CheckBox_BackgroundColor();
-        #endregion
+        /// <summary>
+        /// Gets the color to be used to the background of controls that use a graphics.
+        /// </summary>
+        Color Graph_BackgroundColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of graphics.
+        /// </summary>
+        Color Graph_BackgroundGraphColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the axis of graphics.
+        /// </summary>
+        Color Graph_AxisColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the main bar of graphics.
+        /// </summary>
+        Color Graph_MainColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the controls that use a <see cref="Controls.Type.Statistics.OperationListView"/>.
+        /// </summary>
+        Color OperationListView_BackgroundColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of lists.
+        /// </summary>
+        Color OperationListView_BackgroundColorList { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of items.
+        /// </summary>
+        Color OperationListView_BackgroundColorItem { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the font of items.
+        /// </summary>
+        Color OperationListView_FontColorItem { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of items that must be highlighted.
+        /// </summary>
+        Color OperationListView_BackgroundColorHighlightItem { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the font of items that must be highlighted.
+        /// </summary>
+        Color OperationListView_FontColorHighlightItem { get; }
+
+        /// <summary>
+        /// Gets the color to be used as the dark color of <see cref="Controls.Type.SevenSegment.SevenSegment"/> objects.
+        /// </summary>
+        Color SevenSegment_DarkColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used as the light color of <see cref="Controls.Type.SevenSegment.SevenSegment"/> objects.
+        /// </summary>
+        Color SevenSegment_LightColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of controls that use a <see cref="Controls.Type.Statistics.FirefighterAvailabilityListView"/>.
+        /// </summary>
+        Color FirefighterAvailabilityListView_BackgroundColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of lists.
+        /// </summary>
+        Color FirefighterAvailabilityListView_BackgroundList { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of items.
+        /// </summary>
+        Color FirefighterAvailabilityListView_BackgroundColorItem { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of combo box in the settings forms.
+        /// </summary>
+        Color SettingsForm_ComboBox_BackgroundColor { get; }
+
+        /// <summary>
+        /// Gets the color to be used to the background of check box in the settings forms.
+        /// </summary>
+        Color SettingsForm_CheckBox_BackgroundColor { get; }
     }
 }

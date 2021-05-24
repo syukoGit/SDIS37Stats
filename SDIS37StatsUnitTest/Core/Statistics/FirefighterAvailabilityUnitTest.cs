@@ -28,25 +28,25 @@
             {
                 yield return new object[]
                 {
-                    new FirefighterAvailability{ Availability = FirefighterAvailability.AVAILABILITY.AvailableOnSite, Matricule = "603210V", Name = "AXEL AA", Rank = "SA1" },
-                    new FirefighterAvailability{ Availability = FirefighterAvailability.AVAILABILITY.InIntervention, Matricule = "602422V", Name = "ROBERT TT", Rank = "SA2" },
+                    new FirefighterAvailability{ Availability = FirefighterAvailability.EAvailability.AvailableOnSite, RegistrationNumber = "603210V", Name = "AXEL AA", Rank = "SA1" },
+                    new FirefighterAvailability{ Availability = FirefighterAvailability.EAvailability.InIntervention, RegistrationNumber = "602422V", Name = "ROBERT TT", Rank = "SA2" },
                     1
                 };
                 yield return new object[]
                 {
-                    new FirefighterAvailability{ Availability = FirefighterAvailability.AVAILABILITY.AvailableOnSite, Matricule = "603210V", Name = "AXEL AA", Rank = "SA1" },
-                    new FirefighterAvailability{ Availability = FirefighterAvailability.AVAILABILITY.AvailableOnSite, Matricule = "602422V", Name = "ROBERT TT", Rank = "SA2" },
+                    new FirefighterAvailability{ Availability = FirefighterAvailability.EAvailability.AvailableOnSite, RegistrationNumber = "603210V", Name = "AXEL AA", Rank = "SA1" },
+                    new FirefighterAvailability{ Availability = FirefighterAvailability.EAvailability.AvailableOnSite, RegistrationNumber = "602422V", Name = "ROBERT TT", Rank = "SA2" },
                     -1
                 };
                 yield return new object[]
                 {
-                    new FirefighterAvailability{ Availability = FirefighterAvailability.AVAILABILITY.AvailableOnSite, Matricule = "603210V", Name = "AXEL AA", Rank = "SA1" },
-                    new FirefighterAvailability{ Availability = FirefighterAvailability.AVAILABILITY.AvailableOnSite, Matricule = "602422V", Name = "AXEL AA", Rank = "SA2" },
+                    new FirefighterAvailability{ Availability = FirefighterAvailability.EAvailability.AvailableOnSite, RegistrationNumber = "603210V", Name = "AXEL AA", Rank = "SA1" },
+                    new FirefighterAvailability{ Availability = FirefighterAvailability.EAvailability.AvailableOnSite, RegistrationNumber = "602422V", Name = "AXEL AA", Rank = "SA2" },
                     0
                 };
                 yield return new object[]
                 {
-                    new FirefighterAvailability{ Availability = FirefighterAvailability.AVAILABILITY.AvailableOnSite, Matricule = "603210V", Name = "AXEL AA", Rank = "SA1" },
+                    new FirefighterAvailability{ Availability = FirefighterAvailability.EAvailability.AvailableOnSite, RegistrationNumber = "603210V", Name = "AXEL AA", Rank = "SA1" },
                     null,
                     1
                 };

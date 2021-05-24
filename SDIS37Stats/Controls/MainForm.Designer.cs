@@ -167,7 +167,7 @@
             this.FirefighterAvailabilityListView.Location = new System.Drawing.Point(5, 461);
             this.FirefighterAvailabilityListView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.FirefighterAvailabilityListView.Name = "FirefighterAvailabilityListView";
-            this.FirefighterAvailabilityListView.NbAvailibilitiesDisplayed = 50;
+            this.FirefighterAvailabilityListView.NumberOfAvailibilitiesDisplayed = 50;
             this.FirefighterAvailabilityListView.Size = new System.Drawing.Size(476, 295);
             this.FirefighterAvailabilityListView.TabIndex = 7;
             this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de ... :";

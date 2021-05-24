@@ -1,40 +1,265 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="SevenSegmentArray.cs" company="SyukoTech">
+// Copyright (c) SyukoTech. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 namespace SDIS37Stats.Controls.Type.SevenSegment
 {
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
+    /// <summary>
+    /// Class for make a <see cref="SevenSegment"/> array for display number.
+    /// </summary>
     public class SevenSegmentArray : UserControl
     {
+        /// <summary>
+        /// All <see cref="SevenSegment"/> contained in this <see cref="SevenSegmentArray"/>.
+        /// </summary>
         private SevenSegment[] segments = null;
 
+        /// <summary>
+        /// The width of the LED segments.
+        /// </summary>
         private int elementWidth = 10;
+
+        /// <summary>
+        /// The shear coefficient for italicizing the displays. Try a value like -0.1.
+        /// </summary>
         private float italicFactor = 0.0F;
+
+        /// <summary>
+        /// The color of the segments' background.
+        /// </summary>
         private Color colorBackground = Color.DarkGray;
+
+        /// <summary>
+        /// The color of inactive LED segments.
+        /// </summary>
         private Color colorDark = Color.DimGray;
+
+        /// <summary>
+        /// The color of active LED segments.
+        /// </summary>
         private Color colorLight = Color.Red;
+
+        /// <summary>
+        /// A value indicating whether the dot should be displayed.
+        /// </summary>
         private bool showDot = true;
+
+        /// <summary>
+        /// Padding that applies to each seven-segment element in the array.
+        /// </summary>
         private Padding elementPadding;
 
+        /// <summary>
+        /// The value to be displayed.
+        /// </summary>
         private int theValue;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SevenSegmentArray"/> class.
+        /// </summary>
         public SevenSegmentArray()
         {
-            SuspendLayout();
-            Name = "SevenSegmentArray";
-            Size = new Size(100, 25);
-            Resize += new EventHandler(SevenSegmentArray_Resize);
-            ResumeLayout(false);
+            this.SuspendLayout();
+            this.Name = "SevenSegmentArray";
+            this.Size = new Size(100, 25);
+            this.Resize += new EventHandler(this.SevenSegmentArray_Resize);
+            this.ResumeLayout(false);
 
-            TabStop = false;
-            elementPadding = new Padding(4, 4, 4, 4);
-            RecreateSegments(4);
+            this.TabStop = false;
+            this.elementPadding = new Padding(4, 4, 4, 4);
+            this.RecreateSegments(4);
+        }
+
+        /// <summary>
+        /// Gets or sets the background's color of the LED array.
+        /// </summary>
+        public Color ColorBackground
+        {
+            get
+            {
+                return this.colorBackground;
+            }
+
+            set
+            {
+                this.colorBackground = value;
+                this.UpdateSegments();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of inactive LED segments.
+        /// </summary>
+        public Color ColorDark
+        {
+            get
+            {
+                return this.colorDark;
+            }
+
+            set
+            {
+                this.colorDark = value;
+                this.UpdateSegments();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of active LED segments.
+        /// </summary>
+        public Color ColorLight
+        {
+            get
+            {
+                return this.colorLight;
+            }
+
+            set
+            {
+                this.colorLight = value;
+                this.UpdateSegments();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the width of LED segments.
+        /// </summary>
+        public int ElementWidth
+        {
+            get
+            {
+                return this.elementWidth;
+            }
+
+            set
+            {
+                this.elementWidth = value;
+                this.UpdateSegments();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the shear coefficient for italicizing the displays. Try a value like -0.1.
+        /// </summary>
+        public float ItalicFactor
+        {
+            get
+            {
+                return this.italicFactor;
+            }
+
+            set
+            {
+                this.italicFactor = value;
+                this.UpdateSegments();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the decimal point LED is displayed.
+        /// </summary>
+        public bool DecimalShow
+        {
+            get
+            {
+                return this.showDot;
+            }
+
+            set
+            {
+                this.showDot = value;
+                this.UpdateSegments();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the number of seven-segment elements in this array.
+        /// </summary>
+        public int ArrayCount
+        {
+            get
+            {
+                return this.segments.Length;
+            }
+
+            set
+            {
+                if ((value > 0) && (value <= 100))
+                {
+                    this.RecreateSegments(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the padding that applies to each seven-segment element in the array.
+        /// Tweak these numbers to get the perfect appearance for the array of your size.
+        /// </summary>
+        public Padding ElementPadding
+        {
+            get
+            {
+                return this.elementPadding;
+            }
+
+            set
+            {
+                this.elementPadding = value;
+                this.UpdateSegments();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value to be displayed on the LED array.
+        /// </summary>
+        public int Value
+        {
+            get
+            {
+                return this.theValue;
+            }
+
+            set
+            {
+                this.theValue = value;
+                for (int i = 0; i < this.segments.Length; i++)
+                {
+                    this.segments[i].CustomPattern = 0;
+                    this.segments[i].DecimalOn = false;
+                }
+
+                int segmentIndex = 0;
+                for (int i = this.theValue.ToString().Length - 1; i >= 0; i--)
+                {
+                    if (segmentIndex >= this.segments.Length)
+                    {
+                        break;
+                    }
+
+                    if (this.theValue.ToString()[i] == '.')
+                    {
+                        this.segments[segmentIndex].DecimalOn = true;
+                    }
+                    else
+                    {
+                        this.segments[segmentIndex++].Value = int.Parse(this.theValue.ToString()[i].ToString());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Paints the background of the control.
+        /// </summary>
+        /// <param name="e">A <see cref="PaintEventArgs"/> that contains information about the control to paint.</param>
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            e.Graphics.Clear(this.colorBackground);
         }
 
         /// <summary>
@@ -45,27 +270,37 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
         /// <param name="count">Number of elements to create.</param>
         private void RecreateSegments(int count)
         {
-            if (segments != null)
-                for (int i = 0; i < segments.Length; i++) { segments[i].Parent = null; segments[i].Dispose(); }
+            if (this.segments != null)
+            {
+                foreach (SevenSegment sevenSegment in this.segments)
+                {
+                    sevenSegment.Parent = null;
+                    sevenSegment.Dispose();
+                }
+            }
 
-            if (count <= 0) return;
-            segments = new SevenSegment[count];
+            if (count <= 0)
+            {
+                return;
+            }
+
+            this.segments = new SevenSegment[count];
 
             for (int i = 0; i < count; i++)
             {
-                segments[i] = new SevenSegment
+                this.segments[i] = new ()
                 {
                     Parent = this,
                     Top = 0,
-                    Height = Height,
+                    Height = this.Height,
                     Anchor = AnchorStyles.Top | AnchorStyles.Bottom,
-                    Visible = true
+                    Visible = true,
                 };
             }
 
-            ResizeSegments();
-            UpdateSegments();
-            Value = theValue;
+            this.ResizeSegments();
+            this.UpdateSegments();
+            this.Value = this.theValue;
         }
 
         /// <summary>
@@ -74,11 +309,11 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
         /// </summary>
         private void ResizeSegments()
         {
-            int segWidth = Width / segments.Length;
-            for (int i = 0; i < segments.Length; i++)
+            int segWidth = this.Width / this.segments.Length;
+            for (int i = 0; i < this.segments.Length; i++)
             {
-                segments[i].Left = Width * (segments.Length - 1 - i) / segments.Length;
-                segments[i].Width = segWidth;
+                this.segments[i].Left = this.Width * (this.segments.Length - 1 - i) / this.segments.Length;
+                this.segments[i].Width = segWidth;
             }
         }
 
@@ -88,89 +323,26 @@ namespace SDIS37Stats.Controls.Type.SevenSegment
         /// </summary>
         private void UpdateSegments()
         {
-            for (int i = 0; i < segments.Length; i++)
+            for (int i = 0; i < this.segments.Length; i++)
             {
-                segments[i].ColorBackground = colorBackground;
-                segments[i].ColorDark = colorDark;
-                segments[i].ColorLight = colorLight;
-                segments[i].ElementWidth = elementWidth;
-                segments[i].ItalicFactor = italicFactor;
-                segments[i].DecimalShow = showDot;
-                segments[i].Padding = elementPadding;
+                this.segments[i].ColorBackground = this.colorBackground;
+                this.segments[i].ColorDark = this.colorDark;
+                this.segments[i].ColorLight = this.colorLight;
+                this.segments[i].ElementWidth = this.elementWidth;
+                this.segments[i].ItalicFactor = this.italicFactor;
+                this.segments[i].DecimalShow = this.showDot;
+                this.segments[i].Padding = this.elementPadding;
             }
         }
 
-        private void SevenSegmentArray_Resize(object sender, EventArgs e) { ResizeSegments(); }
-
-        protected override void OnPaintBackground(PaintEventArgs e) { e.Graphics.Clear(colorBackground); }
-
         /// <summary>
-        /// Background color of the LED array.
+        /// Called when the control should be resized.
         /// </summary>
-        public Color ColorBackground { get { return colorBackground; } set { colorBackground = value; UpdateSegments(); } }
-        /// <summary>
-        /// Color of inactive LED segments.
-        /// </summary>
-        public Color ColorDark { get { return colorDark; } set { colorDark = value; UpdateSegments(); } }
-        /// <summary>
-        /// Color of active LED segments.
-        /// </summary>
-        public Color ColorLight { get { return colorLight; } set { colorLight = value; UpdateSegments(); } }
-
-        /// <summary>
-        /// Width of LED segments.
-        /// </summary>
-        public int ElementWidth { get { return elementWidth; } set { elementWidth = value; UpdateSegments(); } }
-        /// <summary>
-        /// Shear coefficient for italicizing the displays. Try a value like -0.1.
-        /// </summary>
-        public float ItalicFactor { get { return italicFactor; } set { italicFactor = value; UpdateSegments(); } }
-        /// <summary>
-        /// Specifies if the decimal point LED is displayed.
-        /// </summary>
-        public bool DecimalShow { get { return showDot; } set { showDot = value; UpdateSegments(); } }
-
-        /// <summary>
-        /// Number of seven-segment elements in this array.
-        /// </summary>
-        public int ArrayCount { get { return segments.Length; } set { if ((value > 0) && (value <= 100)) RecreateSegments(value); } }
-        /// <summary>
-        /// Padding that applies to each seven-segment element in the array.
-        /// Tweak these numbers to get the perfect appearance for the array of your size.
-        /// </summary>
-        public Padding ElementPadding { get { return elementPadding; } set { elementPadding = value; UpdateSegments(); } }
-
-        /// <summary>
-        /// The value to be displayed on the LED array. This can contain numbers,
-        /// certain letters, and decimal points.
-        /// </summary>
-        public int Value
+        /// <param name="sender">A control which must be resized.</param>
+        /// <param name="e">A <see cref="EventArgs"/> that contains the event data.</param>
+        private void SevenSegmentArray_Resize(object sender, EventArgs e)
         {
-            get
-            {
-                return theValue;
-            }
-            set
-            {
-                theValue = value;
-                for (int i = 0; i < segments.Length; i++)
-                {
-                    segments[i].CustomPattern = 0;
-                    segments[i].DecimalOn = false;
-                }
-                
-                int segmentIndex = 0;
-                for (int i = theValue.ToString().Length - 1; i >= 0; i--)
-                {
-                    if (segmentIndex >= segments.Length)
-                        break;
-
-                    if (theValue.ToString()[i] == '.')
-                        segments[segmentIndex].DecimalOn = true;
-                    else
-                        segments[segmentIndex++].Value = int.Parse(theValue.ToString()[i].ToString());
-                }
-            }
+            this.ResizeSegments();
         }
     }
 }

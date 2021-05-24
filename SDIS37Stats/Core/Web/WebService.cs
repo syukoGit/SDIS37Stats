@@ -1,4 +1,9 @@
-﻿namespace SDIS37Stats.Core.Web
+﻿// -----------------------------------------------------------------------
+// <copyright file="WebService.cs" company="SyukoTech">
+// Copyright (c) SyukoTech. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+namespace SDIS37Stats.Core.Web
 {
     using System;
     using System.Collections.Generic;
@@ -10,58 +15,8 @@
     /// <remarks>
     /// It uses a <see cref="System.Windows.Forms.WebBrowser"/> so objects can disposable.
     /// </remarks>
-    class WebService : IDisposable
+    public class WebService : IDisposable
     {
-        public enum EState
-        {
-            NotStated,
-            DataRetrieving,
-            UpToDate,
-            AttemptConnection,
-            FailedConnection,
-            NoConnection,
-            Error
-        };
-
-        /// <summary>
-        /// Private queue for set and get a url queue to execute.
-        /// </summary>
-        private readonly Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> urlQueue = new();
-
-        private int connectionState = 0;
-
-        /// <summary>
-        /// Private integer for get and set a connection state.
-        /// </summary>
-        /// <remarks>
-        /// 0 : no connection.
-        /// 1 : attempt connection.
-        /// 2 : connection success.
-        /// </remarks>
-        private int ConnectionState
-        {
-            get
-            {
-                return this.connectionState;
-            }
-            set
-            {
-                this.connectionState = value;
-                switch (this.connectionState)
-                {
-                    default:
-                    case 0:
-                    case 1:
-                        this.isLogged = false;
-                        break;
-                    case 2:
-                        Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "Successful authentication");
-                        this.isLogged = true;
-                        break;
-                }
-            }
-        }
-
         /// <summary>
         /// Started date and time to http request is send.
         /// Used for measure the response time of the last http request.
@@ -69,37 +24,19 @@
         private DateTime startedTimeHttpRequest = DateTime.MinValue;
 
         /// <summary>
-        /// Gets or sets a boolean if a web page is during loading.
+        /// A value indicating whether a web page is during loading.
         /// </summary>
         private bool webPageDuringLoading = false;
 
+        /// <summary>
+        /// A value indicating whether a web service is logged to the SDIS37 web site.
+        /// </summary>
         private bool isLogged = false;
 
+        /// <summary>
+        /// A <see cref="EState"/> value indicating the state os the web service.
+        /// </summary>
         private EState state = EState.NotStated;
-
-        public delegate void OnMainPageLoadedHandler(HtmlDocument htmlDocument);
-        public event OnMainPageLoadedHandler OnMainPageLoaded;
-
-        public delegate void OnNbOperationInDayUpdatedHandler(HtmlDocument htmlDocument);
-        public event OnNbOperationInDayUpdatedHandler OnNbOperationInDayUpdated;
-
-        public delegate void OnNbOperationPerHourUpdatedHandler(HtmlDocument htmlDocument);
-        public event OnNbOperationPerHourUpdatedHandler OnNbOperationPerHourUpdated;
-
-        public delegate void OnOperationListUpdatedHandler(HtmlDocument htmlDocument);
-        public event OnOperationListUpdatedHandler OnOperationListUpdated;
-
-        public delegate void OnOperationListOfUserFirehouseUpdatedHandler(HtmlDocument htmlDocument);
-        public event OnOperationListOfUserFirehouseUpdatedHandler OnOperationListOfUserFirehouseUpdated;
-
-        public delegate void OnListFirefighterAvailabilityUpdatedHandler(HtmlDocument htmlDocument);
-        public event OnListFirefighterAvailabilityUpdatedHandler OnListFirefighterAvailabilityUpdated;
-
-        public delegate void OnUrlQueueEmptyHandler();
-        public event OnUrlQueueEmptyHandler OnUrlQueueEmpty;
-
-        public delegate void StateChangedEventHandler(object e, EState state);
-        public event StateChangedEventHandler StateChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebService" /> class.
@@ -115,6 +52,108 @@
         }
 
         /// <summary>
+        /// Represents the method that will handle the events when the <see cref="HtmlDocument"/> is loaded of the <see cref="WebService"/> class.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="htmlDocument">A <see cref="HtmlDocument"/> that is loaded.</param>
+        public delegate void HtmlDocumentLoadedEventHandler(object sender, HtmlDocument htmlDocument);
+
+        /// <summary>
+        /// Represents the method that will handle the <see cref="UrlQueueEmpty"/> event of the <see cref="WebService"/> class.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="EventArgs"/> that contains no data.</param>
+        public delegate void UrlQueueEmptyEventHandler(object sender, EventArgs e);
+
+        /// <summary>
+        /// Represents the method that will handle the <see cref="StateChanged"/> event of the <see cref="WebService"/> class.
+        /// </summary>
+        /// <param name="e">The source of the event.</param>
+        /// <param name="state">The new <see cref="EState"/> of the <see cref="WebService"/>.</param>
+        public delegate void StateChangedEventHandler(object e, EState state);
+
+        /// <summary>
+        /// Occurs when the html of the main page of the SDIS37 web site is loaded.
+        /// </summary>
+        public event HtmlDocumentLoadedEventHandler MainPageHtmlLoaded;
+
+        /// <summary>
+        /// Occurs when the html that helps to recover the number of operation is loaded.
+        /// </summary>
+        public event HtmlDocumentLoadedEventHandler NbOperationPageHtmlLoaded;
+
+        /// <summary>
+        /// Occurs when the html that helps to recover the number of operation per hour is loaded.
+        /// </summary>
+        public event HtmlDocumentLoadedEventHandler NbOperationPerHourPageHtmlLoaded;
+
+        /// <summary>
+        /// Occurs when the html that helps to recover the operation of the department is loaded.
+        /// </summary>
+        public event HtmlDocumentLoadedEventHandler OperationListPageHtmlLoaded;
+
+        /// <summary>
+        /// Occurs when the html that helps to recover the operation of the user's firehouse is loaded.
+        /// </summary>
+        public event HtmlDocumentLoadedEventHandler OperationListOfUserFirehousePageHtmlLoaded;
+
+        /// <summary>
+        /// Occurs when the html that helps to recover the operation of the firefighters' availabilities is loaded.
+        /// </summary>
+        public event HtmlDocumentLoadedEventHandler ListFirefighterAvailabilitiesPageHtmlLoaded;
+
+        /// <summary>
+        /// Occurs when the url queue is empty.
+        /// </summary>
+        public event UrlQueueEmptyEventHandler UrlQueueEmpty;
+
+        /// <summary>
+        /// Occurs when the state of the <see cref="WebService"/> is changed.
+        /// </summary>
+        public event StateChangedEventHandler StateChanged;
+
+        /// <summary>
+        /// Defines the state of the <see cref="WebService"/> instance.
+        /// </summary>
+        public enum EState
+        {
+            /// <summary>
+            /// The <see cref="WebService"/> is not started.
+            /// </summary>
+            NotStated,
+
+            /// <summary>
+            /// The <see cref="WebService"/> is loading a web page.
+            /// </summary>
+            DataRetrieving,
+
+            /// <summary>
+            /// The <see cref="WebService"/> is up to date.
+            /// </summary>
+            UpToDate,
+
+            /// <summary>
+            /// The <see cref="WebService"/> is waiting of connection.
+            /// </summary>
+            AttemptConnection,
+
+            /// <summary>
+            /// The connection to the web page is failed.
+            /// </summary>
+            FailedConnection,
+
+            /// <summary>
+            /// The software has not available network.
+            /// </summary>
+            NoConnection,
+
+            /// <summary>
+            /// The <see cref="WebService"/> is in the error state.
+            /// </summary>
+            Error,
+        }
+
+        /// <summary>
         /// Gets or sets the username used for connection.
         /// </summary>
         public static string Username { get; set; }
@@ -124,12 +163,16 @@
         /// </summary>
         public static string Password { get; set; }
 
+        /// <summary>
+        /// Gets the state of the <see cref="WebService"/>.
+        /// </summary>
         public EState State
         {
             get
             {
                 return this.state;
             }
+
             private set
             {
                 this.state = value;
@@ -137,6 +180,9 @@
             }
         }
 
+        /// <summary>
+        /// Gets the currently processed url.
+        /// </summary>
         public string CurrentUrl => this.WebBrowser.Url.Scheme + "://" + this.WebBrowser.Url.Host + this.WebBrowser.Url.AbsolutePath;
 
         /// <summary>
@@ -144,15 +190,20 @@
         /// </summary>
         public WebBrowser WebBrowser { get; private set; }
 
-        public Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> UrlQueue => this.urlQueue;
+        /// <summary>
+        /// Gets the current url queue.
+        /// </summary>
+        public Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> UrlQueue { get; } = new ();
 
-        #region Public
         /// <summary>
         /// Dispose all objects disposable.
         /// </summary>
         public void Dispose()
         {
             this.WebBrowser?.Dispose();
+            this.WebBrowser = null;
+
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -160,16 +211,15 @@
         /// </summary>
         public void ClearSession()
         {
-            Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "WebService -> Clear authentification cache");
+            Syst.Log.WriteLog(Syst.Log.EType.Normal, "WebService -> Clear authentification cache");
             this.WebBrowser.Document.ExecCommand("ClearAuthenticationCache", false, null);
             this.UrlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null, null));
 
             this.NavigateToNextUrl();
         }
-        #endregion
 
         /// <summary>
-        /// Sets the next url of the queue to <see cref="WebBrowser"/>
+        /// Sets the next url of the queue to <see cref="WebBrowser"/>.
         /// </summary>
         public void NavigateToNextUrl()
         {
@@ -199,7 +249,7 @@
                             this.WebBrowser.Navigate(strUrl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
                         }
 
-                        Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "HTTP Request. URL: " + strUrl + (string.IsNullOrEmpty(strPostDatas) ? string.Empty : " (Post data : " + strPostDatas + ")"));
+                        Syst.Log.WriteLog(Syst.Log.EType.Normal, "HTTP Request. URL: " + strUrl + (string.IsNullOrEmpty(strPostDatas) ? string.Empty : " (Post data : " + strPostDatas + ")"));
                     }
                     else
                     {
@@ -211,36 +261,35 @@
             else
             {
                 this.State = EState.UpToDate;
-                this.OnUrlQueueEmpty?.Invoke();
+                this.UrlQueueEmpty?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        #region Private
         /// <summary>
         /// Called when the <see cref="WebBrowser"/> loaded the <see cref="WebServiceURL.WebServicesLoginURL"/> url.
         /// </summary>
-        /// <param name="document">Html document of the login page</param>
+        /// <param name="document">Html document of the login page.</param>
         private void LoginPageLoaded(HtmlDocument document)
         {
-            if (this.ConnectionState == 1)
+            if (document.Body.InnerHtml.Contains("div class=\"alert alert-danger\" role=\"alert\""))
             {
-                Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Authentification error. Invalid username or password");
+                Syst.Log.WriteLog(Syst.Log.EType.Error, "Authentification error. Invalid username or password");
                 this.State = EState.FailedConnection;
+                Username = string.Empty;
+                Password = string.Empty;
                 return;
             }
 
-            Syst.Log.WriteLog(Syst.Log.TYPE.Normal, "Connection attempt. Username: " + Username);
-
-            this.ConnectionState = 1;
+            this.State = EState.AttemptConnection;
 
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 var getCredentials = new Controls.GetCredentials();
                 _ = getCredentials.ShowDialog();
 
-                var (Username, Password) = getCredentials.Credentials;
-                WebService.Username = Username;
-                WebService.Password = Password;
+                var (username, password) = getCredentials.Credentials;
+                WebService.Username = username;
+                WebService.Password = password;
             }
 
             if (document != null)
@@ -258,84 +307,84 @@
                     }
                 }
 
-                buttonElem?.InvokeMember("click");
+                _ = buttonElem?.InvokeMember("click");
             }
+
+            Syst.Log.WriteLog(Syst.Log.EType.Normal, "Connection attempt. Username: " + Username);
         }
 
         /// <summary>
-        /// Called when the Main page of Gipsi is loaded
+        /// Called when the Main page of Gipsi is loaded.
         /// </summary>
-        /// <param name="document">Html document of the main page</param>
+        /// <param name="document">Html document of the main page.</param>
         private void MainPageLoaded(HtmlDocument document)
         {
             this.isLogged = true;
-            this.OnMainPageLoaded?.Invoke(document);
+            this.MainPageHtmlLoaded?.Invoke(this, document);
             this.NavigateToNextUrl();
         }
 
         /// <summary>
         /// Called when the array of the number of operations per hour is loaded.
         /// </summary>
-        /// <param name="document">Html document who contain the array</param>
+        /// <param name="document">Html document who contain the array.</param>
         private void NbOperationPerHourLoaded(HtmlDocument document)
         {
-            this.OnNbOperationPerHourUpdated?.Invoke(document);
+            this.NbOperationPerHourPageHtmlLoaded?.Invoke(this, document);
             this.NavigateToNextUrl();
         }
 
         /// <summary>
         /// Called when the web page with the recent operations is loaded.
         /// </summary>
-        /// <param name="document">Html document with the recent operations</param>
+        /// <param name="document">Html document with the recent operations.</param>
         private void OperationListLoaded(HtmlDocument document)
         {
-            this.OnOperationListUpdated?.Invoke(document);
+            this.OperationListPageHtmlLoaded?.Invoke(this, document);
             this.NavigateToNextUrl();
         }
 
         /// <summary>
         /// Called when the web page with the recent operations of the user's firehouse is loaded.
         /// </summary>
-        /// <param name="document">Html document with the recent operations of the user's firehouse</param>
+        /// <param name="document">Html document with the recent operations of the user's firehouse.</param>
         private void OperationListOfUserFirehouseLoaded(HtmlDocument document)
         {
-            this.OnOperationListOfUserFirehouseUpdated?.Invoke(document);
+            this.OperationListOfUserFirehousePageHtmlLoaded?.Invoke(this, document);
             this.NavigateToNextUrl();
         }
 
         /// <summary>
         /// Called when the web page with the firefighter availabilities is loaded.
         /// </summary>
-        /// <param name="document">Html document with the firefighter availabilities</param>
+        /// <param name="document">Html document with the firefighter availabilities.</param>
         private void FirefighterAvailabilitiesLoaded(HtmlDocument document)
         {
-            this.OnListFirefighterAvailabilityUpdated?.Invoke(document);
+            this.ListFirefighterAvailabilitiesPageHtmlLoaded?.Invoke(this, document);
             this.NavigateToNextUrl();
         }
 
         /// <summary>
         /// Called when the number of operations in day is loaded.
         /// </summary>
-        /// <param name="document">Html document with the number of operations</param>
-        private void NbOperationInDayLoaded(HtmlDocument document)
+        /// <param name="document">Html document with the number of operations.</param>
+        private void NbOperationPageLoaded(HtmlDocument document)
         {
-            this.OnNbOperationInDayUpdated?.Invoke(document);
+            this.NbOperationPageHtmlLoaded?.Invoke(this, document);
             this.NavigateToNextUrl();
         }
-        #endregion
 
-        #region Event
         /// <summary>
         /// Event called when the document is load by the <see cref="System.Windows.Forms.WebBrowser"/>.
         /// </summary>
         /// <param name="sender">Object who send the event.</param>
-        /// <param name="e">Event's arguments</param>
+        /// <param name="e">Event's arguments.</param>
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
             {
                 HtmlDocument document = this.WebBrowser.Document;
-                
+
                 this.webPageDuringLoading = false;
 
                 TimeSpan responseTimeHttpRequest = TimeSpan.Zero;
@@ -347,7 +396,7 @@
 
                 if (document == null)
                 {
-                    Syst.Log.WriteLog(Syst.Log.TYPE.Error, "HTTP error. No document");
+                    Syst.Log.WriteLog(Syst.Log.EType.Error, "HTTP error. No document");
                 }
                 else
                 {
@@ -357,7 +406,7 @@
                         log += " (Response time: " + responseTimeHttpRequest.ToString(@"ss\.fff\s") + ")";
                     }
 
-                    Syst.Log.WriteLog(Syst.Log.TYPE.Normal, log);
+                    Syst.Log.WriteLog(Syst.Log.EType.Normal, log);
 
                     string urlWithoutQuery = document.Url.Scheme + "://" + document.Url.Host + document.Url.AbsolutePath;
 
@@ -366,11 +415,11 @@
                         if (Syst.Network.IsNetworkAvailable())
                         {
                             this.State = EState.Error;
-                            Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error");
+                            Syst.Log.WriteLog(Syst.Log.EType.Error, "Error");
                         }
                         else
                         {
-                            Syst.Log.WriteLog(Syst.Log.TYPE.Error, "No connection");
+                            Syst.Log.WriteLog(Syst.Log.EType.Error, "No connection");
 
                             this.UrlQueue.Clear();
                             this.NavigateToNextUrl();
@@ -400,7 +449,7 @@
                     }
                     else if (urlWithoutQuery == WebServiceURL.WebServiceNbOperationInDayURL.Url)
                     {
-                        this.NbOperationInDayLoaded(document);
+                        this.NbOperationPageLoaded(document);
                     }
                     else if (urlWithoutQuery == WebServiceURL.WebServiceOperationListOfTheUserFirehouseURL.Url)
                     {
@@ -408,16 +457,21 @@
                     }
                     else
                     {
-                        Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Web page unknown. URL: " + document.Url.AbsoluteUri);
+                        Syst.Log.WriteLog(Syst.Log.EType.Error, "Web page unknown. URL: " + document.Url.AbsoluteUri);
                     }
                 }
             }
             catch
             {
-                Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error when processing the web page. URL: " + this.WebBrowser.Document.Url.AbsoluteUri);
+                Syst.Log.WriteLog(Syst.Log.EType.Error, "Error when processing the web page. URL: " + this.WebBrowser.Document.Url.AbsoluteUri);
             }
         }
 
+        /// <summary>
+        /// Occurs before the <see cref="WebBrowser"/> control navigates to a new document.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="WebBrowserNavigatingEventArgs"/> that contains the event data.</param>
         private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
             string url = e.Url.Scheme + "://" + e.Url.Host + e.Url.AbsolutePath;
@@ -430,11 +484,11 @@
                 if (Syst.Network.IsNetworkAvailable())
                 {
                     this.State = EState.Error;
-                    Syst.Log.WriteLog(Syst.Log.TYPE.Error, "Error");
+                    Syst.Log.WriteLog(Syst.Log.EType.Error, "Error");
                 }
                 else
                 {
-                    Syst.Log.WriteLog(Syst.Log.TYPE.Error, "No connection");
+                    Syst.Log.WriteLog(Syst.Log.EType.Error, "No connection");
 
                     this.UrlQueue.Clear();
 
@@ -446,6 +500,5 @@
                 this.State = EState.DataRetrieving;
             }
         }
-        #endregion
     }
 }
