@@ -1,25 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="MainForm.cs" company="SyukoTech">
+// Copyright (c) SyukoTech. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 namespace SDIS37Stats.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Forms;
+
+    /// <summary>
+    /// Class for make the main form.
+    /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Used for display the current webservice's state.
+        /// </summary>
+        private readonly ToolTip webServiceStateToolTip = new ();
+
+        /// <summary>
+        /// A <see cref="Core.Web.WebService"/> object used for connect to SDIS37's webservice.
+        /// </summary>
         private Core.Web.WebService webService;
 
+        /// <summary>
+        /// A <see cref="Core.Statistics.Statistics"/> object used for get the firefighter's statistics.
+        /// </summary>
         private Core.Statistics.Statistics statistics;
 
+        /// <summary>
+        /// Used for show a settings form.
+        /// </summary>
         private SettingsForm settingsForm;
 
-        private ToolTip webServiceStateToolTip = new();
-
-        public bool ShowWebBrowser { get; set; } = false;
-
-        public delegate void OnThemeUpdatedHandler(Extra.Theme.ITheme theme);
-        public event OnThemeUpdatedHandler OnThemeUpdated;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainForm"/> class.
+        /// </summary>
         public MainForm()
         {
             this.InitializeComponent();
@@ -38,99 +56,117 @@ namespace SDIS37Stats.Controls
             }
         }
 
-        #region Private
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="WebBrowser"/> used in the <see cref="Core.Web.WebService"/> should be displayed.
+        /// </summary>
+        public bool ShowWebBrowser { get; set; } = false;
+
+        /// <summary>
+        /// Gets the interval in second with the next minute.
+        /// </summary>
+        /// <returns>The interval in second.</returns>
+        private static int GetIntervalInSecondsWithNextMinute()
+        {
+            DateTime now = DateTime.Now;
+            return ((60 - now.Second) * 1000) - now.Millisecond;
+        }
+
+        /// <summary>
+        /// Initializes the event connections and the <see cref="Core.Web.WebService"/> of the <see cref="MainForm"/> class.
+        /// </summary>
         private void Init()
         {
             Core.Syst.Setting.CurrentSetting.PropertyChanged += this.Setting_PropertyChanged;
+            Core.Syst.Setting.CurrentSetting.ThemeUpdated += this.CurrentSetting_ThemeUpdated;
 
             this.SettingsPicture.Image = Extra.Image.Image.SettingsPicture;
 
-            //Event connection
-            this.OnThemeUpdated += this.NbOperationToday.ApplyTheme;
-            this.OnThemeUpdated += this.NbOperationPerHour.ApplyTheme;
-            this.OnThemeUpdated += this.RecentOperationList.ApplyTheme;
-            this.OnThemeUpdated += this.RecentOperationOfUserFirehouse.ApplyTheme;
-            this.OnThemeUpdated += this.FirefighterAvailabilityListView.ApplyTheme;
-
-            this.ApplyTheme();
-
             this.webService = new Core.Web.WebService();
-            this.webService.OnUrlQueueEmpty += this.WebService_OnUrlQueueEmpty;
+            this.webService.UrlQueueEmpty += this.WebService_OnUrlQueueEmpty;
             this.webService.StateChanged += this.WebService_StateChanged;
 
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
-            this.statistics.OnNewOperation += this.Statistics_NewOperation;
-            this.statistics.OnNewOperationOfUserFirehouse += this.Statistics_NewOperationOfUserFirehouse;
-
             this.SetStatisticEventConnection();
         }
 
-        private void ApplyTheme()
-        {
-            this.BackColor = Core.Syst.Setting.CurrentSetting.Theme.Form_BackgroundColor();
-            this.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
-
-            this.LastUpdate.ForeColor = Core.Syst.Setting.CurrentSetting.Theme.Form_FontColor();
-
-            this.OnThemeUpdated?.Invoke(Core.Syst.Setting.CurrentSetting.Theme);
-        }
-
+        /// <summary>
+        /// Sets the event connections which update the controls which display the statistics.
+        /// </summary>
         private void SetStatisticEventConnection()
         {
-            // NbOperationToday
-            this.statistics.OnTotalOperationInDayUpdated += (c) => this.NbOperationToday.Value = c;
-
-            // NbOperationPerHour
-            this.statistics.OnOperationPerHourUpdated += (c) => this.NbOperationPerHour.Value = c;
-
             // RecentOperationList
-            this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationList.FirehouseName = c;
-            this.statistics.OnOperationListUpdated += (c) =>
-            {
-                var value = c.Where(t => t.Time.Date == DateTime.Now.Date).ToList();
-                value.Sort((a, b) => b.Time.CompareTo(a.Time));
-                this.RecentOperationList.AddOperations(value);
-            };
+            this.statistics.FirehouseNameUpdated += (s, e) => this.RecentOperationList.FirehouseName = (s as Core.Statistics.Statistics).FirehouseName;
+            this.statistics.NewOperation += this.Statistics_NewOperation;
 
             // FirefighterAvailabilityListView
-            this.statistics.OnFirehouseNameUpdated += (c) => this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de " + c + " :";
-            this.statistics.OnFirefighterAvailabilitiesUpdated += this.FirefighterAvailabilityListView.SetFirefighterAvailabilities;
+            this.statistics.FirehouseNameUpdated += (s, e) => this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de " + (s as Core.Statistics.Statistics).FirehouseName + " :";
+            this.statistics.FirefighterAvailabilitiesUpdated += (s, e) => this.FirefighterAvailabilityListView.SetFirefighterAvailabilities(e);
 
             // RecentOperationOfUserFirehouse
-            this.statistics.OnFirehouseNameUpdated += (c) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + c + " :";
-            this.statistics.OnOperationListOfUserFirehouseUpdated += (c) =>
-            {
-                var value = c.Where(t => t.Time.Date == DateTime.Now.Date).ToList();
-                value.Sort((a, b) => b.Time.CompareTo(a.Time));
-                this.RecentOperationOfUserFirehouse.AddOperations(value);
-            };
+            this.statistics.FirehouseNameUpdated += (s, e) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + (s as Core.Statistics.Statistics).FirehouseName + " :";
+            this.statistics.NewOperationOfUserFirehouse += this.Statistics_NewOperationOfUserFirehouse;
         }
 
-        private static int GetIntervalInSecondsWithNextMinute()
+        /// <summary>
+        /// Apply the theme on the control.
+        /// </summary>
+        /// <param name="theme">The theme to be applied.</param>
+        private void ApplyTheme(Extra.Theme.ITheme theme)
         {
-            DateTime now = DateTime.Now;
-            return (60 - now.Second) * 1000 - now.Millisecond;
-        }
-        #endregion
+            this.BackColor = theme.Form_BackgroundColor;
+            this.ForeColor = theme.Form_FontColor;
 
-        #region Event
-        private void Statistics_NewOperation()
+            this.LastUpdate.ForeColor = theme.Form_FontColor;
+        }
+
+        /// <summary>
+        /// Called when a new operation is added.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="operations">The <see cref="Core.Statistics.Operation"/> array that contains the new operations.</param>
+        private void Statistics_NewOperation(object sender, Core.Statistics.Operation[] operations)
         {
+            var value = operations.Where(t => t.StartedDateTimeLocal.Date == DateTime.Now.Date).ToList();
+            value.Sort((a, b) => b.StartedDateTimeLocal.CompareTo(a.StartedDateTimeLocal));
+            this.RecentOperationList.AddOperations(value);
+
+            this.NbOperationToday.Value = this.statistics.GetOperationsInDay(DateTime.Now).Count();
+
+            this.NbOperationPerHour.Value = this.statistics.GetOperationPerHour(DateTime.Now);
+
             if (OperatingSystem.IsWindows())
             {
-                Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.SoundType.NewOperationNotification);
+                Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.ESoundType.NewOperationNotification);
             }
         }
 
-        private void Statistics_NewOperationOfUserFirehouse()
+        /// <summary>
+        /// Called when a new operation of the user's firehouse is added.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="operations">The <see cref="Core.Statistics.Operation"/> array that contains the new operations.</param>
+        private void Statistics_NewOperationOfUserFirehouse(object sender, Core.Statistics.Operation[] operations)
         {
+            var value = operations.Where(t => t.StartedDateTimeLocal.Date == DateTime.Now.Date).ToList();
+            value.Sort((a, b) => b.StartedDateTimeLocal.CompareTo(a.StartedDateTimeLocal));
+            this.RecentOperationOfUserFirehouse.AddOperations(value);
+
+            this.NbOperationToday.Value = this.statistics.GetOperationsInDay(DateTime.Now).Count();
+
+            this.NbOperationPerHour.Value = this.statistics.GetOperationPerHour(DateTime.Now);
+
             if (OperatingSystem.IsWindows())
             {
-                Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.SoundType.NewOperationOfUserFirehouseNotification);
+                Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.ESoundType.NewOperationOfUserFirehouseNotification);
             }
         }
 
+        /// <summary>
+        /// Called when a property of the <see cref="Core.Syst.Setting"/> class is changed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="System.ComponentModel.PropertyChangedEventArgs"/> that contains the event data.</param>
         private void Setting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender != null && sender is Core.Syst.Setting && sender == Core.Syst.Setting.CurrentSetting)
@@ -139,9 +175,6 @@ namespace SDIS37Stats.Controls
 
                 switch (prop.Name)
                 {
-                    case "Theme":
-                        this.ApplyTheme();
-                        break;
                     case "MuteSound":
                         Extra.Sound.Sound.Mute = (bool)prop.GetValue(sender);
                         break;
@@ -152,7 +185,7 @@ namespace SDIS37Stats.Controls
                         this.RecentOperationOfUserFirehouse.NbOperationDisplayed = (int)prop.GetValue(sender);
                         break;
                     case "NbFirefighterAvailabilityDisplayed":
-                        this.FirefighterAvailabilityListView.NbAvailibilitiesDisplayed = (int)prop.GetValue(sender);
+                        this.FirefighterAvailabilityListView.NumberOfAvailibilitiesDisplayed = (int)prop.GetValue(sender);
                         break;
                     default:
                         break;
@@ -160,18 +193,38 @@ namespace SDIS37Stats.Controls
             }
         }
 
+        /// <summary>
+        /// Called when the form is closed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="FormClosedEventArgs"/> that contains the event data.</param>
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.webService?.Dispose();
         }
 
+        /// <summary>
+        /// Called when the theme is updated.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An object that contains no event data.</param>
+        private void CurrentSetting_ThemeUpdated(object sender, EventArgs e)
+        {
+            this.ApplyTheme(((Core.Syst.Setting)sender).Theme);
+        }
+
+        /// <summary>
+        /// when a timer has finished counting.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="EventArgs"/> that contains the event data.</param>
         private void Timer_Tick(object sender, EventArgs e)
         {
             this.timer.Stop();
 
             if (DateTime.Now.Hour == 0 && DateTime.Now.Minute == 0)
             {
-                List<Core.Statistics.Operation> operations = this.statistics.OperationList.Where(c => c.Time.Date == DateTime.Now.AddHours(-1).Date).ToList();
+                List<Core.Statistics.Operation> operations = this.statistics.OperationList.Where(c => c.StartedDateTimeLocal.Date == DateTime.Now.AddHours(-1).Date).ToList();
                 Core.Statistics.Statistics.ExportOperationListToXml(operations, DateTime.Now.AddHours(-1).ToString("yyyy-MM-dd"));
                 this.webService.ClearSession();
             }
@@ -181,12 +234,22 @@ namespace SDIS37Stats.Controls
             this.LastUpdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
         }
 
-        private void WebService_OnUrlQueueEmpty()
+        /// <summary>
+        /// Called when the url queue of the <see cref="Core.Web.WebService"/> class is empty.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="EventArgs"/> that contains no data.</param>
+        private void WebService_OnUrlQueueEmpty(object sender, EventArgs e)
         {
             this.timer.Interval = GetIntervalInSecondsWithNextMinute();
             this.timer.Start();
         }
 
+        /// <summary>
+        /// Called when the state of the <see cref="Core.Web.WebService"/> class is changed.
+        /// </summary>
+        /// <param name="e">The source of the event.</param>
+        /// <param name="state">The new <see cref="Core.Web.WebService.EState"/> of the <see cref="Core.Web.WebService"/>.</param>
         private void WebService_StateChanged(object e, Core.Web.WebService.EState state)
         {
             switch (state)
@@ -197,7 +260,7 @@ namespace SDIS37Stats.Controls
                     break;
                 case Core.Web.WebService.EState.DataRetrieving:
                     this.webServiceState.Image = Extra.Image.Image.WebServiceState_DataRetrieving;
-                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, $"Récupération des données en cours ({ this.webService.CurrentUrl })");
+                    this.webServiceStateToolTip.SetToolTip(this.webServiceState, $"Récupération des données en cours ({this.webService.CurrentUrl})");
                     break;
                 case Core.Web.WebService.EState.UpToDate:
                     this.webServiceState.Image = Extra.Image.Image.WebServiceState_UpToDate;
@@ -222,18 +285,33 @@ namespace SDIS37Stats.Controls
             }
         }
 
+        /// <summary>
+        /// Called when the mouse's cursor enters on the setting picture.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="EventArgs"/> that contains the event data.</param>
         private void SettingsPicture_MouseEnter(object sender, EventArgs e)
         {
             this.SettingsPicture.BorderStyle = BorderStyle.FixedSingle;
-            this.SettingsPicture.BackColor = Core.Syst.Setting.CurrentSetting.Theme.SettingsButton_BackgroundColorWhenSelected();
+            this.SettingsPicture.BackColor = Core.Syst.Setting.CurrentSetting.Theme.SettingsButton_BackgroundColorWhenSelected;
         }
 
+        /// <summary>
+        /// Called when the mouse's cursor leaves on the setting picture.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="EventArgs"/> that contains the event data.</param>
         private void SettingsPicture_MouseLeave(object sender, EventArgs e)
         {
             this.SettingsPicture.BorderStyle = BorderStyle.None;
-            this.SettingsPicture.BackColor = Core.Syst.Setting.CurrentSetting.Theme.SettingsButton_DefaultBackgroundColor();
+            this.SettingsPicture.BackColor = Core.Syst.Setting.CurrentSetting.Theme.SettingsButton_DefaultBackgroundColor;
         }
 
+        /// <summary>
+        /// Called when the setting picture is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="EventArgs"/> that contains the event data.</param>
         private void SettingsPicture_Click(object sender, EventArgs e)
         {
             if (this.settingsForm != null)
@@ -247,6 +325,11 @@ namespace SDIS37Stats.Controls
             this.settingsForm.Show(this);
         }
 
+        /// <summary>
+        /// Called when the settings form is closing.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="FormClosingEventArgs"/> that contains the event data.</param>
         private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (this.settingsForm.DialogResult == DialogResult.OK)
@@ -254,11 +337,14 @@ namespace SDIS37Stats.Controls
                 this.settingsForm.FormClosing -= this.SettingsForm_FormClosing;
 
                 Core.Syst.Setting.UpdateSettings(this.settingsForm.Settings);
-
-                this.ApplyTheme();
             }
         }
 
+        /// <summary>
+        /// Called when a key is pressed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="KeyEventArgs"/> that contains the event data.</param>
         private void Form_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F11)
@@ -274,8 +360,8 @@ namespace SDIS37Stats.Controls
                     this.WindowState = FormWindowState.Maximized;
                 }
             }
+
             e.Handled = false;
         }
-        #endregion
     }
 }
