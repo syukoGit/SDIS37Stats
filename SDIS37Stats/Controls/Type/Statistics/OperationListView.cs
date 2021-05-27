@@ -33,6 +33,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private int numOperationDisplayed = 15;
 
         /// <summary>
+        /// Represents the statistics manager.
+        /// </summary>
+        private Core.Statistics.Statistics statistics = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="OperationListView"/> class.
         /// </summary>
         public OperationListView()
@@ -40,6 +45,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.InitializeComponent();
 
             Core.Syst.Setting.CurrentSetting.ThemeUpdated += this.CurrentSetting_ThemeUpdated;
+
+            this.ApplyTheme(Core.Syst.Setting.CurrentSetting.Theme);
 
             this.timerAutoScroll.Start();
         }
@@ -59,6 +66,34 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 this.numOperationDisplayed = value;
 
                 this.SetOperationViews();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the statistic manager.
+        /// </summary>
+        public Core.Statistics.Statistics Statistics
+        {
+            get
+            {
+                return this.statistics;
+            }
+
+            set
+            {
+                if (this.statistics != null)
+                {
+                    this.statistics.NewOperation -= this.Statistics_NewOperation;
+                    this.statistics.FirehouseNameUpdated -= this.Statistics_FirehouseNameUpdated;
+                }
+
+                this.statistics = value;
+
+                if (this.statistics != null)
+                {
+                    this.statistics.NewOperation += this.Statistics_NewOperation;
+                    this.statistics.FirehouseNameUpdated += this.Statistics_FirehouseNameUpdated;
+                }
             }
         }
 
@@ -93,13 +128,9 @@ namespace SDIS37Stats.Controls.Type.Statistics
         public Color FontColorHighLightItem { get; set; } = Color.Green;
 
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets a value indicating whether the operation list view must display only the operations of the user's firehouse.
         /// </summary>
-        public string Title
-        {
-            get => this.title.Text;
-            set => this.title.Text = value;
-        }
+        public bool OnlyOperationOfUserFirehouse { get; set; } = false;
 
         /// <summary>
         /// Apply a <see cref="Extra.Theme.ITheme"/> on this control.
@@ -222,6 +253,36 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private void CurrentSetting_ThemeUpdated(object sender, EventArgs e)
         {
             this.ApplyTheme(((Core.Syst.Setting)sender).Theme);
+        }
+
+        /// <summary>
+        /// Called when an operation is added.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="operations">An <see cref="Core.Statistics.Operation"/> array that contains added operation.</param>
+        private void Statistics_NewOperation(object sender, Core.Statistics.Operation[] operations)
+        {
+            List<Core.Statistics.Operation> values = this.OnlyOperationOfUserFirehouse ? (sender as Core.Statistics.Statistics).OperationListOfUserFirehouse : (sender as Core.Statistics.Statistics).OperationList;
+
+            values = values.Where(t => t.StartedDateTimeLocal.Date == DateTime.Now.Date).ToList();
+
+            values.Sort((a, b) => b.StartedDateTimeLocal.CompareTo(a.StartedDateTimeLocal));
+
+            this.data.AddRange(values.Where(c => !this.data.Select(t => t.NumOperation).Contains(c.NumOperation)));
+
+            this.SetOperationViews();
+        }
+
+        /// <summary>
+        /// Called when the name of the user's firehouse is modified.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An <see cref="EventArgs"/> that contains no data.</param>
+        private void Statistics_FirehouseNameUpdated(object sender, EventArgs e)
+        {
+            this.FirehouseName = (sender as Core.Statistics.Statistics).FirehouseName;
+
+            this.title.Text = this.OnlyOperationOfUserFirehouse ? "Liste des dernières interventions de " + this.FirehouseName : "Liste des dernières interventions";
         }
 
         /// <summary>

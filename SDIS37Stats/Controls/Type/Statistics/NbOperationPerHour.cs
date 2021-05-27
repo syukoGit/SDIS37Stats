@@ -14,6 +14,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
     public partial class NbOperationPerHour : UserControl
     {
         /// <summary>
+        /// Represents the statistics manager.
+        /// </summary>
+        private Core.Statistics.Statistics statistics = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NbOperationPerHour"/> class.
         /// </summary>
         public NbOperationPerHour()
@@ -21,23 +26,32 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.InitializeComponent();
 
             Core.Syst.Setting.CurrentSetting.ThemeUpdated += this.CurrentSetting_ThemeUpdated;
+
+            this.ApplyTheme(Core.Syst.Setting.CurrentSetting.Theme);
         }
 
         /// <summary>
-        /// Gets or sets the values to be displayed.
+        /// Gets or sets the statistics manager.
         /// </summary>
-        public List<int> Value
+        public Core.Statistics.Statistics Statistics
         {
             get
             {
-                return this.barGraph.Value;
+                return this.statistics;
             }
 
             set
             {
-                if (value != null && value.Count == 24)
+                if (this.statistics != null)
                 {
-                    this.barGraph.Value = value;
+                    this.statistics.NewOperation -= this.Statistics_NewOperation;
+                }
+
+                this.statistics = value;
+
+                if (this.statistics != null)
+                {
+                    this.statistics.NewOperation += this.Statistics_NewOperation;
                 }
             }
         }
@@ -69,6 +83,16 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private void CurrentSetting_ThemeUpdated(object sender, System.EventArgs e)
         {
             this.ApplyTheme(((Core.Syst.Setting)sender).Theme);
+        }
+
+        /// <summary>
+        /// Called when a new operation is added.
+        /// </summary>
+        /// <param name="sender">The source of teh event.</param>
+        /// <param name="operations">An <see cref="Core.Statistics.Operation"/> array that contains added operations.</param>
+        private void Statistics_NewOperation(object sender, Core.Statistics.Operation[] operations)
+        {
+            this.barGraph.Value = (sender as Core.Statistics.Statistics).GetOperationPerHour(System.DateTime.Now);
         }
     }
 }
