@@ -44,6 +44,8 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
             Core.Syst.Setting.CurrentSetting.ThemeUpdated += this.CurrentSetting_ThemeUpdated;
 
+            Core.Syst.Setting.CurrentSetting.PropertyChanged += this.CurrentSetting_PropertyChanged;
+
             this.ApplyTheme(Core.Syst.Setting.CurrentSetting.Theme);
 
             this.timerAutoScroll.Start();
@@ -78,7 +80,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
         }
 
         /// <summary>
-        /// Gets or sets the maximum number of <see cref="FirefighterAvailabilityView"/> to be displayed.
+        /// Gets the maximum number of <see cref="FirefighterAvailabilityView"/> to be displayed.
         /// </summary>
         public int NumberOfAvailibilitiesDisplayed
         {
@@ -87,11 +89,14 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 return this.numAvailibilitiesDisplayed;
             }
 
-            set
+            private set
             {
-                this.numAvailibilitiesDisplayed = value;
+                if (value != this.numAvailibilitiesDisplayed && value > 0)
+                {
+                    this.numAvailibilitiesDisplayed = value;
 
-                this.SetFirefighterAvailabilityViews();
+                    this.SetFirefighterAvailabilityViews();
+                }
             }
         }
 
@@ -184,6 +189,24 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private void CurrentSetting_ThemeUpdated(object sender, EventArgs e)
         {
             this.ApplyTheme(((Core.Syst.Setting)sender).Theme);
+        }
+
+        /// <summary>
+        /// Called when a property of the <see cref="Core.Syst.Setting"/> class is changed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="System.ComponentModel.PropertyChangedEventArgs"/> that contains the event data.</param>
+        private void CurrentSetting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender != null)
+            {
+                var prop = typeof(Core.Syst.Setting).GetProperty(e.PropertyName);
+
+                if (prop.Name == "NbFirefighterAvailabilityDisplayed")
+                {
+                    this.NumberOfAvailibilitiesDisplayed = (int)prop.GetValue(sender);
+                }
+            }
         }
 
         /// <summary>

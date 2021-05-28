@@ -146,7 +146,7 @@ namespace SDIS37Stats.Controls
         /// <param name="e">A <see cref="System.ComponentModel.PropertyChangedEventArgs"/> that contains the event data.</param>
         private void Setting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (sender != null && sender is Core.Syst.Setting && sender == Core.Syst.Setting.CurrentSetting)
+            if (sender != null)
             {
                 var prop = typeof(Core.Syst.Setting).GetProperty(e.PropertyName);
 
@@ -154,15 +154,6 @@ namespace SDIS37Stats.Controls
                 {
                     case "MuteSound":
                         Extra.Sound.Sound.Mute = (bool)prop.GetValue(sender);
-                        break;
-                    case "NbOperationOfDepartmentDisplayed":
-                        this.recentOperationList.NbOperationDisplayed = (int)prop.GetValue(sender);
-                        break;
-                    case "NbOperationOfUserFirehouseDisplayed":
-                        this.recentOperationOfUserFirehouse.NbOperationDisplayed = (int)prop.GetValue(sender);
-                        break;
-                    case "NbFirefighterAvailabilityDisplayed":
-                        this.firefighterAvailabilityListView.NumberOfAvailibilitiesDisplayed = (int)prop.GetValue(sender);
                         break;
                     default:
                         break;

@@ -130,7 +130,6 @@
             this.recentOperationList.Location = new System.Drawing.Point(491, 161);
             this.recentOperationList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.recentOperationList.Name = "recentOperationList";
-            this.recentOperationList.NbOperationDisplayed = 15;
             this.recentOperationList.OnlyOperationOfUserFirehouse = false;
             this.recentOperationList.Size = new System.Drawing.Size(962, 294);
             this.recentOperationList.Statistics = null;
@@ -152,7 +151,6 @@
             this.recentOperationOfUserFirehouse.Location = new System.Drawing.Point(491, 461);
             this.recentOperationOfUserFirehouse.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.recentOperationOfUserFirehouse.Name = "recentOperationOfUserFirehouse";
-            this.recentOperationOfUserFirehouse.NbOperationDisplayed = 5;
             this.recentOperationOfUserFirehouse.OnlyOperationOfUserFirehouse = false;
             this.recentOperationOfUserFirehouse.Size = new System.Drawing.Size(962, 295);
             this.recentOperationOfUserFirehouse.Statistics = null;
@@ -166,7 +164,6 @@
             this.firefighterAvailabilityListView.Location = new System.Drawing.Point(5, 461);
             this.firefighterAvailabilityListView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.firefighterAvailabilityListView.Name = "firefighterAvailabilityListView";
-            this.firefighterAvailabilityListView.NumberOfAvailibilitiesDisplayed = 50;
             this.firefighterAvailabilityListView.Size = new System.Drawing.Size(476, 295);
             this.firefighterAvailabilityListView.Statistics = null;
             this.firefighterAvailabilityListView.TabIndex = 7;
