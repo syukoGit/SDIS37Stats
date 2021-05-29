@@ -29,15 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.LastUpdate = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.NbOperationToday = new SDIS37Stats.Controls.Type.Statistics.NbOperationToday();
-            this.NbOperationPerHour = new SDIS37Stats.Controls.Type.Statistics.NbOperationPerHour();
-            this.RecentOperationList = new SDIS37Stats.Controls.Type.Statistics.OperationListView();
-            this.RecentOperationOfUserFirehouse = new SDIS37Stats.Controls.Type.Statistics.OperationListView();
-            this.FirefighterAvailabilityListView = new SDIS37Stats.Controls.Type.Statistics.FirefighterAvailabilityListView();
+            this.nbOperationToday = new SDIS37Stats.Controls.Type.Statistics.NbOperationToday();
+            this.nbOperationPerHour = new SDIS37Stats.Controls.Type.Statistics.NbOperationPerHour();
+            this.recentOperationList = new SDIS37Stats.Controls.Type.Statistics.OperationListView();
+            this.recentOperationOfUserFirehouse = new SDIS37Stats.Controls.Type.Statistics.OperationListView();
+            this.firefighterAvailabilityListView = new SDIS37Stats.Controls.Type.Statistics.FirefighterAvailabilityListView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.SettingsPicture = new System.Windows.Forms.PictureBox();
@@ -76,11 +75,11 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Controls.Add(this.NbOperationToday, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.NbOperationPerHour, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.RecentOperationList, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.RecentOperationOfUserFirehouse, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.FirefighterAvailabilityListView, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.nbOperationToday, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.nbOperationPerHour, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.recentOperationList, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.recentOperationOfUserFirehouse, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.firefighterAvailabilityListView, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -95,82 +94,79 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1458, 759);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
-            // NbOperationToday
+            // nbOperationToday
             // 
-            this.NbOperationToday.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.NbOperationToday.Location = new System.Drawing.Point(5, 3);
-            this.NbOperationToday.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.NbOperationToday.Name = "NbOperationToday";
-            this.NbOperationToday.Size = new System.Drawing.Size(349, 128);
-            this.NbOperationToday.TabIndex = 3;
-            this.NbOperationToday.Value = 0;
+            this.nbOperationToday.Location = new System.Drawing.Point(5, 3);
+            this.nbOperationToday.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.nbOperationToday.Name = "nbOperationToday";
+            this.nbOperationToday.Size = new System.Drawing.Size(349, 128);
+            this.nbOperationToday.Statistics = null;
+            this.nbOperationToday.TabIndex = 3;
             // 
-            // NbOperationPerHour
+            // nbOperationPerHour
             // 
-            this.NbOperationPerHour.AutoSize = true;
-            this.NbOperationPerHour.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.NbOperationPerHour.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NbOperationPerHour.Location = new System.Drawing.Point(5, 161);
-            this.NbOperationPerHour.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.NbOperationPerHour.Name = "NbOperationPerHour";
-            this.NbOperationPerHour.Size = new System.Drawing.Size(476, 294);
-            this.NbOperationPerHour.TabIndex = 4;
-            this.NbOperationPerHour.Value = ((System.Collections.Generic.List<int>)(resources.GetObject("NbOperationPerHour.Value")));
+            this.nbOperationPerHour.AutoSize = true;
+            this.nbOperationPerHour.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.nbOperationPerHour.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nbOperationPerHour.Location = new System.Drawing.Point(5, 161);
+            this.nbOperationPerHour.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.nbOperationPerHour.Name = "nbOperationPerHour";
+            this.nbOperationPerHour.Size = new System.Drawing.Size(476, 294);
+            this.nbOperationPerHour.Statistics = null;
+            this.nbOperationPerHour.TabIndex = 4;
             // 
-            // RecentOperationList
+            // recentOperationList
             // 
-            this.RecentOperationList.AutoSize = true;
-            this.RecentOperationList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.RecentOperationList.BackgroundColorHighlightItem = System.Drawing.Color.Red;
-            this.RecentOperationList.BackgroundColorItem = System.Drawing.Color.White;
-            this.tableLayoutPanel1.SetColumnSpan(this.RecentOperationList, 2);
-            this.RecentOperationList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RecentOperationList.FirehouseName = "RID";
-            this.RecentOperationList.FontColorHighLightItem = System.Drawing.Color.Green;
-            this.RecentOperationList.FontColorItem = System.Drawing.Color.Blue;
-            this.RecentOperationList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.RecentOperationList.HighlightOperationOfUserFirehouse = true;
-            this.RecentOperationList.Location = new System.Drawing.Point(491, 161);
-            this.RecentOperationList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.RecentOperationList.Name = "RecentOperationList";
-            this.RecentOperationList.NbOperationDisplayed = 15;
-            this.RecentOperationList.Size = new System.Drawing.Size(962, 294);
-            this.RecentOperationList.TabIndex = 5;
-            this.RecentOperationList.Title = "Liste des dernières interventions :";
+            this.recentOperationList.AutoSize = true;
+            this.recentOperationList.BackgroundColorHighlightItem = System.Drawing.Color.Red;
+            this.recentOperationList.BackgroundColorItem = System.Drawing.Color.White;
+            this.tableLayoutPanel1.SetColumnSpan(this.recentOperationList, 2);
+            this.recentOperationList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.recentOperationList.FirehouseName = "RID";
+            this.recentOperationList.FontColorHighLightItem = System.Drawing.Color.Green;
+            this.recentOperationList.FontColorItem = System.Drawing.Color.Blue;
+            this.recentOperationList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.recentOperationList.HighlightOperationOfUserFirehouse = true;
+            this.recentOperationList.Location = new System.Drawing.Point(491, 161);
+            this.recentOperationList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.recentOperationList.Name = "recentOperationList";
+            this.recentOperationList.OnlyOperationOfUserFirehouse = false;
+            this.recentOperationList.Size = new System.Drawing.Size(962, 294);
+            this.recentOperationList.Statistics = null;
+            this.recentOperationList.TabIndex = 5;
             // 
-            // RecentOperationOfUserFirehouse
+            // recentOperationOfUserFirehouse
             // 
-            this.RecentOperationOfUserFirehouse.AutoSize = true;
-            this.RecentOperationOfUserFirehouse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.RecentOperationOfUserFirehouse.BackgroundColorHighlightItem = System.Drawing.Color.Red;
-            this.RecentOperationOfUserFirehouse.BackgroundColorItem = System.Drawing.Color.White;
-            this.tableLayoutPanel1.SetColumnSpan(this.RecentOperationOfUserFirehouse, 2);
-            this.RecentOperationOfUserFirehouse.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RecentOperationOfUserFirehouse.FirehouseName = null;
-            this.RecentOperationOfUserFirehouse.FontColorHighLightItem = System.Drawing.Color.Green;
-            this.RecentOperationOfUserFirehouse.FontColorItem = System.Drawing.Color.Blue;
-            this.RecentOperationOfUserFirehouse.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.RecentOperationOfUserFirehouse.HighlightOperationOfUserFirehouse = false;
-            this.RecentOperationOfUserFirehouse.Location = new System.Drawing.Point(491, 461);
-            this.RecentOperationOfUserFirehouse.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.RecentOperationOfUserFirehouse.Name = "RecentOperationOfUserFirehouse";
-            this.RecentOperationOfUserFirehouse.NbOperationDisplayed = 5;
-            this.RecentOperationOfUserFirehouse.Size = new System.Drawing.Size(962, 295);
-            this.RecentOperationOfUserFirehouse.TabIndex = 6;
-            this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de ... :";
+            this.recentOperationOfUserFirehouse.AutoSize = true;
+            this.recentOperationOfUserFirehouse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.recentOperationOfUserFirehouse.BackgroundColorHighlightItem = System.Drawing.Color.Red;
+            this.recentOperationOfUserFirehouse.BackgroundColorItem = System.Drawing.Color.White;
+            this.tableLayoutPanel1.SetColumnSpan(this.recentOperationOfUserFirehouse, 2);
+            this.recentOperationOfUserFirehouse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.recentOperationOfUserFirehouse.FirehouseName = null;
+            this.recentOperationOfUserFirehouse.FontColorHighLightItem = System.Drawing.Color.Green;
+            this.recentOperationOfUserFirehouse.FontColorItem = System.Drawing.Color.Blue;
+            this.recentOperationOfUserFirehouse.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.recentOperationOfUserFirehouse.HighlightOperationOfUserFirehouse = false;
+            this.recentOperationOfUserFirehouse.Location = new System.Drawing.Point(491, 461);
+            this.recentOperationOfUserFirehouse.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.recentOperationOfUserFirehouse.Name = "recentOperationOfUserFirehouse";
+            this.recentOperationOfUserFirehouse.OnlyOperationOfUserFirehouse = false;
+            this.recentOperationOfUserFirehouse.Size = new System.Drawing.Size(962, 295);
+            this.recentOperationOfUserFirehouse.Statistics = null;
+            this.recentOperationOfUserFirehouse.TabIndex = 6;
             // 
-            // FirefighterAvailabilityListView
+            // firefighterAvailabilityListView
             // 
-            this.FirefighterAvailabilityListView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.FirefighterAvailabilityListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FirefighterAvailabilityListView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.FirefighterAvailabilityListView.Location = new System.Drawing.Point(5, 461);
-            this.FirefighterAvailabilityListView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.FirefighterAvailabilityListView.Name = "FirefighterAvailabilityListView";
-            this.FirefighterAvailabilityListView.NumberOfAvailibilitiesDisplayed = 50;
-            this.FirefighterAvailabilityListView.Size = new System.Drawing.Size(476, 295);
-            this.FirefighterAvailabilityListView.TabIndex = 7;
-            this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de ... :";
+            this.firefighterAvailabilityListView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.firefighterAvailabilityListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.firefighterAvailabilityListView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.firefighterAvailabilityListView.Location = new System.Drawing.Point(5, 461);
+            this.firefighterAvailabilityListView.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.firefighterAvailabilityListView.Name = "firefighterAvailabilityListView";
+            this.firefighterAvailabilityListView.Size = new System.Drawing.Size(476, 295);
+            this.firefighterAvailabilityListView.Statistics = null;
+            this.firefighterAvailabilityListView.TabIndex = 7;
             // 
             // tableLayoutPanel2
             // 
@@ -262,11 +258,11 @@
         private System.Windows.Forms.Label LastUpdate;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private Type.Statistics.NbOperationToday NbOperationToday;
-        private Type.Statistics.NbOperationPerHour NbOperationPerHour;
-        private Type.Statistics.OperationListView RecentOperationList;
-        private Type.Statistics.OperationListView RecentOperationOfUserFirehouse;
-        private Type.Statistics.FirefighterAvailabilityListView FirefighterAvailabilityListView;
+        private Type.Statistics.NbOperationToday nbOperationToday;
+        private Type.Statistics.NbOperationPerHour nbOperationPerHour;
+        private Type.Statistics.OperationListView recentOperationList;
+        private Type.Statistics.OperationListView recentOperationOfUserFirehouse;
+        private Type.Statistics.FirefighterAvailabilityListView firefighterAvailabilityListView;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.PictureBox SettingsPicture;
         private System.Windows.Forms.PictureBox webServiceState;

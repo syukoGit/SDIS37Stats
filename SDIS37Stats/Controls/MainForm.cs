@@ -42,6 +42,8 @@ namespace SDIS37Stats.Controls
         {
             this.InitializeComponent();
 
+            this.ApplyTheme(Core.Syst.Setting.CurrentSetting.Theme);
+
             this.Init();
 
             if (this.ShowWebBrowser)
@@ -85,27 +87,18 @@ namespace SDIS37Stats.Controls
             this.webService.UrlQueueEmpty += this.WebService_OnUrlQueueEmpty;
             this.webService.StateChanged += this.WebService_StateChanged;
 
+            this.recentOperationOfUserFirehouse.OnlyOperationOfUserFirehouse = true;
+
             this.statistics = new Core.Statistics.Statistics(this.webService);
 
-            this.SetStatisticEventConnection();
-        }
-
-        /// <summary>
-        /// Sets the event connections which update the controls which display the statistics.
-        /// </summary>
-        private void SetStatisticEventConnection()
-        {
-            // RecentOperationList
-            this.statistics.FirehouseNameUpdated += (s, e) => this.RecentOperationList.FirehouseName = (s as Core.Statistics.Statistics).FirehouseName;
             this.statistics.NewOperation += this.Statistics_NewOperation;
-
-            // FirefighterAvailabilityListView
-            this.statistics.FirehouseNameUpdated += (s, e) => this.FirefighterAvailabilityListView.Title = "Liste des disponibilités de " + (s as Core.Statistics.Statistics).FirehouseName + " :";
-            this.statistics.FirefighterAvailabilitiesUpdated += (s, e) => this.FirefighterAvailabilityListView.SetFirefighterAvailabilities(e);
-
-            // RecentOperationOfUserFirehouse
-            this.statistics.FirehouseNameUpdated += (s, e) => this.RecentOperationOfUserFirehouse.Title = "Liste des dernières interventions de " + (s as Core.Statistics.Statistics).FirehouseName + " :";
             this.statistics.NewOperationOfUserFirehouse += this.Statistics_NewOperationOfUserFirehouse;
+
+            this.firefighterAvailabilityListView.Statistics = this.statistics;
+            this.recentOperationList.Statistics = this.statistics;
+            this.recentOperationOfUserFirehouse.Statistics = this.statistics;
+            this.nbOperationPerHour.Statistics = this.statistics;
+            this.nbOperationToday.Statistics = this.statistics;
         }
 
         /// <summary>
@@ -127,14 +120,6 @@ namespace SDIS37Stats.Controls
         /// <param name="operations">The <see cref="Core.Statistics.Operation"/> array that contains the new operations.</param>
         private void Statistics_NewOperation(object sender, Core.Statistics.Operation[] operations)
         {
-            var value = operations.Where(t => t.StartedDateTimeLocal.Date == DateTime.Now.Date).ToList();
-            value.Sort((a, b) => b.StartedDateTimeLocal.CompareTo(a.StartedDateTimeLocal));
-            this.RecentOperationList.AddOperations(value);
-
-            this.NbOperationToday.Value = this.statistics.GetOperationsInDay(DateTime.Now).Count();
-
-            this.NbOperationPerHour.Value = this.statistics.GetOperationPerHour(DateTime.Now);
-
             if (OperatingSystem.IsWindows())
             {
                 Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.ESoundType.NewOperationNotification);
@@ -148,14 +133,6 @@ namespace SDIS37Stats.Controls
         /// <param name="operations">The <see cref="Core.Statistics.Operation"/> array that contains the new operations.</param>
         private void Statistics_NewOperationOfUserFirehouse(object sender, Core.Statistics.Operation[] operations)
         {
-            var value = operations.Where(t => t.StartedDateTimeLocal.Date == DateTime.Now.Date).ToList();
-            value.Sort((a, b) => b.StartedDateTimeLocal.CompareTo(a.StartedDateTimeLocal));
-            this.RecentOperationOfUserFirehouse.AddOperations(value);
-
-            this.NbOperationToday.Value = this.statistics.GetOperationsInDay(DateTime.Now).Count();
-
-            this.NbOperationPerHour.Value = this.statistics.GetOperationPerHour(DateTime.Now);
-
             if (OperatingSystem.IsWindows())
             {
                 Extra.Sound.Sound.PlaySoundOnlyWindows(Extra.Sound.Sound.ESoundType.NewOperationOfUserFirehouseNotification);
@@ -169,7 +146,7 @@ namespace SDIS37Stats.Controls
         /// <param name="e">A <see cref="System.ComponentModel.PropertyChangedEventArgs"/> that contains the event data.</param>
         private void Setting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (sender != null && sender is Core.Syst.Setting && sender == Core.Syst.Setting.CurrentSetting)
+            if (sender != null)
             {
                 var prop = typeof(Core.Syst.Setting).GetProperty(e.PropertyName);
 
@@ -177,15 +154,6 @@ namespace SDIS37Stats.Controls
                 {
                     case "MuteSound":
                         Extra.Sound.Sound.Mute = (bool)prop.GetValue(sender);
-                        break;
-                    case "NbOperationOfDepartmentDisplayed":
-                        this.RecentOperationList.NbOperationDisplayed = (int)prop.GetValue(sender);
-                        break;
-                    case "NbOperationOfUserFirehouseDisplayed":
-                        this.RecentOperationOfUserFirehouse.NbOperationDisplayed = (int)prop.GetValue(sender);
-                        break;
-                    case "NbFirefighterAvailabilityDisplayed":
-                        this.FirefighterAvailabilityListView.NumberOfAvailibilitiesDisplayed = (int)prop.GetValue(sender);
                         break;
                     default:
                         break;

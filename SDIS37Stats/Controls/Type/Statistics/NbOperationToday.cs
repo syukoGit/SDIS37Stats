@@ -13,6 +13,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
     public partial class NbOperationToday : UserControl
     {
         /// <summary>
+        /// Represents the statistics manager.
+        /// </summary>
+        private Core.Statistics.Statistics statistics = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NbOperationToday"/> class.
         /// </summary>
         public NbOperationToday()
@@ -20,21 +25,33 @@ namespace SDIS37Stats.Controls.Type.Statistics
             this.InitializeComponent();
 
             Core.Syst.Setting.CurrentSetting.ThemeUpdated += this.CurrentSetting_ThemeUpdated;
+
+            this.ApplyTheme(Core.Syst.Setting.CurrentSetting.Theme);
         }
 
         /// <summary>
-        /// Gets or sets the value to be displayed.
+        /// Gets or sets the statistics manager.
         /// </summary>
-        public int Value
+        public Core.Statistics.Statistics Statistics
         {
             get
             {
-                return this.sevenSegmentArray1.Value;
+                return this.statistics;
             }
 
             set
             {
-                this.sevenSegmentArray1.Value = value;
+                if (this.statistics != null)
+                {
+                    this.statistics.NewOperation -= this.Statistics_NewOperation;
+                }
+
+                this.statistics = value;
+
+                if (this.statistics != null)
+                {
+                    this.statistics.NewOperation += this.Statistics_NewOperation;
+                }
             }
         }
 
@@ -62,6 +79,16 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private void CurrentSetting_ThemeUpdated(object sender, System.EventArgs e)
         {
             this.ApplyTheme(((Core.Syst.Setting)sender).Theme);
+        }
+
+        /// <summary>
+        /// Called when an operation is added.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="operations">An <see cref="Core.Statistics.Operation"/> array that contains added operation.</param>
+        private void Statistics_NewOperation(object sender, Core.Statistics.Operation[] operations)
+        {
+            this.sevenSegmentArray1.Value = (sender as Core.Statistics.Statistics).OperationList.Count;
         }
     }
 }

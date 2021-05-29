@@ -33,6 +33,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private int numOperationDisplayed = 15;
 
         /// <summary>
+        /// Represents the statistics manager.
+        /// </summary>
+        private Core.Statistics.Statistics statistics = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="OperationListView"/> class.
         /// </summary>
         public OperationListView()
@@ -41,11 +46,15 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
             Core.Syst.Setting.CurrentSetting.ThemeUpdated += this.CurrentSetting_ThemeUpdated;
 
+            Core.Syst.Setting.CurrentSetting.PropertyChanged += this.CurrentSetting_PropertyChanged;
+
+            this.ApplyTheme(Core.Syst.Setting.CurrentSetting.Theme);
+
             this.timerAutoScroll.Start();
         }
 
         /// <summary>
-        /// Gets or sets the maximum number of the <see cref="OperationView"/> to be displayed.
+        /// Gets the maximum number of the <see cref="OperationView"/> to be displayed.
         /// </summary>
         public int NbOperationDisplayed
         {
@@ -54,11 +63,42 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 return this.numOperationDisplayed;
             }
 
+            private set
+            {
+                if (this.numOperationDisplayed != value && value > 0)
+                {
+                    this.numOperationDisplayed = value;
+
+                    this.SetOperationViews();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the statistic manager.
+        /// </summary>
+        public Core.Statistics.Statistics Statistics
+        {
+            get
+            {
+                return this.statistics;
+            }
+
             set
             {
-                this.numOperationDisplayed = value;
+                if (this.statistics != null)
+                {
+                    this.statistics.NewOperation -= this.Statistics_NewOperation;
+                    this.statistics.FirehouseNameUpdated -= this.Statistics_FirehouseNameUpdated;
+                }
 
-                this.SetOperationViews();
+                this.statistics = value;
+
+                if (this.statistics != null)
+                {
+                    this.statistics.NewOperation += this.Statistics_NewOperation;
+                    this.statistics.FirehouseNameUpdated += this.Statistics_FirehouseNameUpdated;
+                }
             }
         }
 
@@ -93,13 +133,9 @@ namespace SDIS37Stats.Controls.Type.Statistics
         public Color FontColorHighLightItem { get; set; } = Color.Green;
 
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets a value indicating whether the operation list view must display only the operations of the user's firehouse.
         /// </summary>
-        public string Title
-        {
-            get => this.title.Text;
-            set => this.title.Text = value;
-        }
+        public bool OnlyOperationOfUserFirehouse { get; set; } = false;
 
         /// <summary>
         /// Apply a <see cref="Extra.Theme.ITheme"/> on this control.
@@ -222,6 +258,64 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private void CurrentSetting_ThemeUpdated(object sender, EventArgs e)
         {
             this.ApplyTheme(((Core.Syst.Setting)sender).Theme);
+        }
+
+        /// <summary>
+        /// Called when a property of the <see cref="Core.Syst.Setting"/> class is changed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="System.ComponentModel.PropertyChangedEventArgs"/> that contains the event data.</param>
+        private void CurrentSetting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender != null)
+            {
+                var prop = typeof(Core.Syst.Setting).GetProperty(e.PropertyName);
+
+                if (this.OnlyOperationOfUserFirehouse)
+                {
+                    if (prop.Name == "NbOperationOfUserFirehouseDisplayed")
+                    {
+                        this.NbOperationDisplayed = (int)prop.GetValue(sender);
+                    }
+                }
+                else
+                {
+                    if (prop.Name == "NbOperationOfDepartmentDisplayed")
+                    {
+                        this.NbOperationDisplayed = (int)prop.GetValue(sender);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when an operation is added.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="operations">An <see cref="Core.Statistics.Operation"/> array that contains added operation.</param>
+        private void Statistics_NewOperation(object sender, Core.Statistics.Operation[] operations)
+        {
+            List<Core.Statistics.Operation> values = this.OnlyOperationOfUserFirehouse ? (sender as Core.Statistics.Statistics).OperationListOfUserFirehouse : (sender as Core.Statistics.Statistics).OperationList;
+
+            values = values.Where(t => t.StartedDateTimeLocal.Date == DateTime.Now.Date).ToList();
+
+            values.Sort((a, b) => b.StartedDateTimeLocal.CompareTo(a.StartedDateTimeLocal));
+
+            this.data.AddRange(values.Where(c => !this.data.Select(t => t.NumOperation).Contains(c.NumOperation)));
+
+            this.SetOperationViews();
+        }
+
+        /// <summary>
+        /// Called when the name of the user's firehouse is modified.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An <see cref="EventArgs"/> that contains no data.</param>
+        private void Statistics_FirehouseNameUpdated(object sender, EventArgs e)
+        {
+            this.FirehouseName = (sender as Core.Statistics.Statistics).FirehouseName;
+
+            this.title.Text = this.OnlyOperationOfUserFirehouse ? "Liste des dernières interventions de " + this.FirehouseName : "Liste des dernières interventions";
         }
 
         /// <summary>

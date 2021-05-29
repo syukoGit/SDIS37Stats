@@ -16,7 +16,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
     public partial class FirefighterAvailabilityListView : UserControl
     {
         /// <summary>
-        /// List of <see cref="FirefighterAvailability"/> to be displayed.
+        /// List of <see cref="Core.Statistics.FirefighterAvailability"/> to be displayed.
         /// </summary>
         private readonly List<Core.Statistics.FirefighterAvailability> data = new ();
 
@@ -31,6 +31,11 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private int numAvailibilitiesDisplayed = 50;
 
         /// <summary>
+        /// Represents the <see cref="Core.Statistics.Statistics"/> object that contains the firefighters' availabilities.
+        /// </summary>
+        private Core.Statistics.Statistics statistics = null;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FirefighterAvailabilityListView"/> class.
         /// </summary>
         public FirefighterAvailabilityListView()
@@ -39,20 +44,43 @@ namespace SDIS37Stats.Controls.Type.Statistics
 
             Core.Syst.Setting.CurrentSetting.ThemeUpdated += this.CurrentSetting_ThemeUpdated;
 
+            Core.Syst.Setting.CurrentSetting.PropertyChanged += this.CurrentSetting_PropertyChanged;
+
+            this.ApplyTheme(Core.Syst.Setting.CurrentSetting.Theme);
+
             this.timerAutoScroll.Start();
         }
 
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets the statistics manager.
         /// </summary>
-        public string Title
+        public Core.Statistics.Statistics Statistics
         {
-            get => this.title.Text;
-            set => this.title.Text = value;
+            get
+            {
+                return this.statistics;
+            }
+
+            set
+            {
+                if (this.statistics != null)
+                {
+                    this.statistics.FirefighterAvailabilitiesUpdated -= this.Statistics_FirefighterAvailabilitiesUpdated;
+                    this.statistics.FirehouseNameUpdated -= this.Statistics_FirehouseNameUpdated;
+                }
+
+                this.statistics = value;
+
+                if (this.statistics != null)
+                {
+                    this.statistics.FirefighterAvailabilitiesUpdated += this.Statistics_FirefighterAvailabilitiesUpdated;
+                    this.statistics.FirehouseNameUpdated += this.Statistics_FirehouseNameUpdated;
+                }
+            }
         }
 
         /// <summary>
-        /// Gets or sets the maximum number of <see cref="FirefighterAvailabilityView"/> to be displayed.
+        /// Gets the maximum number of <see cref="FirefighterAvailabilityView"/> to be displayed.
         /// </summary>
         public int NumberOfAvailibilitiesDisplayed
         {
@@ -61,11 +89,14 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 return this.numAvailibilitiesDisplayed;
             }
 
-            set
+            private set
             {
-                this.numAvailibilitiesDisplayed = value;
+                if (value != this.numAvailibilitiesDisplayed && value > 0)
+                {
+                    this.numAvailibilitiesDisplayed = value;
 
-                this.SetFirefighterAvailabilityViews();
+                    this.SetFirefighterAvailabilityViews();
+                }
             }
         }
 
@@ -90,18 +121,6 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 item.BackColor = theme.FirefighterAvailabilityListView_BackgroundColorItem;
                 item.ForeColor = theme.Form_FontColor;
             }
-        }
-
-        /// <summary>
-        /// Set the <see cref="FirefighterAvailabilityView"/> list to be displayed.
-        /// </summary>
-        /// <param name="firefighterAvailabilities">The <see cref="FirefighterAvailabilityView"/> list to be displayed.</param>
-        public void SetFirefighterAvailabilities(IEnumerable<Core.Statistics.FirefighterAvailability> firefighterAvailabilities)
-        {
-            this.data.Clear();
-            this.data.AddRange(firefighterAvailabilities);
-
-            this.SetFirefighterAvailabilityViews();
         }
 
         /// <summary>
@@ -170,6 +189,47 @@ namespace SDIS37Stats.Controls.Type.Statistics
         private void CurrentSetting_ThemeUpdated(object sender, EventArgs e)
         {
             this.ApplyTheme(((Core.Syst.Setting)sender).Theme);
+        }
+
+        /// <summary>
+        /// Called when a property of the <see cref="Core.Syst.Setting"/> class is changed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="System.ComponentModel.PropertyChangedEventArgs"/> that contains the event data.</param>
+        private void CurrentSetting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender != null)
+            {
+                var prop = typeof(Core.Syst.Setting).GetProperty(e.PropertyName);
+
+                if (prop.Name == "NbFirefighterAvailabilityDisplayed")
+                {
+                    this.NumberOfAvailibilitiesDisplayed = (int)prop.GetValue(sender);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when a firefighter's availability is added or modified.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="firefighterAvailabilities">A <see cref="Core.Statistics.FirefighterAvailability"/> list that contains the firefighters' added or modified.</param>
+        private void Statistics_FirefighterAvailabilitiesUpdated(object sender, List<Core.Statistics.FirefighterAvailability> firefighterAvailabilities)
+        {
+            this.data.Clear();
+            this.data.AddRange((sender as Core.Statistics.Statistics).FirefighterAvailabilities);
+
+            this.SetFirefighterAvailabilityViews();
+        }
+
+        /// <summary>
+        /// Called when the firehouse's name of the user is modified.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A <see cref="EventArgs"/> that contains no data.</param>
+        private void Statistics_FirehouseNameUpdated(object sender, EventArgs e)
+        {
+            this.title.Text = "Liste des disponibilités de " + (sender as Core.Statistics.Statistics).FirehouseName + " :";
         }
 
         /// <summary>
