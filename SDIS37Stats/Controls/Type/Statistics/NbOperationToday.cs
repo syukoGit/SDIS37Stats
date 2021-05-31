@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------
 namespace SDIS37Stats.Controls.Type.Statistics
 {
+    using System.Linq;
     using System.Windows.Forms;
 
     /// <summary>
@@ -88,7 +89,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
         /// <param name="operations">An <see cref="Core.Statistics.Operation"/> array that contains added operation.</param>
         private void Statistics_NewOperation(object sender, Core.Statistics.Operation[] operations)
         {
-            this.sevenSegmentArray1.Value = (sender as Core.Statistics.Statistics).OperationList.Count;
+            this.sevenSegmentArray1.Value = (sender as Core.Statistics.Statistics).GetOperationsInDay(System.DateTime.Now).Count();
         }
     }
 }
