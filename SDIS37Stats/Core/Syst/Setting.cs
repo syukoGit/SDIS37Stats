@@ -78,7 +78,7 @@ namespace SDIS37Stats.Core.Syst
                 if (this.theme.ThemeType != value.ThemeType)
                 {
                     this.theme = value;
-                    this.ThemeUpdated(this, EventArgs.Empty);
+                    this.ThemeUpdated?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -181,10 +181,12 @@ namespace SDIS37Stats.Core.Syst
         /// <returns>A deep copy of the settings.</returns>
         public Setting DeepCopy()
         {
-            var copy = (Setting)this.MemberwiseClone();
+            var copy = new Setting();
 
-            copy.MuteSound = this.MuteSound;
-            copy.Theme = this.Theme;
+            foreach (PropertyInfo property in typeof(Setting).GetProperties(BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.Public))
+            {
+                property.SetValue(copy, property.GetValue(this));
+            }
 
             return copy;
         }
