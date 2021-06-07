@@ -176,8 +176,8 @@ namespace SDIS37Stats.Core.Statistics
         /// </summary>
         public void Refresh()
         {
-            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListURL, null, null));
-            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
+            this.webService.UrlQueue.Enqueue(Web.WebServiceURL.WebServiceOperationListURL);
+            this.webService.UrlQueue.Enqueue(Web.WebServiceURL.WebServiceFirefighterAvailabilityURL);
             this.webService.NavigateToNextUrl();
         }
 
@@ -279,9 +279,9 @@ namespace SDIS37Stats.Core.Statistics
         {
             this.webService.OperationListPageHtmlLoaded += this.WebService_OperationList_Init;
 
-            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListURL, null, null));
-            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceFirefighterAvailabilityURL, null, null));
-            this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListOfTheUserFirehouseURL, null, null));
+            this.webService.UrlQueue.Enqueue(Web.WebServiceURL.WebServiceOperationListURL);
+            this.webService.UrlQueue.Enqueue(Web.WebServiceURL.WebServiceFirefighterAvailabilityURL);
+            this.webService.UrlQueue.Enqueue(Web.WebServiceURL.WebServiceOperationListOfTheUserFirehouseURL);
 
             this.webService.NavigateToNextUrl();
         }
@@ -307,7 +307,10 @@ namespace SDIS37Stats.Core.Statistics
                 }
                 else
                 {
-                    this.webService.UrlQueue.Enqueue((Web.WebServiceURL.WebServiceOperationListURL, new Dictionary<string, string> { { "page", (currentPage + 1).ToString() } }, null));
+                    var url = Web.WebServiceURL.WebServiceOperationListURL;
+                    url.QueryParameters["page"] = (currentPage + 1).ToString();
+                    this.webService.UrlQueue.Enqueue(url);
+
                     this.webService.NavigateToNextUrl();
                 }
             }

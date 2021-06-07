@@ -48,7 +48,7 @@ namespace SDIS37Stats.Core.Web
             this.WebBrowser.DocumentCompleted += this.WebBrowser_DocumentCompleted;
             this.WebBrowser.Navigating += this.WebBrowser_Navigating;
 
-            this.WebBrowser.Url = new Uri(WebServiceURL.WebServiceMainPageURL.GetAbsoluteUrl(null));
+            this.WebBrowser.Url = new Uri(WebServiceURL.WebServiceMainPageURL.GetAbsoluteUrl());
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace SDIS37Stats.Core.Web
         /// <summary>
         /// Gets the current url queue.
         /// </summary>
-        public Queue<(URL url, Dictionary<string, string> queryParams, Dictionary<string, string> postDatas)> UrlQueue { get; } = new ();
+        public Queue<URL> UrlQueue { get; } = new ();
 
         /// <summary>
         /// Dispose all objects disposable.
@@ -213,7 +213,7 @@ namespace SDIS37Stats.Core.Web
         {
             Syst.Log.WriteLog(Syst.Log.EType.Normal, "WebService -> Clear authentification cache");
             this.WebBrowser.Document.ExecCommand("ClearAuthenticationCache", false, null);
-            this.UrlQueue.Enqueue((WebServiceURL.WebServicesLoginURL, null, null));
+            this.UrlQueue.Enqueue(WebServiceURL.WebServicesLoginURL);
 
             this.NavigateToNextUrl();
         }
@@ -233,23 +233,23 @@ namespace SDIS37Stats.Core.Web
                     {
                         this.startedTimeHttpRequest = DateTime.Now;
 
-                        var (url, queryParams, postDatas) = this.UrlQueue.Dequeue();
+                        var url = this.UrlQueue.Dequeue();
 
                         this.WebBrowser.ScriptErrorsSuppressed = !url.UseJS;
 
-                        var (strUrl, strPostDatas) = url.GetAbsoluteUrlAndPostData(queryParams, postDatas);
+                        var (absoluteUrl, postData) = url.GetAbsoluteUrlAndPostData();
 
-                        if (string.IsNullOrEmpty(strPostDatas))
+                        if (string.IsNullOrEmpty(postData))
                         {
-                            this.WebBrowser.Navigate(strUrl);
+                            this.WebBrowser.Navigate(absoluteUrl);
                         }
                         else
                         {
-                            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(strPostDatas);
-                            this.WebBrowser.Navigate(strUrl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
+                            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(postData);
+                            this.WebBrowser.Navigate(absoluteUrl, string.Empty, bytes, "Content-Type: application/x-www-form-urlencoded");
                         }
 
-                        Syst.Log.WriteLog(Syst.Log.EType.Normal, "HTTP Request. URL: " + strUrl + (string.IsNullOrEmpty(strPostDatas) ? string.Empty : " (Post data : " + strPostDatas + ")"));
+                        Syst.Log.WriteLog(Syst.Log.EType.Normal, "HTTP Request. URL: " + absoluteUrl + (string.IsNullOrEmpty(postData) ? string.Empty : " (Post data : " + postData + ")"));
                     }
                     else
                     {
