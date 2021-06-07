@@ -5,6 +5,8 @@
 // -----------------------------------------------------------------------
 namespace SDIS37Stats.Core.Web
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Internal class containing the <see cref="URL"/> used by the <see cref="WebService"/> class.
     /// </summary>
@@ -26,21 +28,21 @@ namespace SDIS37Stats.Core.Web
         ///     <list type="bullet">
         ///         <item>
         ///             <term>date</term>
-        ///             <description>Date of the day on wich one wishes to retrieve the information (default value: today date).</description>
+        ///             <description>Date of the day on wich one wishes to retrieve the information. Default value: 01/01/2021.</description>
         ///         </item>
         ///         <item>
         ///             <term>rbcsp</term>
-        ///             <description>Acronym of principal firehouse or department (default value: SDIS).</description>
+        ///             <description>Acronym of principal firehouse or department Available values: SDIS/AMB/CHI/LOC/NAG/TCN/SAG | Default value: SDIS.</description>
         ///         </item>
         ///     </list>
         /// </para>
         /// </summary>
         public static URL WebServiceNbOperationInDayURL => new ("https://webservices.sdis37.fr/interventions/nbInterventions")
         {
-            PostDatas = new PostData[]
+            PostData = new Dictionary<string, string>
             {
-                new PostData("date") { DefaultValue = "01/01/2021" },
-                new PostData("rbcsp") { DefaultValue = "SDIS" },
+                { "date", "01/01/2021" },
+                { "rbcsp", "SDIS" },
             },
         };
 
@@ -70,11 +72,10 @@ namespace SDIS37Stats.Core.Web
         /// </summary>
         public static URL WebServiceOperationListURL => new ("https://webservices.sdis37.fr/interventions/liste")
         {
-            QueryParameters = new QueryParameter[]
+            QueryParameters = new Dictionary<string, string>
             {
-                new QueryParameter("direction") { DefaultValue = "desc" },
-                new QueryParameter("sort") { DefaultValue = "Depart" },
-                new QueryParameter("page"),
+                { "direction", "desc" },
+                { "sort", "Depart" },
             },
         };
 
@@ -99,11 +100,10 @@ namespace SDIS37Stats.Core.Web
         /// </summary>
         public static URL WebServiceOperationListOfTheUserFirehouseURL => new ("https://webservices.sdis37.fr/interventions/listestats/undefined")
         {
-            QueryParameters = new QueryParameter[]
+            QueryParameters = new Dictionary<string, string>
             {
-                new QueryParameter("direction") { DefaultValue = "desc" },
-                new QueryParameter("sort") { DefaultValue = "Depart" },
-                new QueryParameter("page"),
+                { "direction", "desc" },
+                { "sort", "Depart" },
             },
         };
 
