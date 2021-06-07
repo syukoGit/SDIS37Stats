@@ -59,12 +59,11 @@
             this.title.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.title.AutoSize = true;
             this.title.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.title.Location = new System.Drawing.Point(267, 0);
+            this.title.Location = new System.Drawing.Point(289, 0);
             this.title.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(43, 20);
+            this.title.Size = new System.Drawing.Size(0, 20);
             this.title.TabIndex = 1;
-            this.title.Text = "Title";
             // 
             // panel
             // 

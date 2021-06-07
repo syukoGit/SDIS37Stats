@@ -69,7 +69,7 @@
             this.sevenSegmentArray1.Size = new System.Drawing.Size(203, 91);
             this.sevenSegmentArray1.TabIndex = 1;
             this.sevenSegmentArray1.TabStop = false;
-            this.sevenSegmentArray1.Value = 126;
+            this.sevenSegmentArray1.Value = 0;
             // 
             // fix_label
             // 

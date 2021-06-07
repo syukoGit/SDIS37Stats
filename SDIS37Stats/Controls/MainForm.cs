@@ -83,6 +83,8 @@ namespace SDIS37Stats.Controls
 
             this.SettingsPicture.Image = Extra.Image.Image.SettingsPicture;
 
+            this.LastUpdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+
             this.webService = new Core.Web.WebService();
             this.webService.UrlQueueEmpty += this.WebService_OnUrlQueueEmpty;
             this.webService.StateChanged += this.WebService_StateChanged;
