@@ -11,19 +11,31 @@ namespace SDIS37Stats.Core.Web
     internal class WebServiceURL
     {
         /// <summary>
-        /// Used for get the login url of the webservice.
+        /// Gets the <see cref="URL"/> for get the login url of the webservice.
         /// </summary>
-        public static readonly URL WebServicesLoginURL = new ("https://webservices.sdis37.fr/users/login");
+        public static URL WebServicesLoginURL => new ("https://webservices.sdis37.fr/users/login");
 
         /// <summary>
-        /// Used for get the main page of the webservice.
+        /// Gets the <see cref="URL"/> for get the main page of the webservice.
         /// </summary>
-        public static readonly URL WebServiceMainPageURL = new ("https://webservices.sdis37.fr/interventions");
+        public static URL WebServiceMainPageURL => new ("https://webservices.sdis37.fr/interventions");
 
         /// <summary>
-        /// Used for get the number of operation in day.
+        /// Gets the <see cref="URL"/> get the number of operation in day.
+        /// <para>The available post data:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <term>date</term>
+        ///             <description>Date of the day on wich one wishes to retrieve the information (default value: today date).</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>rbcsp</term>
+        ///             <description>Acronym of principal firehouse or department (default value: SDIS).</description>
+        ///         </item>
+        ///     </list>
+        /// </para>
         /// </summary>
-        public static readonly URL WebServiceNbOperationInDayURL = new ("https://webservices.sdis37.fr/interventions/nbInterventions")
+        public static URL WebServiceNbOperationInDayURL => new ("https://webservices.sdis37.fr/interventions/nbInterventions")
         {
             PostDatas = new PostData[]
             {
@@ -33,14 +45,30 @@ namespace SDIS37Stats.Core.Web
         };
 
         /// <summary>
-        /// Used for get the number of operations per hour.
+        /// Gets <see cref="URL"/> for get the number of operations per hour.
         /// </summary>
-        public static readonly URL WebServiceStatsForOperationPerHourURL = new ("https://webservices.sdis37.fr/interventions/getNb");
+        public static URL WebServiceStatsForOperationPerHourURL => new ("https://webservices.sdis37.fr/interventions/getNb");
 
         /// <summary>
-        /// Used for get the lis of recent operations in SDIS37.
+        /// Gets the <see cref="URL"/> for get the list of recent operations in SDIS37.
+        /// <para>
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <term>direction</term>
+        ///             <description>Defines the order of the data. Available value: desc/asc</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>sort</term>
+        ///             <description>Defines the sort applied to the data.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>page</term>
+        ///             <description>Defines the page. Default value: last page</description>
+        ///         </item>
+        ///     </list>
+        /// </para>
         /// </summary>
-        public static readonly URL WebServiceOperationListURL = new ("https://webservices.sdis37.fr/interventions/liste")
+        public static URL WebServiceOperationListURL => new ("https://webservices.sdis37.fr/interventions/liste")
         {
             QueryParameters = new QueryParameter[]
             {
@@ -51,9 +79,25 @@ namespace SDIS37Stats.Core.Web
         };
 
         /// <summary>
-        /// Used for get the list of the recent operations in the user's firehouse.
+        /// Gets the <see cref="URL"/> for get the list of the recent operations in the user's firehouse.
+        /// <para>
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <term>direction</term>
+        ///             <description>Defines the order of the data. Available value: desc/asc</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>sort</term>
+        ///             <description>Defines the sort applied to the data.</description>
+        ///         </item>
+        ///         <item>
+        ///             <term>page</term>
+        ///             <description>Defines the page. Default value: last page</description>
+        ///         </item>
+        ///     </list>
+        /// </para>
         /// </summary>
-        public static readonly URL WebServiceOperationListOfTheUserFirehouseURL = new ("https://webservices.sdis37.fr/interventions/listestats/undefined")
+        public static URL WebServiceOperationListOfTheUserFirehouseURL => new ("https://webservices.sdis37.fr/interventions/listestats/undefined")
         {
             QueryParameters = new QueryParameter[]
             {
@@ -64,8 +108,8 @@ namespace SDIS37Stats.Core.Web
         };
 
         /// <summary>
-        /// Used for get the availabilities of the firefighters of the user's firehouse.
+        /// Gets the <see cref="URL"/> for get the availabilities of the firefighters of the user's firehouse.
         /// </summary>
-        public static readonly URL WebServiceFirefighterAvailabilityURL = new ("https://webservices.sdis37.fr/personnels");
+        public static URL WebServiceFirefighterAvailabilityURL => new ("https://webservices.sdis37.fr/personnels");
     }
 }
