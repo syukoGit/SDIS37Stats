@@ -28,7 +28,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
         /// <summary>
         /// Maximum number of <see cref="FirefighterAvailabilityView"/> to be displayed.
         /// </summary>
-        private int numAvailibilitiesDisplayed = 50;
+        private int numAvailibilitiesDisplayed = Core.Syst.Setting.CurrentSetting.NbFirefighterAvailabilityDisplayed;
 
         /// <summary>
         /// Represents the <see cref="Core.Statistics.Statistics"/> object that contains the firefighters' availabilities.
