@@ -8,6 +8,7 @@ namespace SDIS37Stats
     using System;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// The main class containing the main entry point of the application.
@@ -41,12 +42,16 @@ namespace SDIS37Stats
                     SetUsernamePassword(args);
                 }
 
+                Core.Syst.Setting.ImportSettings(@"Settings\AutoSaveSettings.xml");
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Controls.MainForm());
             }
             finally
             {
+                Core.Syst.Setting.ExportSettingsToXml(Core.Syst.Setting.CurrentSetting, "AutoSaveSettings.xml");
+
                 _ = SetThreadExecutionState(0x80000000);
                 Core.Syst.Log.WriteLog(Core.Syst.Log.EType.Normal, "Application stopped");
             }

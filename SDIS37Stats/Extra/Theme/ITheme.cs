@@ -6,11 +6,12 @@
 namespace SDIS37Stats.Extra.Theme
 {
     using System.Drawing;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// Interface used by the themes.
     /// </summary>
-    public interface ITheme
+    public interface ITheme : IXmlSerializable
     {
         /// <summary>
         /// Defines the type of theme.

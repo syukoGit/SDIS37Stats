@@ -5,8 +5,9 @@
 // -----------------------------------------------------------------------
 namespace SDIS37Stats.Extra.Theme
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
+    using System.Xml;
+    using System.Xml.Schema;
 
     /// <summary>
     /// Class to make the dark theme.
@@ -84,5 +85,29 @@ namespace SDIS37Stats.Extra.Theme
 
         /// <inheritdoc/>
         public Color SevenSegment_LightColor => ColorPalette.Gray4;
+
+        /// <inheritdoc/>
+        public XmlSchema GetSchema() => null;
+
+        /// <inheritdoc/>
+        public void ReadXml(XmlReader reader)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Type", this.ThemeType.ToString());
+
+            foreach (var themeProp in this.GetType().GetProperties())
+            {
+                if (!(themeProp.Name == "ThemeType"))
+                {
+                    writer.WriteStartElement(themeProp.Name);
+                    writer.WriteAttributeString("Color", themeProp.GetValue(this).ToString());
+                    writer.WriteEndElement();
+                }
+            }
+        }
     }
 }
