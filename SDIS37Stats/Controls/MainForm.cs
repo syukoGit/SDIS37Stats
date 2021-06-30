@@ -90,6 +90,9 @@ namespace SDIS37Stats.Controls
             this.webService.StateChanged += this.WebService_StateChanged;
 
             this.recentOperationOfUserFirehouse.OnlyOperationOfUserFirehouse = true;
+            this.recentOperationOfUserFirehouse.NbOperationDisplayed = Core.Syst.Setting.CurrentSetting.NbOperationOfUserFirehouseDisplayed;
+
+            this.recentOperationList.NbOperationDisplayed = Core.Syst.Setting.CurrentSetting.NbOperationOfDepartmentDisplayed;
 
             this.statistics = new Core.Statistics.Statistics(this.webService);
 

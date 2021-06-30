@@ -54,7 +54,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
         }
 
         /// <summary>
-        /// Gets the maximum number of the <see cref="OperationView"/> to be displayed.
+        /// Gets or sets the maximum number of the <see cref="OperationView"/> to be displayed.
         /// </summary>
         public int NbOperationDisplayed
         {
@@ -63,7 +63,7 @@ namespace SDIS37Stats.Controls.Type.Statistics
                 return this.numOperationDisplayed;
             }
 
-            private set
+            set
             {
                 if (this.numOperationDisplayed != value && value > 0)
                 {
