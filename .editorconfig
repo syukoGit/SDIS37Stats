@@ -116,3 +116,6 @@ dotnet_style_qualification_for_field = false:suggestion
 dotnet_style_qualification_for_method = true:suggestion
 #prefer properties to be prefaced with this. in C# or Me. in Visual Basic
 dotnet_style_qualification_for_property = true:suggestion
+
+[*.{cs,vb}]
+dotnet_style_qualification_for_field=true:suggestion
