@@ -1,0 +1,52 @@
+﻿<UserControl
+    x:Class="Controls.Type.Statistic.NbOperationPerHour"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Charts="using:DevExpress.WinUI.Charts"
+    mc:Ignorable="d">
+
+    <Grid Padding="48">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Charts:CartesianChart Margin="50,0,50,25" ToolTipEnabled="True">
+            <Charts:CartesianChart.AxisY>
+                <Charts:AxisY>
+                    <Charts:AxisY.LabelOptions>
+                        <Charts:AxisLabelOptions x:Name="axisYLabel"/>
+                    </Charts:AxisY.LabelOptions>
+                    <Charts:AxisY.Title>
+                        <Charts:AxisTitle Content="{x:Bind AxisYTitle}"/>
+                    </Charts:AxisY.Title>
+                </Charts:AxisY>
+            </Charts:CartesianChart.AxisY>
+            <Charts:CartesianChart.AxisX>
+                <Charts:AxisX>
+                    <Charts:AxisX.LabelOptions>
+                        <Charts:AxisLabelOptions x:Name="axisXLabel"/>
+                    </Charts:AxisX.LabelOptions>
+                    <Charts:AxisX.Title>
+                        <Charts:AxisTitle Content="{x:Bind AxisXTitle}"/>
+                    </Charts:AxisX.Title>
+                </Charts:AxisX>
+            </Charts:CartesianChart.AxisX>
+            <Charts:CartesianChart.Legend>
+                <Charts:Legend Margin="0,-5,0,-5" BorderThickness="0" FontSize="12" HorizontalPosition="Center" MaximumRowsOrColumns="3" Orientation="Horizontal" VerticalPosition="BottomOutside"/>
+            </Charts:CartesianChart.Legend>
+            <Charts:CartesianChart.Series>
+                <Charts:Series DisplayName="Intervention du département" Data="{x:Bind source}">
+                    <Charts:Series.View>
+                        <Charts:SideBySideBarSeriesView>
+                            <Charts:SideBySideBarSeriesView.Palette>
+                                <Charts:GreenPalette/>
+                            </Charts:SideBySideBarSeriesView.Palette>
+                        </Charts:SideBySideBarSeriesView>
+                    </Charts:Series.View>
+                </Charts:Series>
+            </Charts:CartesianChart.Series>
+        </Charts:CartesianChart>
+    </Grid>
+</UserControl>
